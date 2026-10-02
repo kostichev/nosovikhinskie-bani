@@ -725,6 +725,33 @@ body{font-size:17px}
 .fog-hint.gone{opacity:0}
 @media (max-width:640px){ .fog{-webkit-backdrop-filter:blur(10px) brightness(1.1);backdrop-filter:blur(10px) brightness(1.1)} .fog-hint{bottom:calc(100px + env(safe-area-inset-bottom,0px));font-size:11px} }
 @media (prefers-reduced-motion:reduce){ .fog,.fog-hint{display:none} }
+
+.fog-hint{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+@media (max-width:640px){ .fog-hint{bottom:calc(150px + env(safe-area-inset-bottom,0px))} }
+/* ---------- v9 ---------- */
+.nav{top:calc(env(safe-area-inset-top,0px) + 14px);left:var(--gutter);right:var(--gutter);padding:10px 12px 10px 22px;border-radius:999px;
+  background:rgba(32,27,21,.78);border:1px solid rgba(var(--fg-rgb),.2);box-shadow:0 18px 40px -18px rgba(0,0,0,.8);max-width:1440px;margin-inline:auto}
+.nav.hide{transform:none}
+.nav img{height:44px}
+.nav-links a{font-size:15px;opacity:.92}
+.nav-phone{font-size:13px}
+@media (max-width:640px){
+  .nav{top:calc(env(safe-area-inset-top,0px) + 10px);left:10px;right:10px;padding:8px 8px 8px 16px}
+  .nav img{height:34px}
+}
+.fog{-webkit-backdrop-filter:blur(3.5px) saturate(110%) brightness(1.07);backdrop-filter:blur(3.5px) saturate(110%) brightness(1.07);
+  background:radial-gradient(120% 90% at 50% 40%,rgba(226,219,206,.13),rgba(226,219,206,.06) 70%)}
+@media (max-width:640px){ .fog{-webkit-backdrop-filter:blur(4px) brightness(1.06);backdrop-filter:blur(4px) brightness(1.06)} }
+.hero-in{padding-top:130px}
+.hero-title{font-size:clamp(56px,min(11.8vw,18.5vh),200px);text-shadow:0 6px 40px rgba(0,0,0,.45)}
+.hero-foot p{font-size:clamp(18px,1.55vw,23px);line-height:1.5;color:var(--bone);max-width:34ch;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.hero .btn{font-size:16px;padding:18px 30px}
+.scene::after{background:linear-gradient(180deg,rgba(10,9,7,.7),rgba(10,9,7,.35) 35%,rgba(10,9,7,.55) 70%,rgba(10,9,7,.9))}
+@media (max-width:640px){
+  .hero-in{padding-top:100px}
+  .hero-title{font-size:clamp(48px,14.6vw,80px)}
+  .hero-foot p{font-size:17px}
+}
 </style>
 <style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -1116,8 +1143,8 @@ const steam = { density: .5, target: .14, boost: 0, speed: 1, tone: 1, off: fals
   let k = 0;
   (function loop() {
     if (++k % 10 === 0) {
-      const m = document.querySelector(".manifesto");
-      const off = !!m && m.getBoundingClientRect().top < innerHeight * .35;
+      const m = document.querySelector("#hero");
+      const off = !!m && m.getBoundingClientRect().top < innerHeight * .45;
       if (off !== steam.off) { steam.off = off; steam.offAt = performance.now(); document.documentElement.classList.toggle("steam-off", off); }
     }
     requestAnimationFrame(loop);
@@ -1326,7 +1353,6 @@ function motion() {
   $("#steam").style.zIndex = 55; $("#puffs").style.zIndex = 56;
   steam.boost = .55; steam.density = .6;
   gsap.timeline({ defaults: { ease: "power3.out" } })
-    .fromTo("#welLogo", { opacity: 0, scale: 1.06, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.8, immediateRender: true }, .1)
     .fromTo(".wel-hello", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.2 }, .5)
     .fromTo(".wel-addr, .wel-cue", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.2, stagger: .15 }, .8)
     .from(".nav", { y: -30, opacity: 0, duration: 1 }, .9)
@@ -1336,13 +1362,14 @@ function motion() {
 
   /* WELCOME: при прокрутке логотип и стекло плавно растворяются, при обратной — возвращаются */
   gsap.timeline({ scrollTrigger: { trigger: "#welcome", start: "top top", end: "+=90%", scrub: 1, pin: true } })
-    .fromTo("#welLogo", { opacity: 1, scale: 1, filter: "blur(0px)" }, { opacity: 0, scale: 1.08, filter: "blur(22px)", ease: "power1.in", duration: .85, immediateRender: false }, .05)
+    .fromTo("#welLogo", { y: 0, scale: 1, filter: "blur(0px) brightness(1) saturate(1)" }, { y: () => -innerHeight * .12, scale: 1.1, filter: "blur(28px) brightness(2.2) saturate(0)", ease: "power1.in", duration: .8, immediateRender: false }, .05)
+    .fromTo("#welLogo", { opacity: 1 }, { opacity: 0, ease: "power1.in", duration: .4, immediateRender: false }, .5)
     .fromTo(".wel-hello", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: -60, opacity: 0, filter: "blur(10px)", duration: .55, immediateRender: false }, .05)
     .fromTo(".wel-addr", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: 50, opacity: 0, filter: "blur(10px)", duration: .55, immediateRender: false }, .1)
     .fromTo(".wel-cue, .fog-hint", { opacity: 1 }, { opacity: 0, duration: .2, immediateRender: false }, 0)
     .fromTo("#fog", { opacity: 1 }, { opacity: 0, duration: .8, immediateRender: false }, .1)
-    .to(steam, { target: .3, duration: .6 }, .1)
-    .to(steam, { target: .14, duration: .3 }, .7);
+    .fromTo(steam, { target: .14 }, { target: .5, duration: .45, immediateRender: false }, .25)
+    .to(steam, { target: .05, duration: .3 }, .7);
 
   /* HERO: заголовок проявляется из пара, на скролле разлетается */
   gsap.set(chars, { yPercent: 110, opacity: 0, filter: "blur(10px)" });
@@ -1356,7 +1383,7 @@ function motion() {
     .to(chars, { yPercent: () => gsap.utils.random(-140, -40), xPercent: () => gsap.utils.random(-60, 60), rotate: () => gsap.utils.random(-25, 25), opacity: 0, filter: "blur(14px)", stagger: { each: .012, from: "random" }, ease: "power2.in" }, .15)
     .to("#heroScene", { scale: 1.4, filter: "brightness(.3)", ease: "none" }, 0)
     .to(".hero-foot", { opacity: 0, y: -40, ease: "none" }, 0)
-    .to(steam, { target: .7, ease: "none" }, .2);
+
 
 
 
