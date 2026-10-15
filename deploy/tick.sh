@@ -2,6 +2,7 @@
 # Запускается cron'ом каждые 5 минут: подтягивает свежую версию сайта и,
 # как только домен смотрит на этот сервер, выпускает бесплатный SSL (Let's Encrypt).
 set -u
+cd /
 DOMAIN="xn----8sbccpraaeo3adgda1cf3e.xn--p1ai"
 DIR="/var/www/nosbani"
 STAMP="/var/lib/nosbani-ssl-try"

@@ -2,6 +2,7 @@
 # Установка сайта «Носовихинские бани» на сервер (Ubuntu/Debian, запускать от root).
 # Повторный запуск безопасен: другие сайты на сервере не трогает.
 set -euo pipefail
+cd /  # на случай, если консоль стоит в удалённой папке
 
 DOMAIN="xn----8sbccpraaeo3adgda1cf3e.xn--p1ai"     # носовихинские-бани.рф
 REPO="https://github.com/kostichev/nosovikhinskie-bani.git"
