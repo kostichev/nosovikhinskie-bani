@@ -2249,12 +2249,16 @@ const steam = { density: .5, target: .14, boost: 0, speed: 1, tone: 1, off: fals
 const steamIdle = () => steam.off && steam.base < .01 && steam.veil < .01;
 (function initSteam() {
   if (reduce || LITE) return;
-  const c = $("#steam"), gl = c.getContext("webgl", { premultipliedAlpha: false, antialias: false, alpha: true });
+  const c = $("#steam"), gl = c.getContext("webgl", { premultipliedAlpha: true, antialias: false, alpha: true });
   if (!gl) return;
   const vs = `attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
-  const fs = `precision mediump float;
+  const fs = `#ifdef GL_FRAGMENT_PRECISION_HIGH
+  precision highp float;
+  #else
+  precision mediump float;
+  #endif
   uniform vec2 r;uniform float t;uniform vec2 m;uniform float d;uniform float tint;uniform float tone;uniform vec3 tr[14];uniform float bs;uniform float bk;uniform float by;
-  float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+  float h(vec2 p){vec3 q=fract(vec3(p.xyx)*.1031);q+=dot(q,q.yzx+33.33);return fract((q.x+q.y)*q.z);}
   float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
   float fbm(vec2 p){float v=0.,a=.5;mat2 R=mat2(.8,.6,-.6,.8);for(int i=0;i<4;i++){v+=a*n(p);p=R*p*2.03;a*=.5;}return v;}
   void main(){
@@ -2267,7 +2271,7 @@ const steamIdle = () => steam.off && steam.base < .01 && steam.veil < .01;
       float k=tr[i].z*exp(-dd*7.);
       clr+=k; sw+=normalize(dv+1e-4)*k*.9;
     }
-    float T=t*.55;
+    float T=mod(t,600.)*.55;
     /* пар поднимается, закручивается и тянется вверх тонкими языками */
     vec2 q=p; q.y-=T*.32;
     vec2 w=vec2(fbm(q*.9+vec2(0.,T*.05)),fbm(q*.9+vec2(4.1,2.7)-vec2(0.,T*.04)))-.5;
@@ -2286,7 +2290,8 @@ const steamIdle = () => steam.off && steam.base < .01 && steam.veil < .01;
     a=max(a,av);
     a*=1.-min(.94,clr);
     vec3 col=mix(vec3(1.,.97,.93),vec3(.9,.95,.98),tint)*(.82+.25*f2);
-    gl_FragColor=vec4(col,a);
+    a=clamp(a,0.,1.);
+    gl_FragColor=vec4(col*a,a);
   }`;
   const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); return o; };
   const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(pr);
