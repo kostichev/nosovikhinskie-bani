@@ -1061,6 +1061,24 @@ html,body{overflow-x:clip}
 @media (max-width:900px){ .sched3{grid-template-columns:minmax(0,1fr)} .sn-card{min-height:0} }
 @media (max-width:760px){ .sd-col{padding:18px 18px 6px} .sd-list li{grid-template-columns:58px minmax(0,1fr) auto;gap:10px} .sd-list time{font-size:22px} .sd-list span{font-size:16px} .sd-list span small{display:block;margin:2px 0 0} }
 
+
+/* v16: шкала шагов, слово-фон, пар под потолком */
+.how-word{position:absolute;inset:0;z-index:1;display:grid;align-items:end;justify-items:center;pointer-events:none;overflow:hidden}
+.how-word span{grid-area:1/1;font:italic 300 clamp(170px,27vw,440px)/.8 var(--f-display);letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1px rgba(246,240,228,.24);opacity:0;white-space:nowrap;margin-bottom:-.08em}
+.how-ceil{position:absolute;left:0;right:0;top:0;height:62%;z-index:1;pointer-events:none;transform-origin:50% 0;transform:scaleY(0);opacity:0;
+  background:radial-gradient(70% 90% at 60% 0%,rgba(244,236,224,.26),rgba(244,236,224,.10) 45%,transparent 75%);filter:blur(6px)}
+.how-tl{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,96px);position:relative}
+.how-tl li{position:relative;padding-top:18px;cursor:pointer;font:500 11px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim);transition:color .3s}
+.how-tl li::before{content:"";position:absolute;left:0;top:0;width:9px;height:9px;border-radius:50%;border:1px solid rgba(var(--fg-rgb),.35);background:var(--night);z-index:1;transition:background .3s,border-color .3s,transform .3s}
+.how-tl li:hover{color:var(--bone)}
+.how-tl li.done::before{background:var(--brass);border-color:var(--brass)}
+.how-tl li.on{color:#f6f0e4}
+.how-tl li.on::before{background:var(--cta-bg);border-color:var(--cta-bg);transform:scale(1.35);box-shadow:0 0 0 5px rgba(164,182,74,.18)}
+.how-tl > i{position:absolute;left:4px;top:4px;width:288px;height:1px;background:rgba(var(--fg-rgb),.18)}
+.how-tl > i em{display:block;height:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--brass),var(--cta-bg))}
+@media (max-width:900px){ .how-tl{grid-template-columns:repeat(4,minmax(0,1fr));width:100%} .how-tl > i{width:75%} .how-word span{font-size:clamp(110px,34vw,200px)} }
+.no-motion .how-word,.no-motion .how-ceil,.no-motion .how-tl,.no-motion .how-hint{display:none}
+@media (prefers-reduced-motion:reduce){ .how-word,.how-ceil,.how-tl{display:none} }
 </style>
 <style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -1098,44 +1116,6 @@ html,body{overflow-x:clip}
     </div>
     <div class="wel-cue"><span class="mono">Листайте</span><i></i></div>
     <div class="wel-haze" id="welHaze" aria-hidden="true"></div>
-    <figure class="wel-vat" id="welVat" aria-hidden="true">
-      <svg viewBox="0 0 640 440" class="vat-svg">
-        <defs>
-          <radialGradient id="vIron" cx=".38" cy=".22" r=".95"><stop offset="0" stop-color="#4a4541"/><stop offset=".35" stop-color="#26231f"/><stop offset=".75" stop-color="#121110"/><stop offset="1" stop-color="#070606"/></radialGradient>
-          <linearGradient id="vRim" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1a1816"/><stop offset=".3" stop-color="#5a544e"/><stop offset=".55" stop-color="#2a2724"/><stop offset=".8" stop-color="#4a4540"/><stop offset="1" stop-color="#141311"/></linearGradient>
-          <radialGradient id="vWater" cx=".42" cy=".38" r=".75"><stop offset="0" stop-color="#e9b678"/><stop offset=".22" stop-color="#9a7a46"/><stop offset=".55" stop-color="#3f4a2c"/><stop offset="1" stop-color="#1b2014"/></radialGradient>
-          <radialGradient id="vEmber" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffb35c" stop-opacity=".95"/><stop offset=".35" stop-color="#ff6a1f" stop-opacity=".55"/><stop offset="1" stop-color="#ff6a1f" stop-opacity="0"/></radialGradient>
-          <linearGradient id="vSheen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-          <filter id="vSoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter>
-          <filter id="vSoft2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4"/></filter>
-          <clipPath id="vBodyClip"><path d="M70 168 C70 330 170 404 320 404 C470 404 570 330 570 168 Z"/></clipPath>
-        </defs>
-        <ellipse class="vat-glow" cx="320" cy="412" rx="250" ry="34" fill="url(#vEmber)" filter="url(#vSoft)"/>
-        <!-- очаг из камня -->
-        <g fill="#2a2520" opacity=".95">
-          <path d="M150 400 q24 -22 52 -2 q-4 26 -30 28 q-26 -2 -22 -26z"/><path d="M196 408 q30 -20 58 0 q-6 22 -30 24 q-26 -2 -28 -24z"/>
-          <path d="M386 408 q30 -20 58 0 q-4 24 -30 24 q-26 -2 -28 -24z"/><path d="M436 400 q26 -22 54 0 q-6 26 -30 26 q-24 -2 -24 -26z"/>
-        </g>
-        <g class="vat-fire"><ellipse cx="320" cy="404" rx="70" ry="16" fill="url(#vEmber)"/><ellipse cx="320" cy="400" rx="34" ry="8" fill="#ffd08a" opacity=".7" filter="url(#vSoft2)"/></g>
-        <!-- корпус чана -->
-        <path d="M70 168 C70 330 170 404 320 404 C470 404 570 330 570 168 Z" fill="url(#vIron)"/>
-        <g clip-path="url(#vBodyClip)">
-          <path d="M120 190 C130 300 190 370 260 392" fill="none" stroke="url(#vSheen)" stroke-width="26" opacity=".9" filter="url(#vSoft2)"/>
-          <ellipse cx="320" cy="430" rx="230" ry="60" fill="#ff7a2c" opacity=".22" filter="url(#vSoft)"/>
-          <g stroke="#000" stroke-opacity=".35" stroke-width="2" fill="none"><path d="M78 230 C150 252 490 252 562 230"/><path d="M96 300 C170 320 470 320 544 300"/></g>
-        </g>
-        <!-- уши-ручки -->
-        <g fill="none" stroke="#2f2b28" stroke-width="12" stroke-linecap="round"><path d="M64 190 q-34 8 -30 44 q4 26 34 22"/><path d="M576 190 q34 8 30 44 q-4 26 -34 22"/></g>
-        <!-- обод и вода -->
-        <ellipse cx="320" cy="168" rx="256" ry="46" fill="url(#vRim)"/>
-        <ellipse cx="320" cy="166" rx="236" ry="36" fill="url(#vWater)"/>
-        <ellipse class="vat-shine" cx="270" cy="160" rx="110" ry="12" fill="#ffe2b0" opacity=".28" filter="url(#vSoft2)"/>
-        <g class="vat-herbs" fill="#7c8b2c"><ellipse cx="240" cy="170" rx="9" ry="3.5" transform="rotate(-20 240 170)"/><ellipse cx="372" cy="160" rx="8" ry="3" transform="rotate(25 372 160)"/><ellipse cx="420" cy="176" rx="10" ry="3.5" transform="rotate(-8 420 176)"/><ellipse cx="300" cy="182" rx="7" ry="3" transform="rotate(40 300 182)"/><circle cx="338" cy="172" r="3.5" fill="#d9b44a"/><circle cx="210" cy="160" r="3" fill="#d9b44a"/><circle cx="452" cy="164" r="3" fill="#c96a3a"/></g>
-        <ellipse cx="320" cy="168" rx="256" ry="46" fill="none" stroke="#6d665e" stroke-opacity=".5" stroke-width="2"/>
-      </svg>
-      <canvas class="vat-steam" id="vatSteam"></canvas>
-      <figcaption class="wel-vat-cap"><span class="mono">Чугунный чан</span><b>Горячая вода с травами под открытым небом</b></figcaption>
-    </figure>
   </section>
 
   <!-- HOW: как рождается пар (вместо фото-блока) -->
@@ -1144,7 +1124,9 @@ html,body{overflow-x:clip}
     <canvas class="how-smoke" id="howSmoke" aria-hidden="true"></canvas>
     <div class="how-glow" id="howGlow" aria-hidden="true"></div>
     <div class="how-flash" id="howFlash" aria-hidden="true"></div>
+    <div class="how-ceil" id="howCeil" aria-hidden="true"></div>
     <div class="how-shade" aria-hidden="true"></div>
+    <div class="how-word" aria-hidden="true"><span>Жар</span><span>Вода</span><span>Пар</span><span>Веник</span></div>
     <div class="how-in">
       <div class="how-text">
         <span class="mono how-kicker">Пар, который помнит традиции</span>
@@ -1156,7 +1138,7 @@ html,body{overflow-x:clip}
           <li class="how-step" data-i="3"><span class="mono">04 · Веник</span><h3>Дубовый веник разгоняет пар</h3><p>Банщик нагоняет жар веником и прогревает всё тело. Потом купель, травяной чай и отдых.</p>
             <div class="how-cta"><button class="btn solid" data-book data-cursor>Записаться на пар <span class="arr">→</span></button><a class="btn" href="#info">Расписание паров</a></div></li>
         </ol>
-        <div class="how-prog" aria-hidden="true"><span class="mono"><b id="howNum">01</b> / 04</span><i><em id="howBar"></em></i></div>
+        <ol class="how-tl" id="howTl"><li class="on" data-i="0"><span>Печь</span></li><li data-i="1"><span>Камни</span></li><li data-i="2"><span>Пар</span></li><li data-i="3"><span>Веник</span></li><i><em id="howBar"></em></i></ol>
       </div>
       <div class="how-meter" aria-hidden="true">
         <span class="mono hm-label">Температура в парной</span>
@@ -1663,7 +1645,7 @@ const steamIdle = () => steam.off && steam.base < .01 && steam.veil < .01;
 })();
 
 /* ================== «КАК РОЖДАЕТСЯ ПАР»: ветра пара (фон секции) ================== */
-const how = { heat: 0, hum: 0, burst: 0, swirl: 0, vel: 0, sweep: 0, sweepK: 0, sdir: 1 };
+const how = { heat: 0, hum: 0, burst: 0, swirl: 0, vel: 0, sweep: 0, sweepK: 0, sdir: 1, drops: 0 };
 (function howFlow() {
   const cv = $("#howFlow"), sec = $("#hero"), sm = $("#howSmoke"), sx2 = sm && sm.getContext("2d");
   if (!cv || !sec || reduce) return;
@@ -1695,7 +1677,7 @@ const how = { heat: 0, hum: 0, burst: 0, swirl: 0, vel: 0, sweep: 0, sweepK: 0, 
     }
     g.putImageData(id, 0, 0); return c;
   });
-  const SM = []; let smAcc = 0;
+  const SM = [], DR = []; let smAcc = 0;
   const spawn = (p, anywhere) => {
     p.x = Math.random() * W;
     p.y = anywhere ? Math.random() * H : H + Math.random() * 30;
@@ -1768,6 +1750,24 @@ const how = { heat: 0, hum: 0, burst: 0, swirl: 0, vel: 0, sweep: 0, sweepK: 0, 
       SM.push({ x: fromStones ? sx + (Math.random() - .5) * W * .3 : Math.random() * W, y: H + 40, r: (mob ? 70 : 110) * (.6 + Math.random() * .8), vx: (Math.random() - .5) * .4, vy: -(.6 + Math.random() * .8) * (1 + burst * 2), life: 0, max: 260 + Math.random() * 200, rot: Math.random() * 6.3, vr: (Math.random() - .5) * .006, k: (Math.random() * 3) | 0 });
     }
     sx2.clearRect(0, 0, W, H);
+    // капли из ковша падают на камни
+    if (how.drops > .02) for (let k = 0; k < how.drops * 1.3; k++) if (DR.length < 70) DR.push({ x: sx + (Math.random() - .5) * W * (mob ? .5 : .26), y: -20 - Math.random() * H * .3, v: (mob ? 10 : 14) + Math.random() * 8 });
+    if (DR.length) {
+      sx2.lineCap = "round"; sx2.lineWidth = mob ? 2.6 : 3.2; sx2.strokeStyle = "rgba(196,232,246,.8)"; sx2.beginPath();
+      for (let i = DR.length - 1; i >= 0; i--) { const d = DR[i]; d.y += d.v; sx2.moveTo(d.x, d.y); sx2.lineTo(d.x, d.y - d.v * 1.3); if (d.y > H * .86) DR.splice(i, 1); }
+      sx2.stroke();
+    }
+    // след размаха веника: мягкие светлые дуги пара
+    if (sk > .03) {
+      const tail = .7 * how.sdir;
+      for (let j = 0; j < 4; j++) {
+        const rr = GR * (1 - j * .045), a0 = ga - tail, gx0 = gcx + Math.cos(a0) * rr, gy0 = gcy + Math.sin(a0) * rr, gx1 = gcx + Math.cos(ga) * rr, gy1 = gcy + Math.sin(ga) * rr;
+        const lg = sx2.createLinearGradient(gx0, gy0, gx1, gy1);
+        lg.addColorStop(0, "rgba(255,240,222,0)"); lg.addColorStop(1, `rgba(255,240,222,${(j === 3 ? .3 : .07) * sk})`);
+        sx2.strokeStyle = lg; sx2.lineWidth = j === 3 ? 2 : (mob ? 60 : 110) - j * 30; sx2.lineCap = "round";
+        sx2.beginPath(); if (how.sdir > 0) sx2.arc(gcx, gcy, rr, a0, ga); else sx2.arc(gcx, gcy, rr, ga, a0); sx2.stroke();
+      }
+    }
     for (let i = SM.length - 1; i >= 0; i--) {
       const q = SM[i]; q.life++;
       const n = noise(q.x * .002 + t * .03, q.y * .002);
@@ -1783,34 +1783,6 @@ const how = { heat: 0, hum: 0, burst: 0, swirl: 0, vel: 0, sweep: 0, sweepK: 0, 
     }
     sx2.globalAlpha = 1;
   })(performance.now());
-})();
-
-/* ================== ПАР НАД ЧУГУННЫМ ЧАНОМ ================== */
-const vatS = { on: 0 };
-(function vatSteam() {
-  const cv = $("#vatSteam"); if (!cv || reduce) return;
-  const x = cv.getContext("2d"); let W = 1, H = 1; const P = [];
-  const sp = document.createElement("canvas"); sp.width = sp.height = 64;
-  const sg = sp.getContext("2d"), rg = sg.createRadialGradient(32, 32, 0, 32, 32, 32);
-  rg.addColorStop(0, "rgba(255,248,238,.85)"); rg.addColorStop(.45, "rgba(255,248,238,.3)"); rg.addColorStop(1, "rgba(255,248,238,0)");
-  sg.fillStyle = rg; sg.fillRect(0, 0, 64, 64);
-  let RY = 1;
-  const size = () => { const r = cv.getBoundingClientRect(), sv = cv.parentNode.querySelector("svg").getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); cv.width = W; cv.height = H; RY = (sv.top + sv.height * .37 - r.top) / H; };
-  size(); addEventListener("resize", size);
-  (function loop() {
-    requestAnimationFrame(loop);
-    if (vatS.on < .02) { if (P.length) { P.length = 0; x.clearRect(0, 0, W, H); } return; }
-    if (W < 2 || (vatS.n = (vatS.n || 0) + 1) % 30 === 0) size();
-    x.clearRect(0, 0, W, H);
-    for (let k = 0; k < 2; k++) if (P.length < 90) P.push({ x: W * (.5 + (Math.random() - .5) * .62), y: H * RY + Math.random() * 6, r: W * (.025 + Math.random() * .025), vx: (Math.random() - .5) * .3, vy: -(.5 + Math.random() * .7), life: 0, max: 150 + Math.random() * 120 });
-    for (let i = P.length - 1; i >= 0; i--) {
-      const p = P[i]; p.life++; p.vx += Math.sin((p.life + i * 7) * .03) * .02; p.x += p.vx; p.y += p.vy; p.r += W * .0016;
-      const k = p.life / p.max; if (k >= 1) { P.splice(i, 1); continue; }
-      x.globalAlpha = (k < .15 ? k / .15 : 1 - (k - .15) / .85) * .2 * vatS.on;
-      x.drawImage(sp, p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
-    }
-    x.globalAlpha = 1;
-  })();
 })();
 
 /* ================== ЗАПОТЕВШЕЕ СТЕКЛО ================== */
@@ -1904,12 +1876,11 @@ function motion() {
   lenis && lenis.start();
 
   /* WELCOME: логотип плавится в жаркой мути пара, из неё проступает чугунный чан */
-  gsap.set("#welVat", { xPercent: -50, yPercent: -20 });
-  gsap.timeline({ scrollTrigger: { trigger: "#welcome", start: "top top", end: "+=170%", scrub: 1.2, pin: true } })
+  gsap.timeline({ scrollTrigger: { trigger: "#welcome", start: "top top", end: "+=120%", scrub: 1.2, pin: true } })
     .fromTo("#stDisp", { attr: { scale: 0 } }, { attr: { scale: 190 }, ease: "power1.in", duration: .7, immediateRender: false }, 0)
     .fromTo("#stTurb", { attr: { baseFrequency: "0.010 0.022" } }, { attr: { baseFrequency: "0.022 0.060" }, duration: .7, immediateRender: false }, 0)
     .fromTo("#welLogo", { y: 0, scale: 1, filter: "blur(0px) brightness(1) sepia(0) saturate(1)" }, { y: () => -innerHeight * .14, scale: 1.12, filter: "blur(28px) brightness(2.2) sepia(.65) saturate(1.7)", ease: "power1.in", duration: .7, immediateRender: false }, 0)
-    .fromTo("#welLogo", { opacity: 1 }, { opacity: 0, duration: .25, immediateRender: false }, .45)
+    .fromTo("#welLogo", { opacity: 1 }, { opacity: 0, duration: .3, immediateRender: false }, .68)
     .fromTo("#welHaze", { opacity: 0, scale: .85 }, { opacity: 1, scale: 1.15, duration: .5, immediateRender: false }, .08)
     .to("#welHaze", { opacity: .4, duration: .4 }, .62)
     .fromTo(".wel-hello", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: -50, opacity: 0, filter: "blur(10px)", duration: .35, immediateRender: false }, .05)
@@ -1917,12 +1888,11 @@ function motion() {
     .fromTo(".wel-cue", { opacity: 1 }, { opacity: 0, duration: .15, immediateRender: false }, 0)
     .fromTo(steam, { target: .14 }, { target: .9, duration: .45, immediateRender: false }, .08)
     .to(steam, { target: .3, duration: .35 }, .55)
-    .fromTo("#welVat", { opacity: 0, yPercent: -20, scale: .82, filter: "blur(20px) brightness(.5)" }, { opacity: 1, yPercent: -46, scale: 1, filter: "blur(0px) brightness(1)", duration: .45, ease: "power2.out", immediateRender: false, onUpdate: function () { vatS.on = this.progress(); } }, .5)
     .to({}, { duration: .1 }, .95);
 
   /* КАК РОЖДАЕТСЯ ПАР: ветра пара, клубы и размах веника — всё движется вместе со скроллом */
   (() => {
-    const steps = $$(".how-step"), num = $("#howNum");
+    const steps = $$(".how-step"), tlis = $$("#howTl li"), words = $$(".how-word span");
     const g = { t: 20, h: 15 };
     const setG = () => { $("#gTemp").textContent = Math.round(g.t); $("#gHum").textContent = Math.round(g.h); $("#gTempBar").style.transform = `scaleX(${(g.t - 20) / 70})`; };
     setG();
@@ -1932,7 +1902,7 @@ function motion() {
     const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: "#hero", start: "top top", end: "+=240%", scrub: .6, pin: true,
       onUpdate: s => {
         const i = Math.min(3, Math.floor(s.progress * 4 * .999));
-        if (i !== cur) { cur = i; num.textContent = "0" + (i + 1); steps.forEach((el, k) => el.classList.toggle("on", k === i)); }
+        if (i !== cur) { cur = i; steps.forEach((el, k) => el.classList.toggle("on", k === i)); tlis.forEach((el, k) => { el.classList.toggle("on", k === i); el.classList.toggle("done", k < i); }); }
         $("#howBar").style.transform = `scaleX(${s.progress})`;
         $("#howHint").style.opacity = Math.max(0, 1 - s.progress * 12);
       } } });
@@ -1941,6 +1911,19 @@ function motion() {
       tl.to(steps[i], { opacity: 0, y: -60, duration: .3 }, i + .7)
         .fromTo(steps[i + 1], { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .3, immediateRender: false }, i + .85);
     }
+    // огромное слово-подсказка на фоне: Жар → Вода → Пар → Веник
+    words.forEach((w, k) => {
+      tl.fromTo(w, { opacity: 0, yPercent: 18, filter: "blur(14px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: .35, immediateRender: k === 0 ? true : false }, Math.max(0, k - .1));
+      if (k < 3) tl.to(w, { opacity: 0, yPercent: -14, filter: "blur(14px)", duration: .3 }, k + .72);
+    });
+    tl.set(words[0], { opacity: 1, yPercent: 0, filter: "blur(0px)" }, 0);
+    // шаг 2: капли из ковша падают на камни
+    tl.to(how, { drops: 1, duration: .1 }, 1.0).to(how, { drops: 0, duration: .05 }, 1.22);
+    // шаг 3: пар уходит под потолок и опускается на полки
+    tl.fromTo("#howCeil", { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 1, duration: .6, ease: "power2.out", immediateRender: false }, 2.05)
+      .to("#howCeil", { y: () => innerHeight * .08, duration: .4 }, 2.6);
+    // клик по шагу на шкале — прокрутка к нему
+    tlis.forEach((li, k) => li.addEventListener("click", () => { const st = tl.scrollTrigger, y = st.start + (st.end - st.start) * ((k + .35) / 4); window.__lenis ? window.__lenis.scrollTo(y, { duration: 1.2 }) : scrollTo({ top: y, behavior: "smooth" }); }));
     // температура растёт, цифра «дышит»
     tl.fromTo(".hm-temp", { scale: .92 }, { scale: 1.06, duration: 4, transformOrigin: "0% 60%" }, 0)
     // 1. печь набирает жар
