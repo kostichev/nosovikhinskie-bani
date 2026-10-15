@@ -80,7 +80,7 @@ p{margin:0}
 /* ---------- intro ---------- */
 .intro{position:fixed;inset:0;z-index:70;background:var(--night);display:grid;place-items:center;pointer-events:none}
 .intro-meta{position:absolute;left:var(--gutter);right:var(--gutter);bottom:calc(32px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:16px}
-.intro-temp{font-family:var(--f-display);font-weight:300;font-size:clamp(64px,12vw,160px);line-height:.8;font-variant-numeric:tabular-nums}
+.intro-temp{font-family:var(--f-display);font-weight:300;font-size:clamp(64px,12vw,160px);line-height:.8;font-variant-numeric:lining-nums tabular-nums}
 .intro-temp sup{font-size:.35em;vertical-align:top;margin-left:4px;color:var(--brass)}
 .intro-bar{position:absolute;left:0;bottom:0;height:1px;width:0;background:linear-gradient(90deg,var(--water),var(--brass),var(--ember))}
 
@@ -175,7 +175,7 @@ p{margin:0}
 .rp-img{position:relative;overflow:hidden;aspect-ratio:4/5;max-height:70vh;width:100%;justify-self:end;border-radius:2px}
 .rp-img div{position:absolute;inset:0 -12%;background-size:cover;background-position:center;will-change:transform;filter:var(--grade)}
 .rp-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,9,7,.55))}
-.rp-temp{font-family:var(--f-display);font-weight:300;font-size:clamp(110px,17vw,290px);line-height:.78;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.rp-temp{font-family:var(--f-display);font-weight:300;font-size:clamp(110px,17vw,290px);line-height:.78;letter-spacing:-.04em;font-variant-numeric:lining-nums tabular-nums}
 .rp-temp sup{font-size:.22em;vertical-align:top;color:var(--brass);letter-spacing:0;margin-left:.08em}
 .rp-body{display:grid;gap:14px;max-width:38ch}
 .rp-body h3{font-family:var(--f-display);font-size:clamp(30px,3.2vw,48px);line-height:1}
@@ -211,7 +211,7 @@ p{margin:0}
 .t-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font-size:15px}
 .t-row span{color:var(--bone-dim);white-space:nowrap}
 .t-row i{flex:1;border-bottom:1px dotted rgba(var(--fg-rgb),.22);transform:translateY(-4px)}
-.t-row b{font-family:var(--f-display);font-weight:400;font-size:24px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.t-row b{font-family:var(--f-display);font-weight:400;font-size:24px;font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
 .t small{color:var(--bone-dim);font-size:13px}
 .t.vip{grid-column:1/-1;grid-template-columns:minmax(0,1fr) auto;align-items:center;padding-block:40px;border-bottom:1px solid var(--bone-faint)}
 .t.vip h3{font-size:clamp(40px,5vw,72px)}
@@ -298,7 +298,7 @@ p{margin:0}
 
 /* ---------- schedule / contacts ---------- */
 .info{padding-block:clamp(120px,16vw,220px)}
-.sched{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.sched{width:100%;border-collapse:collapse;font-variant-numeric:lining-nums tabular-nums}
 .sched-wrap{overflow-x:auto;margin-bottom:clamp(80px,10vw,140px)}
 .sched td{padding:22px 12px 22px 0;border-bottom:1px solid var(--bone-faint);vertical-align:baseline}
 .sched tr:first-child td{border-top:1px solid var(--bone-faint)}
@@ -347,7 +347,7 @@ footer{position:relative;padding:clamp(100px,14vw,200px) var(--gutter) calc(48px
 .sheet-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 28px;border-top:1px solid var(--bone-faint);flex-wrap:wrap}
 .total{display:grid}
 .total span{font:10px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim)}
-.total b{font-family:var(--f-display);font-weight:400;font-size:36px;line-height:1.1;font-variant-numeric:tabular-nums}
+.total b{font-family:var(--f-display);font-weight:400;font-size:36px;line-height:1.1;font-variant-numeric:lining-nums tabular-nums}
 .foot-btns{display:flex;gap:10px}
 .step-title{font:10px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bone-dim);margin:8px 0 14px}
 .opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1px;background:var(--bone-faint);border:1px solid var(--bone-faint)}
@@ -642,7 +642,7 @@ input[type=range]{width:100%;accent-color:var(--brass)}
 .fact{font-size:13px;line-height:1;padding:9px 12px;border-radius:999px;background:rgba(var(--fg-rgb),.06);border:1px solid var(--bone-faint);white-space:nowrap}
 .fact b{font-weight:600}
 .card-foot{margin-top:auto;display:grid;gap:14px;padding-top:4px}
-.price-line{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.price-line{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-variant-numeric:lining-nums tabular-nums}
 .price-line b{font-family:var(--f-display);font-weight:400;font-size:36px;line-height:1}
 .price-line span{color:var(--bone-dim);font-size:13px}
 .card .btn{width:100%;justify-content:center}
@@ -897,7 +897,7 @@ body{font-size:17px}
 .how-meter{justify-self:end;display:grid;gap:14px;min-width:0;width:min(100%,440px)}
 .hm-label{color:var(--bone-dim)}
 .hm-temp{display:flex;align-items:flex-start;font-family:var(--f-display);font-weight:300;line-height:.86;letter-spacing:-.04em;color:#f6f0e4;text-shadow:0 0 60px rgba(255,140,60,.25)}
-.hm-temp b{font-weight:300;font-size:clamp(130px,15vw,250px);font-variant-numeric:tabular-nums;min-width:2ch}
+.hm-temp b{font-weight:300;font-size:clamp(130px,15vw,250px);font-variant-numeric:lining-nums tabular-nums;min-width:2ch}
 .hm-temp sup{font-size:clamp(28px,2.6vw,44px);line-height:1;margin:.3em 0 0 .1em;color:var(--brass);letter-spacing:0}
 .hm-scale{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}
 .hm-scale i{grid-column:2;grid-row:1;display:block;height:2px;background:rgba(var(--fg-rgb),.16);border-radius:2px;overflow:hidden}
@@ -905,7 +905,7 @@ body{font-size:17px}
 .hm-scale span:first-of-type{grid-column:1;grid-row:1}.hm-scale span:last-of-type{grid-column:3;grid-row:1}
 .hm-scale span{font-size:11px;color:var(--bone-dim)}
 .hm-hum{display:flex;justify-content:space-between;align-items:baseline;padding-top:12px;border-top:1px solid rgba(var(--fg-rgb),.14);color:var(--bone-dim)}
-.hm-hum b{font:400 26px/1 var(--f-display);color:#f6f0e4;letter-spacing:0;font-variant-numeric:tabular-nums}
+.hm-hum b{font:400 26px/1 var(--f-display);color:#f6f0e4;letter-spacing:0;font-variant-numeric:lining-nums tabular-nums}
 @media (max-width:900px){
   .how-shade{background:linear-gradient(180deg,rgba(10,9,7,.55),rgba(10,9,7,.15) 30%,rgba(10,9,7,.7) 55%,rgba(10,9,7,.92))}
   .how-in{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;align-content:stretch;gap:12px;padding-top:calc(var(--navh) + 18px);padding-bottom:max(84px,calc(70px + env(safe-area-inset-bottom,0px)))}
@@ -950,7 +950,7 @@ body{font-size:17px}
 .sc-list{list-style:none;margin:0;padding:0}
 .sc-list li{display:grid;grid-template-columns:72px minmax(0,1fr);align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px dashed var(--bone-faint)}
 .sc-list li:last-child{border-bottom:0}
-.sc-list time{font-family:var(--f-display);font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.sc-list time{font-family:var(--f-display);font-size:26px;line-height:1;font-variant-numeric:lining-nums tabular-nums}
 .sc-list span{font-size:17px}
 .sc-list li.past{opacity:.38}
 .sc-list li.next{position:relative}
@@ -1045,7 +1045,7 @@ html,body{overflow-x:clip}
 .sn-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .sn-top .mono{color:var(--brass)}
 .sn-badge{font:600 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cta-fg);background:var(--cta-bg);padding:7px 11px;border-radius:999px}
-.sn-time{font-family:var(--f-display);font-weight:300;font-size:clamp(84px,9vw,140px);line-height:.9;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.sn-time{font-family:var(--f-display);font-weight:300;font-size:clamp(84px,9vw,140px);line-height:.9;letter-spacing:-.03em;font-variant-numeric:lining-nums tabular-nums}
 .sn-name{font-family:var(--f-display);font-size:clamp(30px,3vw,44px);line-height:1.05}
 .sn-name small{display:block;margin-top:8px;font:400 15px/1.4 var(--f-body);color:var(--bone-dim)}
 .sn-left{font:500 15px/1.4 var(--f-body);color:var(--bone)}
@@ -1058,7 +1058,7 @@ html,body{overflow-x:clip}
 .sd-list{list-style:none;margin:0;padding:0}
 .sd-list li{display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px dashed var(--bone-faint)}
 .sd-list li:last-child{border-bottom:0}
-.sd-list time{font-family:var(--f-display);font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.sd-list time{font-family:var(--f-display);font-size:26px;line-height:1;font-variant-numeric:lining-nums tabular-nums}
 .sd-list span{font-size:17px}
 .sd-list span small{color:var(--bone-dim);font-size:14px;margin-left:6px}
 .sd-list em{font:600 10px/1 var(--f-mono);font-style:normal;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
@@ -1146,7 +1146,7 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
 .cert-card:hover .cert-face{transform:rotateX(0) rotateY(0)}
 .cert-face img{height:clamp(44px,5vw,64px);width:auto}
 .cert-face .mono{color:var(--brass)}
-.cert-sum{font:300 clamp(48px,6vw,84px)/1 var(--f-display);color:#f6f0e4;font-variant-numeric:tabular-nums}
+.cert-sum{font:300 clamp(48px,6vw,84px)/1 var(--f-display);color:#f6f0e4;font-variant-numeric:lining-nums tabular-nums}
 .cert-to{font:italic 300 18px/1.3 var(--f-display);color:var(--bone-dim)}
 .cert-text{display:grid;gap:16px;align-content:start}
 .cert-text .mono{color:var(--brass)}
@@ -1323,6 +1323,21 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
 #pageVeil.on{opacity:1;pointer-events:auto}
 #pageVeil.on span{transform:scale(1) translateY(-3%)}
 @media (prefers-reduced-motion:reduce){ #pageVeil{display:none} }
+
+/* ===== v20: цифры, лёгкая мобильная версия ===== */
+html{font-variant-numeric:lining-nums}
+.sn-time{line-height:1;margin-bottom:6px}
+.hm-temp{line-height:.92}
+.lite #steam,.lite #puffs,.lite #welSmoke,.lite #sparks,.lite #heatTint,.lite .grain,.lite .wel-haze,.lite .cur,.lite .cur-ring{display:none!important}
+.lite .wel-logo > img{filter:none!important}
+.lite .nav{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.lite .nav::before,.lite .nav::after{display:none}
+.lite .how-shade{background:linear-gradient(180deg,rgba(10,9,7,.6),rgba(10,9,7,.2) 30%,rgba(10,9,7,.75) 55%,rgba(10,9,7,.94))}
+.lite .gal-img > img,.lite .card:hover{transform:none!important}
+.lite .cookie,.lite .mbar,.lite #pageVeil{-webkit-backdrop-filter:none;backdrop-filter:none}
+.lite .mbar{background:rgba(14,12,9,.96)}
+@media (max-width:900px){.foot-legal a{display:inline-flex;align-items:center;min-height:36px;padding:0 2px}}
+.foot-legal .dev{margin-left:auto;color:rgba(236,231,218,.45)}.foot-legal .dev a{color:var(--bone);text-decoration:none;border-bottom:1px solid rgba(164,182,74,.6)}.foot-legal .dev a:hover{color:var(--cta-bg)}@media (max-width:700px){.foot-legal .dev{margin-left:0;width:100%;padding-top:6px}}
 </style>
 <style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -1657,7 +1672,7 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
   </div>
   <div class="foot-word" id="footWord">Носовихинские<br>бани</div>
   <div class="foot-row"><span>© Носовихинские бани, Балашиха</span><span>ИП Юраньева Л. А. · ИНН 504013252486</span></div>
-  <nav class="foot-legal" aria-label="Документы"><a href="pravila/">Правила посещения</a><a href="privacy/">Политика конфиденциальности</a><a href="ceny/">Цены</a><a href="bani/">Отдельные бани</a><a href="parenie/">Парение</a><a href="chan/">Чан</a><a href="https://yandex.ru/maps/org/nosovihinskie_bani/26400482508/" target="_blank" rel="noopener">Мы на Яндекс Картах</a></nav>
+  <nav class="foot-legal" aria-label="Документы"><a href="pravila/">Правила посещения</a><a href="privacy/">Политика конфиденциальности</a><a href="ceny/">Цены</a><a href="bani/">Отдельные бани</a><a href="parenie/">Парение</a><a href="chan/">Чан</a><a href="https://yandex.ru/maps/org/nosovihinskie_bani/26400482508/" target="_blank" rel="noopener">Мы на Яндекс Картах</a><span class="dev">Сайт разработан в&nbsp;ROSTVERK</span></nav>
 </footer>
 
 <div class="fab" id="fab"><button class="btn" data-book data-cursor>Записаться <span class="arr">→</span></button></div>
@@ -1685,6 +1700,8 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
 (() => {
 "use strict";
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const LITE = matchMedia("(max-width:900px), (hover:none) and (pointer:coarse)").matches;
+if (LITE) document.documentElement.classList.add("lite");
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const rub = n => n.toLocaleString("ru-RU").replace(/ /g, " ") + " ₽";
@@ -2141,7 +2158,7 @@ const smokeSprites = (() => {
 /* пар наползает слева, справа и снизу и постепенно поглощает логотип */
 (function welcomeSmoke() {
   const cv = $("#welSmoke"), sec = $("#welcome");
-  if (!cv || !sec || reduce) return;
+  if (!cv || !sec || reduce || LITE) return;
   const x = cv.getContext("2d"), mob = matchMedia("(max-width:760px)").matches, Q = mob ? .5 : .6;
   let W = 1, H = 1, VH = 1, vis = true, P = [], acc = 0, t = 0;
   const size = () => { const r = cv.getBoundingClientRect(); W = r.width; H = r.height; VH = innerHeight; cv.width = W * Q; cv.height = H * Q; x.setTransform(Q, 0, 0, Q, 0, 0); };
@@ -2180,7 +2197,7 @@ const smokeSprites = (() => {
 /* искры и тёплый экран: в переходах между блоками, при растворении и в жаре парной */
 (function sparksAndHeat() {
   const cv = $("#sparks"), tint = $("#heatTint");
-  if (!cv || reduce) return;
+  if (!cv || reduce || LITE) return;
   const x = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 1.5), mob = matchMedia("(max-width:760px)").matches;
   let W = 1, H = 1; const S = [];
   const size = () => { W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0); };
@@ -2231,7 +2248,7 @@ const steam = { density: .5, target: .14, boost: 0, speed: 1, tone: 1, off: fals
 })();
 const steamIdle = () => steam.off && steam.base < .01 && steam.veil < .01;
 (function initSteam() {
-  if (reduce) return;
+  if (reduce || LITE) return;
   const c = $("#steam"), gl = c.getContext("webgl", { premultipliedAlpha: false, antialias: false, alpha: true });
   if (!gl) return;
   const vs = `attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
@@ -2410,7 +2427,7 @@ const how = { heat: 0, hum: 0, burst: 0, swirl: 0, vel: 0, sweep: 0, sweepK: 0, 
     W = Math.max(1, sec.clientWidth); H = Math.max(1, sec.clientHeight);
     cv.width = W * dpr; cv.height = H * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
     if (sm) { sm.width = W * .5; sm.height = H * .5; sx2.setTransform(.5, 0, 0, .5, 0, 0); }
-    const N = Math.round(Math.min(mob ? 700 : 1900, W * H / (mob ? 480 : 640)));
+    const N = Math.round(Math.min(LITE ? 340 : 1900, W * H / (LITE ? 900 : 640)));
     P = Array.from({ length: N }, () => spawn({}, true));
   };
   size(); addEventListener("resize", () => { clearTimeout(size.t); size.t = setTimeout(size, 200); });
@@ -2466,7 +2483,7 @@ const how = { heat: 0, hum: 0, burst: 0, swirl: 0, vel: 0, sweep: 0, sweepK: 0, 
     x.strokeStyle = `rgba(${Math.min(255, r + 20)},${Math.min(255, g2 + 30)},${Math.min(255, b + 40)},${Math.min(.75, al * 1.9)})`; x.stroke(paths[1]);
     if (!sm) return;
     smAcc += .03 + hum * .16 + burst * 1.4 + heat * .05 + vel * .05 + sk * .1;
-    while (smAcc >= 1 && SM.length < (mob ? 40 : 70)) {
+    while (smAcc >= 1 && SM.length < (LITE ? 12 : 70)) {
       smAcc--;
       const fromStones = burst > .2;
       SM.push({ x: fromStones ? sx + (Math.random() - .5) * W * .3 : Math.random() * W, y: H + 40, r: (mob ? 70 : 110) * (.6 + Math.random() * .8), vx: (Math.random() - .5) * .4, vy: -(.6 + Math.random() * .8) * (1 + burst * 2), life: 0, max: 260 + Math.random() * 200, rot: Math.random() * 6.3, vr: (Math.random() - .5) * .006, k: (Math.random() * 3) | 0 });
@@ -2599,20 +2616,28 @@ function motion() {
 
   /* WELCOME: логотип медленно растворяется в реалистичном паре, который наползает слева, справа и снизу */
   const welBack = () => gsap.set(".wel-hello, .wel-addr", { opacity: 1, y: 0, filter: "none" });
+  if (LITE) {
+    gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: "#welcome", start: "top top", end: "+=90%", scrub: .4, pin: true, onLeaveBack: welBack, onRefresh: st => { if (st.progress < .01) welBack(); } } })
+      .fromTo("#welLogo", { opacity: 1, y: 0, scale: 1 }, { opacity: 0, y: () => -innerHeight * .12, scale: .94, duration: 1, immediateRender: false }, 0)
+      .fromTo(".wel-hello", { opacity: 1, y: 0 }, { opacity: 0, y: -30, duration: .5, immediateRender: false }, 0)
+      .fromTo(".wel-addr", { opacity: 1, y: 0 }, { opacity: 0, y: 20, duration: .5, immediateRender: false }, .05);
+  } else {
   const welTl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: "#welcome", start: "top top", end: "+=230%", scrub: 2, pin: true,
-      onLeaveBack: welBack, onRefresh: s => { if (s.progress < .01) welBack(); } } })
-    .fromTo(ws, { p: 0 }, { p: 1, duration: 1, ease: "power1.in", immediateRender: false }, 0)
-    .fromTo("#stDisp", { attr: { scale: 0 } }, { attr: { scale: 150 }, duration: .9, ease: "power2.in", immediateRender: false }, 0)
-    .fromTo("#stTurb", { attr: { baseFrequency: "0.010 0.022" } }, { attr: { baseFrequency: "0.016 0.046" }, duration: .9, immediateRender: false }, 0)
-    .fromTo("#welLogo", { y: 0, scale: 1, filter: "blur(0px) brightness(1)" }, { y: () => -innerHeight * .08, scale: 1.06, filter: "blur(22px) brightness(1.7)", duration: .85, ease: "power1.in", immediateRender: false }, .1)
-    .fromTo("#welLogo", { opacity: 1 }, { opacity: 0, duration: .35, ease: "power1.in", immediateRender: false }, .6)
-    .fromTo(".wel-hello", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: -40, opacity: 0, filter: "blur(12px)", duration: .3, immediateRender: false }, .06)
-    .fromTo(".wel-addr", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: 30, opacity: 0, filter: "blur(12px)", duration: .3, immediateRender: false }, .1)
-    .fromTo(".wel-cue", { opacity: 1 }, { opacity: 0, duration: .1, immediateRender: false }, 0)
-    .fromTo("#welHaze", { opacity: 0, scale: .9 }, { opacity: .9, scale: 1.15, duration: .7, immediateRender: false }, .15)
-    .fromTo(steam, { target: .14 }, { target: .55, duration: .8, immediateRender: false }, .1);
+        onLeaveBack: welBack, onRefresh: s => { if (s.progress < .01) welBack(); } } })
+      .fromTo(ws, { p: 0 }, { p: 1, duration: 1, ease: "power1.in", immediateRender: false }, 0)
+      .fromTo("#stDisp", { attr: { scale: 0 } }, { attr: { scale: 150 }, duration: .9, ease: "power2.in", immediateRender: false }, 0)
+      .fromTo("#stTurb", { attr: { baseFrequency: "0.010 0.022" } }, { attr: { baseFrequency: "0.016 0.046" }, duration: .9, immediateRender: false }, 0)
+      .fromTo("#welLogo", { y: 0, scale: 1, filter: "blur(0px) brightness(1)" }, { y: () => -innerHeight * .08, scale: 1.06, filter: "blur(22px) brightness(1.7)", duration: .85, ease: "power1.in", immediateRender: false }, .1)
+      .fromTo("#welLogo", { opacity: 1 }, { opacity: 0, duration: .35, ease: "power1.in", immediateRender: false }, .6)
+      .fromTo(".wel-hello", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: -40, opacity: 0, filter: "blur(12px)", duration: .3, immediateRender: false }, .06)
+      .fromTo(".wel-addr", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: 30, opacity: 0, filter: "blur(12px)", duration: .3, immediateRender: false }, .1)
+      .fromTo(".wel-cue", { opacity: 1 }, { opacity: 0, duration: .1, immediateRender: false }, 0)
+      .fromTo("#welHaze", { opacity: 0, scale: .9 }, { opacity: .9, scale: 1.15, duration: .7, immediateRender: false }, .15)
+      .fromTo(steam, { target: .14 }, { target: .55, duration: .8, immediateRender: false }, .1);
+  }
+
   // следующий блок проступает из пара снизу
-  gsap.fromTo(".how-in", { opacity: 0, y: 90, filter: "blur(16px)" }, { opacity: 1, y: 0, filter: "blur(0px)", ease: "power1.out", scrollTrigger: { trigger: "#hero", start: "top bottom", end: "top 10%", scrub: 1.2 } });
+  if (!LITE) gsap.fromTo(".how-in", { opacity: 0, y: 90, filter: "blur(16px)" }, { opacity: 1, y: 0, filter: "blur(0px)", ease: "power1.out", scrollTrigger: { trigger: "#hero", start: "top bottom", end: "top 10%", scrub: 1.2 } });
 
   /* КАК РОЖДАЕТСЯ ПАР: ветра пара, клубы и размах веника — всё движется вместе со скроллом */
   (() => {
@@ -2623,7 +2648,7 @@ function motion() {
     gsap.set(steps, { opacity: 0, y: 60 }); gsap.set(steps[0], { opacity: 1, y: 0 });
     gsap.from(".how-text > *, .how-meter > *", { y: 40, opacity: 0, stagger: .07, duration: 1, ease: "power3.out", scrollTrigger: { trigger: "#hero", start: "top 70%" } });
     let cur = -1;
-    const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: "#hero", start: "top top", end: "+=240%", scrub: .6, pin: true,
+    const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: "#hero", start: "top top", end: LITE ? "+=190%" : "+=240%", scrub: LITE ? .3 : .6, pin: true,
       onUpdate: s => {
         const i = Math.min(3, Math.floor(s.progress * 4 * .999));
         if (i !== cur) { cur = i; steps.forEach((el, k) => el.classList.toggle("on", k === i)); tlis.forEach((el, k) => { el.classList.toggle("on", k === i); el.classList.toggle("done", k < i); }); }
@@ -2773,7 +2798,8 @@ function motion() {
 
   /* ПЕРЕХОДЫ: блок растворяется в пару, следующий проявляется из него */
   (() => {
-    const blur = !matchMedia("(max-width:760px)").matches;
+    if (LITE) return;
+    const blur = true;
     const secs = ["#hero", ".manifesto", "#rooms", "#hall", "#info", "#baths", "#cycle", "#gallery", "#reviews", "#offers", "#faq", "#rules", "#visit"].map(s => $(s)).filter(Boolean);
     const kids = s => [...s.children];
     const F = b => blur ? `blur(${b}px)` : "blur(0px)";
