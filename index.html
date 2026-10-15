@@ -1239,6 +1239,51 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
 .duo.duo-one{grid-template-columns:minmax(0,1fr);max-width:760px}
 @media (max-width:1360px){ .nav-phone{display:none} } .nav .snd{margin-left:auto} @media (min-width:1001px){ .nav .snd{margin-left:0} }
 .mbar .mb-wa{flex:none;width:44px;padding:0;display:grid;place-items:center}.mbar .mb-wa svg{width:20px;height:20px}
+
+/* ===== v18: пар первого экрана, искры, жар, подсказка звука, отзывы и карта в стиле сайта ===== */
+#welSmoke{position:absolute;left:0;top:0;width:100%;height:150%;pointer-events:none;z-index:2;-webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+.wel-in{z-index:1}
+#sparks{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:57}
+#heatTint{position:fixed;inset:0;pointer-events:none;z-index:54;opacity:0;mix-blend-mode:screen;
+  background:radial-gradient(120% 70% at 50% 115%,rgba(255,104,28,.38),rgba(255,140,60,.12) 50%,transparent 75%),radial-gradient(90% 60% at 50% -10%,rgba(255,150,80,.10),transparent 70%)}
+@media (prefers-reduced-motion:reduce){ #welSmoke,#sparks,#heatTint{display:none} }
+.no-motion #welSmoke,.no-motion #sparks,.no-motion #heatTint{display:none}
+.snd-hint{position:fixed;z-index:130;width:240px;padding:10px 14px;border-radius:12px;background:rgba(20,17,13,.94);border:1px solid rgba(164,182,74,.5);color:var(--bone);font:500 13px/1.35 var(--f-body);text-align:center;opacity:0;transform:translateY(-6px);transition:opacity .5s,transform .5s var(--ease);pointer-events:none}
+.snd-hint::before{content:"";position:absolute;top:-6px;left:50%;width:10px;height:10px;background:inherit;border-left:1px solid rgba(164,182,74,.5);border-top:1px solid rgba(164,182,74,.5);transform:translateX(-50%) rotate(45deg)}
+.snd-hint.on{opacity:1;transform:none}
+.snd.on{animation:sndPulse 2.4s ease-in-out infinite}
+@keyframes sndPulse{50%{box-shadow:0 0 0 6px rgba(164,182,74,.12)}}
+
+/* отзывы — свои карточки в стиле сайта */
+.rev-grid{grid-template-columns:minmax(0,1fr);gap:clamp(28px,4vw,48px)}
+.rev-score{grid-template-columns:auto minmax(0,1fr);align-items:end;column-gap:clamp(24px,4vw,64px);justify-items:start}
+.rev-score > .mono{grid-column:1/-1}
+.rev-score .rev-num{grid-row:2/span 4}
+.rev-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px var(--gutter) 22px;margin-inline:calc(-1 * var(--gutter));scrollbar-width:thin;scrollbar-color:rgba(var(--fg-rgb),.25) transparent;cursor:grab}
+.rev-track.drag{cursor:grabbing;scroll-snap-type:none}
+.rv{flex:none;width:clamp(280px,30vw,400px);scroll-snap-align:start;display:grid;align-content:start;gap:14px;padding:24px 24px 22px;border-radius:18px;
+  background:linear-gradient(160deg,rgba(255,248,236,.05),rgba(255,248,236,.015));border:1px solid var(--bone-faint);position:relative;overflow:hidden}
+.rv::before{content:"“";position:absolute;right:18px;top:-18px;font:italic 400 140px/1 var(--f-display);color:rgba(201,164,106,.14);pointer-events:none}
+.rv-head{display:flex;align-items:center;gap:12px}
+.rv-ava{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font:500 17px/1 var(--f-display);color:var(--cta-fg);background:linear-gradient(135deg,var(--brass),var(--cta-bg));flex:none}
+.rv-head b{display:block;font:500 16px/1.2 var(--f-body);color:var(--bone)}
+.rv-head span{font:400 13px/1.2 var(--f-body);color:var(--bone-dim)}
+.rv-stars{color:#f0c35a;letter-spacing:3px;font-size:15px}
+.rv p{color:var(--bone-dim);font-size:16px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
+.rv.open p{-webkit-line-clamp:unset}
+.rv button.more{justify-self:start;background:none;border:0;padding:0;color:var(--brass);font:500 14px/1 var(--f-body);cursor:pointer}
+.rv-src{font:500 10px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(236,231,218,.4)}
+.rev-widget{display:none}
+@media (max-width:700px){ .rev-score{grid-template-columns:minmax(0,1fr)} .rev-score .rev-num{grid-row:auto} }
+
+/* карта — тёмная, в стиле сайта */
+.visit-map{border-color:rgba(201,164,106,.35);box-shadow:0 40px 80px -40px rgba(0,0,0,.9)}
+.visit-map iframe{filter:invert(.9) hue-rotate(180deg) saturate(.45) brightness(.92) contrast(.92) sepia(.28)}
+.visit-map::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 90px 10px rgba(10,9,7,.85);border-radius:inherit}
+.map-tag{position:absolute;left:16px;top:16px;z-index:2;display:grid;gap:4px;padding:12px 16px;border-radius:14px;background:rgba(14,12,9,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(201,164,106,.35);pointer-events:none}
+.map-tag b{font:400 22px/1.1 var(--f-display);color:#f6f0e4}
+.map-tag span{font:500 10px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+.wel-hello .wi,.wel-addr .wi{display:inline-block}
 </style>
 <style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -1246,7 +1291,9 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
 
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="steamify" x="-20%" y="-40%" width="140%" height="180%"><feTurbulence id="stTurb" type="fractalNoise" baseFrequency="0.010 0.022" numOctaves="2" seed="7"/><feDisplacementMap id="stDisp" in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
-<canvas id="steam" aria-hidden="true"></canvas><canvas id="puffs" aria-hidden="true"></canvas>
+<canvas id="steam" aria-hidden="true"></canvas>
+<canvas id="sparks" aria-hidden="true"></canvas>
+<div id="heatTint" aria-hidden="true"></div><canvas id="puffs" aria-hidden="true"></canvas>
 <div class="vignette" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="cur" aria-hidden="true"></div><div class="cur-ring" aria-hidden="true"><span>Запись</span></div>
@@ -1273,12 +1320,13 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
   <!-- WELCOME -->
   <section class="welcome" id="welcome" data-steam>
     <div class="wel-in">
-      <span class="wel-hello">Добро пожаловать в</span>
+      <span class="wel-hello"><span class="wi">Добро пожаловать в</span></span>
       <h1 class="wel-logo" id="welLogo" style="margin:0"><img src="img/logo.svg" alt="Носовихинские бани" width="1200" height="490" fetchpriority="high"><span class="sr"> — банный комплекс в Балашихе: русская парная, хаммам, бассейн и отдельные бани</span></h1>
-      <p class="wel-addr">Балашиха, мкр Кучино, ул. Центральная, вл. 98 · ежедневно 10:00–23:00</p>
+      <p class="wel-addr"><span class="wi">Балашиха, мкр Кучино, ул. Центральная, вл. 98 · ежедневно 10:00–23:00</span></p>
     </div>
     <div class="wel-cue"><span class="mono">Листайте</span><i></i></div>
     <div class="wel-haze" id="welHaze" aria-hidden="true"></div>
+    <canvas id="welSmoke" aria-hidden="true"></canvas>
   </section>
 
   <!-- HOW: как рождается пар (вместо фото-блока) -->
@@ -1434,9 +1482,7 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
             <a class="btn sm" href="https://yandex.ru/maps/org/nosovihinskie_bani/26400482508/reviews/?add-review=true" target="_blank" rel="noopener" data-goal="review_add">Оставить отзыв</a>
           </div>
         </div>
-        <div class="rev-widget" id="revWidget" data-src="https://yandex.ru/maps-reviews-widget/26400482508?comments">
-          <div class="rev-ph"><span class="mono">Отзывы загружаются с Яндекс Карт…</span></div>
-        </div>
+        <div class="rev-track" id="revTrack" tabindex="0" aria-label="Отзывы гостей"><article class="rv"><div class="rv-head"><span class="rv-ava" aria-hidden="true">М</span><div><b>Максим Долматов</b><span>8 июня</span></div></div><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div><p>Советую ходить с утра. Мало посетителей, пар что надо! Парения каждые 1,5 часа начиная с 09:30 утра. Персонал очень вежлив и приветлив. Кухня вкусная. Цены более чем приемлемые. Также брал индивидуальную программу — банщик Олег ТОП! Есть уютный дворик с бассейном.</p><button class="more" type="button">Читать полностью</button><span class="rv-src">Отзыв с Яндекс Карт</span></article><article class="rv"><div class="rv-head"><span class="rv-ava" aria-hidden="true">Н</span><div><b>Надежда Гулицкая</b><span>21 октября 2025</span></div></div><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div><p>Наконец-то я нашла баню, которую готова посещать регулярно! Замечательная парная с волшебным ароматным парением каждые 1,5 часа. Чисто, просторно, удобно! Вкусная кухня! …Я уже попробовала цитрусовый бриз и таёжное парение!</p><button class="more" type="button">Читать полностью</button><span class="rv-src">Отзыв с Яндекс Карт</span></article><article class="rv"><div class="rv-head"><span class="rv-ava" aria-hidden="true">С</span><div><b>Сергей Седельников</b><span>21 февраля</span></div></div><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div><p>Лучшие бани! Парение от банщиков с пониманием смысла… Оно значительно мягче, чем в других, но при этом продолжительнее, и ты действительно пропариваешься, а не просто обожжённый выходишь.</p><button class="more" type="button">Читать полностью</button><span class="rv-src">Отзыв с Яндекс Карт</span></article><article class="rv"><div class="rv-head"><span class="rv-ava" aria-hidden="true">О</span><div><b>Олег</b><span>25 февраля</span></div></div><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div><p>Отличная общественная баня. Ароматный пар по выходным каждые полтора часа. Банщики вежливые и позитивные. Атмосфера душевная, располагающая к отдыху и релаксу. Пар мягкий. Есть хамам и купели.</p><button class="more" type="button">Читать полностью</button><span class="rv-src">Отзыв с Яндекс Карт</span></article><article class="rv"><div class="rv-head"><span class="rv-ava" aria-hidden="true">О</span><div><b>олег обухович</b><span>13 июля</span></div></div><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div><p>Это лучшая общественная баня. Здесь отличный пар, опытные банщики и тёплый уличный бассейн. Еда вкусная, квас превосходный, а самый приятный напиток — газированная вода с мёдом и лимоном.</p><button class="more" type="button">Читать полностью</button><span class="rv-src">Отзыв с Яндекс Карт</span></article><article class="rv"><div class="rv-head"><span class="rv-ava" aria-hidden="true">В</span><div><b>Владислав Никитин</b><span>27 января</span></div></div><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div><p>Очень уютно, комфортно, отличный зал, обстановка, парная 5+++! Внимательный персонал, отличная купель на улице. Класс — выйти из бани в мороз −15, окунуться и назад вернуться в парную…</p><button class="more" type="button">Читать полностью</button><span class="rv-src">Отзыв с Яндекс Карт</span></article><article class="rv"><div class="rv-head"><span class="rv-ava" aria-hidden="true">М</span><div><b>Мирослава</b><span>10 мая</span></div></div><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div><p>Просто огонь, будто бы в другое измерение попадаешь, еда вкусная, напитки шикарные, персонал доброжелателен и вежлив. Всё чисто, убрано и красиво.</p><button class="more" type="button">Читать полностью</button><span class="rv-src">Отзыв с Яндекс Карт</span></article><article class="rv"><div class="rv-head"><span class="rv-ava" aria-hidden="true">Т</span><div><b>Тимофей Николаевич</b><span>23 марта</span></div></div><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div><p>Хорошие общественные бани в Балашихе, ходим компанией с открытия. Парная отличная, очень вкусная кухня, общий пар всегда на уровне.</p><button class="more" type="button">Читать полностью</button><span class="rv-src">Отзыв с Яндекс Карт</span></article></div>
       </div>
     </div>
   </section>
@@ -1555,6 +1601,7 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
         </dl>
       </div>
       <div class="visit-map" id="visitMap" data-src="https://yandex.ru/map-widget/v1/org/nosovihinskie_bani/26400482508/?ll=37.948216%2C55.751614&z=16">
+        <div class="map-tag"><span>Носовихинские бани</span><b>Центральная ул., 98</b></div>
         <button class="visit-load" type="button"><span class="mono">Карта</span><b>Показать на карте</b></button>
       </div>
     </div>
@@ -1808,6 +1855,15 @@ const lazyBg = (() => {
   t.addEventListener("wheel", e => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) e.stopPropagation(); }, { passive: true });
 })();
 
+/* отзывы: тянуть мышкой, раскрыть полностью */
+(() => {
+  const t = $("#revTrack"); if (!t) return;
+  let down = false, sx = 0, sl = 0, moved = false;
+  t.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.target.closest("button")) return; down = true; moved = false; sx = e.clientX; sl = t.scrollLeft; t.classList.add("drag"); });
+  addEventListener("pointermove", e => { if (!down) return; const dx = e.clientX - sx; if (Math.abs(dx) > 4) moved = true; t.scrollLeft = sl - dx; });
+  addEventListener("pointerup", () => { if (!down) return; down = false; t.classList.remove("drag"); });
+  t.querySelectorAll(".rv").forEach(rv => { const p = rv.querySelector("p"), b = rv.querySelector(".more"); requestAnimationFrame(() => { if (p.scrollHeight <= p.clientHeight + 2) b.remove(); }); b && b.addEventListener("click", () => { rv.classList.toggle("open"); b.textContent = rv.classList.contains("open") ? "Свернуть" : "Читать полностью"; }); });
+})();
 /* отзывы и карта Яндекса — загружаются только рядом с экраном */
 const lazyFrame = (box, title) => {
   if (!box || box.dataset.done) return; box.dataset.done = 1;
@@ -1864,57 +1920,216 @@ const loadMetrika = () => {
   box.addEventListener("click", e => { const b = e.target.closest("[data-c]"); if (!b) return; store.set("nb-cookie", b.dataset.c); box.classList.remove("on"); setTimeout(() => box.remove(), 700); if (b.dataset.c === "all") loadMetrika(); });
 })();
 
-/* ================== ЗВУК ПАРНОЙ: треск печи, шипение воды на камнях, порыв веника ================== */
+/* ================== ЗВУК ПАРНОЙ: тихий треск дров, пар, мягкие эффекты скролла и спокойная мелодия ================== */
 const sound = (() => {
-  let ctx = null, on = false, master, hissG, hissF, gustG, gustF, roomG, crackG, timer = 0;
+  let ctx = null, on = false, master, verb, fxBus, musicBus, timer = 0, plTimer = 0, musicOn = false, musicTimer = 0;
+  let hissG, hissF, airG, airF, rumbleG, pourG, pourF, crackG;
   const noiseBuf = (sec, brown) => {
     const b = ctx.createBuffer(1, ctx.sampleRate * sec, ctx.sampleRate), d = b.getChannelData(0); let last = 0;
     for (let i = 0; i < d.length; i++) { const w = Math.random() * 2 - 1; if (brown) { last = (last + .02 * w) / 1.02; d[i] = last * 3.5; } else d[i] = w; }
     return b;
   };
+  const impulse = (sec, decay) => {
+    const len = ctx.sampleRate * sec, b = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let c = 0; c < 2; c++) { const d = b.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay); }
+    return b;
+  };
   const loop = (buf, ...nodes) => { const s = ctx.createBufferSource(); s.buffer = buf; s.loop = true; nodes.reduce((a, n) => (a.connect(n), n), s); s.start(); return s; };
+  const filt = (type, f, q) => { const n = ctx.createBiquadFilter(); n.type = type; n.frequency.value = f; if (q) n.Q.value = q; return n; };
+  const gain = v => { const g = ctx.createGain(); g.gain.value = v; return g; };
+  let white;
   const init = () => {
     ctx = new (window.AudioContext || window.webkitAudioContext)();
-    master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
-    const white = noiseBuf(2, false), brown = noiseBuf(4, true);
-    // гул печи и комнаты
-    roomG = ctx.createGain(); roomG.gain.value = .5; const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 320; loop(brown, lp, roomG, master);
-    // шипение пара
-    hissF = ctx.createBiquadFilter(); hissF.type = "bandpass"; hissF.frequency.value = 4200; hissF.Q.value = .6; hissG = ctx.createGain(); hissG.gain.value = 0; loop(white, hissF, hissG, master);
-    // порыв веника
-    gustF = ctx.createBiquadFilter(); gustF.type = "bandpass"; gustF.frequency.value = 600; gustF.Q.value = 1.4; gustG = ctx.createGain(); gustG.gain.value = 0; loop(white, gustF, gustG, master);
-    crackG = ctx.createGain(); crackG.gain.value = .9; crackG.connect(master);
-    const crack = () => {
-      if (!on) return;
-      const t = ctx.currentTime, s = ctx.createBufferSource(), g = ctx.createGain(), f = ctx.createBiquadFilter();
-      s.buffer = white; f.type = "bandpass"; f.frequency.value = 900 + Math.random() * 3000; f.Q.value = 2 + Math.random() * 6;
-      const big = Math.random() < .12, v = (big ? .5 : .12) * (.4 + Math.random() * .6);
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + .002); g.gain.exponentialRampToValueAtTime(.0005, t + (big ? .09 : .025));
-      s.connect(f).connect(g).connect(crackG); s.start(t, Math.random() * 1.5, .12);
-      timer = setTimeout(crack, 40 + Math.random() * (Math.random() < .2 ? 900 : 220));
-    };
-    sound.crack = crack;
-    // реакция на сцену «как рождается пар»
-    (function tick() {
-      requestAnimationFrame(tick);
-      if (!on || typeof how === "undefined") return;
-      const t = ctx.currentTime, k = .08;
-      hissG.gain.setTargetAtTime(.02 + how.heat * .05 + how.burst * .55 + how.hum * .05, t, k);
-      hissF.frequency.setTargetAtTime(3200 + how.burst * 2600, t, k);
-      gustG.gain.setTargetAtTime(how.sweepK * .5 + how.vel * .06, t, .06);
-      gustF.frequency.setTargetAtTime(380 + how.sweep * 1300, t, .05);
-      roomG.gain.setTargetAtTime(.35 + how.heat * .35, t, .3);
-    })();
+    master = gain(0); const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -24; comp.ratio.value = 3; master.connect(comp).connect(ctx.destination);
+    verb = ctx.createConvolver(); verb.buffer = impulse(3.2, 2.6); const verbG = gain(.5); verb.connect(verbG).connect(master);
+    fxBus = gain(1); fxBus.connect(master); fxBus.connect(verb);
+    musicBus = gain(0); musicBus.connect(master); const mv = gain(.9); musicBus.connect(mv).connect(verb);
+    white = noiseBuf(2, false); const brown = noiseBuf(4, true);
+    rumbleG = gain(.12); loop(brown, filt("lowpass", 260), rumbleG, master);                       // гул печи
+    hissF = filt("bandpass", 4200, .5); hissG = gain(0); loop(white, hissF, hissG, fxBus);          // шипение пара
+    airF = filt("lowpass", 700); airG = gain(0); loop(brown, airF, airG, fxBus);                    // мягкий «вдох» пара при переходах
+    pourF = filt("bandpass", 1100, 3); pourG = gain(0); loop(white, pourF, pourG, fxBus);           // струйка воды
+    crackG = gain(.6); crackG.connect(master);
+    tick();
   };
+  // треск дров: короткие щелчки, иногда «стрельнёт» полено
+  const crack = () => {
+    if (!on) return;
+    const t = ctx.currentTime, s = ctx.createBufferSource(), g = ctx.createGain(), f = filt("bandpass", 700 + Math.random() * 2600, 1.5 + Math.random() * 5), lp = filt("lowpass", 5000);
+    s.buffer = white; const big = Math.random() < .08, v = (big ? .22 : .05) * (.4 + Math.random() * .6);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + .002); g.gain.exponentialRampToValueAtTime(.0004, t + (big ? .11 : .03));
+    s.connect(f).connect(lp).connect(g).connect(crackG); s.start(t, Math.random() * 1.5, .15);
+    timer = setTimeout(crack, 60 + Math.random() * (Math.random() < .25 ? 1400 : 320));
+  };
+  // мягкая нота калимбы
+  const pluck = (freq, vol, when) => {
+    const t = when || ctx.currentTime, o = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain(), g2 = ctx.createGain();
+    o.type = "sine"; o.frequency.value = freq; o2.type = "sine"; o2.frequency.value = freq * 4.02;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.0001, t + 3.2);
+    g2.gain.setValueAtTime(0, t); g2.gain.linearRampToValueAtTime(vol * .25, t + .005); g2.gain.exponentialRampToValueAtTime(.0001, t + .5);
+    o.connect(g).connect(musicBus); o2.connect(g2).connect(musicBus); o.start(t); o2.start(t); o.stop(t + 3.4); o2.stop(t + .6);
+  };
+  // мягкий аккорд-подушка
+  const pad = (notes, t, dur) => notes.forEach((f, i) => {
+    [0, 4].forEach(det => {
+      const o = ctx.createOscillator(), g = ctx.createGain(), lp = filt("lowpass", 900);
+      o.type = i ? "sine" : "triangle"; o.frequency.value = f; o.detune.value = det;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.022, t + dur * .35); g.gain.linearRampToValueAtTime(0, t + dur);
+      o.connect(lp).connect(g).connect(musicBus); o.start(t); o.stop(t + dur + .1);
+    });
+  });
+  const N = n => 440 * Math.pow(2, (n - 69) / 12);
+  const CH = [[45, 52, 60, 64], [41, 48, 57, 64], [48, 55, 59, 64], [43, 50, 59, 62]];   // Am · Fmaj7 · Cmaj7 · G
+  const PENT = [69, 72, 74, 76, 79, 81, 84];
+  let ci = 0;
+  const musicStep = () => {
+    if (!on || !musicOn) return;
+    const t = ctx.currentTime + .05, ch = CH[ci++ % CH.length];
+    pad(ch.map(N), t, 9.5);
+    for (let k = 0; k < 3; k++) if (Math.random() < .85) pluck(N(PENT[(Math.random() * PENT.length) | 0]), .035 + Math.random() * .02, t + 1 + k * 2.6 + Math.random() * .8);
+    musicTimer = setTimeout(musicStep, 8000);
+  };
+  const startMusic = () => { if (musicOn || !ctx) return; musicOn = true; musicBus.gain.setTargetAtTime(1, ctx.currentTime, 2.5); clearTimeout(musicTimer); musicStep(); };
+  // звук следует за анимациями
+  let lastVeil = 0, chimed = 0;
+  function tick() {
+    requestAnimationFrame(tick);
+    if (!on) return;
+    const t = ctx.currentTime, H = (() => { try { return how; } catch (e) { return null; } })() || { heat: 0, burst: 0, hum: 0, sweepK: 0, sweep: 0, vel: 0, drops: 0 };
+    const veil = steam.veil || 0;
+    hissG.gain.setTargetAtTime(.004 + H.heat * .018 + H.burst * .22 + H.hum * .015 + ws.p * .03, t, .12);
+    hissF.frequency.setTargetAtTime(3400 + H.burst * 2400, t, .1);
+    airG.gain.setTargetAtTime(veil * .16 + ws.p * .12 + H.sweepK * .2 + Math.min(.08, H.vel * .03), t, .25);
+    airF.frequency.setTargetAtTime(420 + H.sweep * 900 + veil * 300, t, .2);
+    pourG.gain.setTargetAtTime(H.drops * .12 * (.6 + .4 * Math.random()), t, .03);
+    pourF.frequency.setTargetAtTime(800 + Math.random() * 900, t, .02);
+    rumbleG.gain.setTargetAtTime(.08 + H.heat * .12, t, .4);
+    // на пике перехода — тихая нота
+    if (veil > .7 && lastVeil <= .7 && performance.now() - chimed > 2500) { chimed = performance.now(); pluck(N(PENT[(Math.random() * 4) | 0] - 12), .03); }
+    lastVeil = veil;
+    // мелодия начинается с блока «Здесь время течёт иначе»
+    if (!musicOn) { const m = $(".manifesto"); if (m && m.getBoundingClientRect().top < innerHeight * .75) startMusic(); }
+  }
+  const btns = () => $$(".snd");
   const set = v => {
     on = v; store.set("nb-sound", v ? "1" : "0");
-    $$(".snd").forEach(b => { b.classList.toggle("on", v); b.setAttribute("aria-pressed", v); b.setAttribute("aria-label", v ? "Выключить звук парной" : "Включить звук парной"); });
-    if (v) { if (!ctx) init(); ctx.resume(); master.gain.setTargetAtTime(.55, ctx.currentTime, .4); clearTimeout(timer); sound.crack(); goal("sound_on"); }
-    else if (ctx) { master.gain.setTargetAtTime(0, ctx.currentTime, .2); clearTimeout(timer); }
+    btns().forEach(b => { b.classList.toggle("on", v); b.setAttribute("aria-pressed", v); b.setAttribute("aria-label", v ? "Выключить звук парной" : "Включить звук парной"); });
+    if (v) { if (!ctx) init(); ctx.resume(); master.gain.setTargetAtTime(.32, ctx.currentTime, .8); clearTimeout(timer); crack(); if (musicOn) { musicOn = false; startMusic(); } goal("sound_on"); hint(false); }
+    else if (ctx) { master.gain.setTargetAtTime(0, ctx.currentTime, .3); clearTimeout(timer); clearTimeout(musicTimer); }
   };
   document.addEventListener("click", e => { if (e.target.closest(".snd")) set(!on); });
   document.addEventListener("visibilitychange", () => { if (!ctx) return; document.hidden ? ctx.suspend() : on && ctx.resume(); });
-  return { set };
+  // подсказка «со звуком атмосфернее»
+  const hint = show => {
+    let h = $("#sndHint");
+    if (!show) { if (h) { h.classList.remove("on"); setTimeout(() => h.remove(), 500); } return; }
+    const b = btns().find(x => x.offsetParent); if (!b) return;
+    h = document.createElement("div"); h.id = "sndHint"; h.className = "snd-hint"; h.innerHTML = "Включите звук — треск печи и пар"; document.body.appendChild(h);
+    const r = b.getBoundingClientRect(); h.style.top = (r.bottom + 12) + "px"; h.style.left = Math.max(12, Math.min(innerWidth - 260, r.left + r.width / 2 - 120)) + "px";
+    requestAnimationFrame(() => h.classList.add("on")); setTimeout(() => hint(false), 6500);
+  };
+  if (store.get("nb-hint") !== "1" && !reduce) setTimeout(() => { if (!on) { hint(true); store.set("nb-hint", "1"); } }, 5000);
+  return { set, pluck: (...a) => ctx && on && pluck(...a) };
+})();
+
+/* ================== v18: реалистичный пар первого экрана, искры, жар ================== */
+const ws = { p: 0 };          // прогресс растворения первого экрана 0…1
+const fx = { sparks: 0 };     // дополнительная подача искр
+const smokeSprites = (() => {
+  // процедурные «клубы» пара: шум внутри мягкого круга, тёплый и белый варианты
+  const h = (x, y) => { const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); };
+  const vn = (x, y) => { const i = Math.floor(x), j = Math.floor(y), fx_ = x - i, fy = y - j, u = fx_ * fx_ * (3 - 2 * fx_), v = fy * fy * (3 - 2 * fy);
+    return (h(i, j) * (1 - u) + h(i + 1, j) * u) * (1 - v) + (h(i, j + 1) * (1 - u) + h(i + 1, j + 1) * u) * v; };
+  const fbm = (x, y) => vn(x, y) * .5 + vn(x * 2.1, y * 2.1) * .3 + vn(x * 4.3, y * 4.3) * .2;
+  const make = (seed, rgb) => {
+    const S = 160, c = document.createElement("canvas"); c.width = c.height = S; const g = c.getContext("2d"), id = g.createImageData(S, S);
+    for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+      const dx = (x - S / 2) / (S / 2), dy = (y - S / 2) / (S / 2), d = Math.sqrt(dx * dx + dy * dy);
+      const n = fbm(x / 26 + seed * 7.3, y / 26 + seed * 3.1);
+      const a = Math.max(0, 1 - d) ** 1.4 * Math.max(0, n * 1.6 - .35), o = (y * S + x) * 4;
+      id.data[o] = rgb[0]; id.data[o + 1] = rgb[1]; id.data[o + 2] = rgb[2]; id.data[o + 3] = Math.min(255, a * 255);
+    }
+    g.putImageData(id, 0, 0); return c;
+  };
+  return { white: [0, 1, 2, 3].map(k => make(k, [244, 239, 230])), warm: [4, 5].map(k => make(k, [255, 214, 170])) };
+})();
+
+/* пар наползает слева, справа и снизу и постепенно поглощает логотип */
+(function welcomeSmoke() {
+  const cv = $("#welSmoke"), sec = $("#welcome");
+  if (!cv || !sec || reduce) return;
+  const x = cv.getContext("2d"), mob = matchMedia("(max-width:760px)").matches, Q = mob ? .5 : .6;
+  let W = 1, H = 1, VH = 1, vis = true, P = [], acc = 0, t = 0;
+  const size = () => { const r = cv.getBoundingClientRect(); W = r.width; H = r.height; VH = innerHeight; cv.width = W * Q; cv.height = H * Q; x.setTransform(Q, 0, 0, Q, 0, 0); };
+  size(); addEventListener("resize", size);
+  if ("IntersectionObserver" in window) new IntersectionObserver(e => { vis = e[0].isIntersecting; }).observe(sec);
+  const spawn = side => {
+    const m = Math.min(W, VH), r = m * (.22 + Math.random() * .2) * (1 + ws.p * .6), sp = .5 + ws.p * 1.3;
+    const warm = Math.random() < .12 + ws.p * .25, set = warm ? smokeSprites.warm : smokeSprites.white;
+    const q = { r, rot: Math.random() * 6.28, vr: (Math.random() - .5) * .004, life: 0, max: 360 + Math.random() * 260, spr: set[(Math.random() * set.length) | 0] };
+    if (side === 0) Object.assign(q, { x: -r * .6, y: VH * (.25 + Math.random() * .85), vx: (.5 + Math.random() * .9) * sp, vy: -(.1 + Math.random() * .4) });
+    else if (side === 1) Object.assign(q, { x: W + r * .6, y: VH * (.25 + Math.random() * .85), vx: -(.5 + Math.random() * .9) * sp, vy: -(.1 + Math.random() * .4) });
+    else Object.assign(q, { x: Math.random() * W, y: VH + r * (.2 + Math.random() * .6), vx: (Math.random() - .5) * .5, vy: -(.45 + Math.random() * .8) * sp });
+    P.push(q);
+  };
+  (function loop() {
+    requestAnimationFrame(loop);
+    if (!vis && !P.length) return;
+    t += .004;
+    acc += .06 + ws.p * 3.2;
+    while (acc >= 1 && P.length < (mob ? 90 : 150)) { acc--; const r = Math.random(); spawn(r < .32 ? 0 : r < .64 ? 1 : 2); }
+    x.clearRect(0, 0, W, H);
+    for (let i = P.length - 1; i >= 0; i--) {
+      const q = P[i]; q.life++;
+      // мягкое закручивание и подъём
+      q.vx += Math.sin(q.y * .004 + t * 3 + i) * .006; q.vy -= .0025;
+      q.vx *= .996; q.vy *= .996; q.x += q.vx; q.y += q.vy; q.r += .18 + ws.p * .25; q.rot += q.vr;
+      const k = q.life / q.max;
+      if (k >= 1 || q.y < -q.r * 1.2) { P.splice(i, 1); continue; }
+      x.globalAlpha = (k < .25 ? k / .25 : 1 - (k - .25) / .75) * (.08 + ws.p * .3);
+      x.save(); x.translate(q.x, q.y); x.rotate(q.rot); x.drawImage(q.spr, -q.r, -q.r, q.r * 2, q.r * 2); x.restore();
+    }
+    x.globalAlpha = 1;
+  })();
+})();
+
+/* искры и тёплый экран: в переходах между блоками, при растворении и в жаре парной */
+(function sparksAndHeat() {
+  const cv = $("#sparks"), tint = $("#heatTint");
+  if (!cv || reduce) return;
+  const x = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 1.5), mob = matchMedia("(max-width:760px)").matches;
+  let W = 1, H = 1; const S = [];
+  const size = () => { W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0); };
+  size(); addEventListener("resize", size);
+  const hero = $("#hero");
+  const loop = () => {
+    requestAnimationFrame(loop);
+    let howOn = 0;
+    const hw = (() => { try { return how; } catch (e) { return null; } })();
+    if (hero && hw) { const r = hero.getBoundingClientRect(); howOn = r.top < H * .5 && r.bottom > H * .5 ? 1 : 0; }
+    const heat = howOn ? hw.heat : 0, burst = howOn ? hw.burst : 0;
+    if (tint) tint.style.opacity = Math.min(1, heat * .75 + burst * .25).toFixed(3);
+    const veil = steam.veil || 0, band = (1 - (steam.vy || .5)) * H;
+    let rate = veil * 1.4 + ws.p * (ws.p < .98 ? 1.1 : 0) + heat * 1.3 + burst * 4 + fx.sparks;
+    if (mob) rate *= .6;
+    for (let k = 0; k < rate; k++) if (Math.random() < rate - k && S.length < 140) {
+      const fromBand = veil > ws.p && veil > heat;
+      S.push({ x: Math.random() * W, y: fromBand ? band + (Math.random() - .3) * H * .25 : H + 10, vx: (Math.random() - .5) * .6, vy: -(.6 + Math.random() * 1.6), life: 0, max: 70 + Math.random() * 120, s: .6 + Math.random() * 1.4, f: Math.random() * 6 });
+    }
+    x.clearRect(0, 0, W, H);
+    if (!S.length) return;
+    x.globalCompositeOperation = "lighter";
+    for (let i = S.length - 1; i >= 0; i--) {
+      const p = S[i]; p.life++;
+      p.vx += Math.sin(p.life * .08 + p.f) * .03; p.vy *= .995; p.x += p.vx; p.y += p.vy;
+      const k = p.life / p.max; if (k >= 1 || p.y < -10) { S.splice(i, 1); continue; }
+      const a = (1 - k) * (.55 + .45 * Math.sin(p.life * .5 + p.f));
+      x.fillStyle = `rgba(255,140,50,${a * .18})`; x.beginPath(); x.arc(p.x, p.y, p.s * 4, 0, 6.283); x.fill();
+      x.fillStyle = `rgba(255,214,150,${a})`; x.beginPath(); x.arc(p.x, p.y, p.s, 0, 6.283); x.fill();
+    }
+    x.globalCompositeOperation = "source-over";
+  };
+  requestAnimationFrame(loop);
 })();
 
 /* ================== STEAM (WebGL) ================== */
@@ -2276,7 +2491,7 @@ function motion() {
   ScrollTrigger.config({ ignoreMobileResize: true });
   let lenis = null;
   if (window.Lenis) {
-    lenis = new Lenis({ lerp: .085, wheelMultiplier: .9 });
+    lenis = new Lenis({ lerp: .065, wheelMultiplier: .75, touchMultiplier: 1 });
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
     $$('a[href^="#"]').forEach(a => a.addEventListener("click", e => { const id = a.getAttribute("href"); if (id.length > 1 && $(id)) { e.preventDefault(); lenis.scrollTo(id); } }));
@@ -2290,28 +2505,30 @@ function motion() {
   $("#steam").style.zIndex = 55; $("#puffs").style.zIndex = 56;
   steam.boost = .55; steam.density = .6;
   gsap.timeline({ defaults: { ease: "power3.out" } })
-    .fromTo("#welLogo", { filter: "blur(9px)" }, { filter: "blur(0px)", duration: 1, ease: "power2.out", immediateRender: true }, .15)
-    .fromTo(".wel-hello", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.2 }, .5)
-    .fromTo(".wel-addr, .wel-cue", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.2, stagger: .15 }, .8)
+    .fromTo("#welLogo img", { opacity: 0, scale: .97 }, { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out", immediateRender: true, clearProps: "opacity,transform" }, .15)
+    .fromTo(".wel-hello .wi", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.2 }, .5)
+    .fromTo(".wel-addr .wi, .wel-cue > *", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.2, stagger: .15 }, .8)
     .from(".nav", { opacity: 0, duration: 1 }, .6)
     .to(steam, { boost: 0, duration: 4, ease: "power2.out" }, .2)
 ;
   lenis && lenis.start();
 
-  /* WELCOME: логотип плавится в жаркой мути пара, из неё проступает чугунный чан */
-  gsap.timeline({ scrollTrigger: { trigger: "#welcome", start: "top top", end: "+=120%", scrub: 1.2, pin: true } })
-    .fromTo("#stDisp", { attr: { scale: 0 } }, { attr: { scale: 190 }, ease: "power1.in", duration: .7, immediateRender: false }, 0)
-    .fromTo("#stTurb", { attr: { baseFrequency: "0.010 0.022" } }, { attr: { baseFrequency: "0.022 0.060" }, duration: .7, immediateRender: false }, 0)
-    .fromTo("#welLogo", { y: 0, scale: 1, filter: "blur(0px) brightness(1) sepia(0) saturate(1)" }, { y: () => -innerHeight * .14, scale: 1.12, filter: "blur(28px) brightness(2.2) sepia(.65) saturate(1.7)", ease: "power1.in", duration: .7, immediateRender: false }, 0)
-    .fromTo("#welLogo", { opacity: 1 }, { opacity: 0, duration: .3, immediateRender: false }, .68)
-    .fromTo("#welHaze", { opacity: 0, scale: .85 }, { opacity: 1, scale: 1.15, duration: .5, immediateRender: false }, .08)
-    .to("#welHaze", { opacity: .4, duration: .4 }, .62)
-    .fromTo(".wel-hello", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: -50, opacity: 0, filter: "blur(10px)", duration: .35, immediateRender: false }, .05)
-    .fromTo(".wel-addr", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: 40, opacity: 0, filter: "blur(10px)", duration: .35, immediateRender: false }, .1)
-    .fromTo(".wel-cue", { opacity: 1 }, { opacity: 0, duration: .15, immediateRender: false }, 0)
-    .fromTo(steam, { target: .14 }, { target: .9, duration: .45, immediateRender: false }, .08)
-    .to(steam, { target: .3, duration: .35 }, .55)
-    .to({}, { duration: .1 }, .95);
+  /* WELCOME: логотип медленно растворяется в реалистичном паре, который наползает слева, справа и снизу */
+  const welBack = () => gsap.set(".wel-hello, .wel-addr", { opacity: 1, y: 0, filter: "none" });
+  const welTl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: "#welcome", start: "top top", end: "+=230%", scrub: 2, pin: true,
+      onLeaveBack: welBack, onRefresh: s => { if (s.progress < .01) welBack(); } } })
+    .fromTo(ws, { p: 0 }, { p: 1, duration: 1, ease: "power1.in", immediateRender: false }, 0)
+    .fromTo("#stDisp", { attr: { scale: 0 } }, { attr: { scale: 150 }, duration: .9, ease: "power2.in", immediateRender: false }, 0)
+    .fromTo("#stTurb", { attr: { baseFrequency: "0.010 0.022" } }, { attr: { baseFrequency: "0.016 0.046" }, duration: .9, immediateRender: false }, 0)
+    .fromTo("#welLogo", { y: 0, scale: 1, filter: "blur(0px) brightness(1)" }, { y: () => -innerHeight * .08, scale: 1.06, filter: "blur(22px) brightness(1.7)", duration: .85, ease: "power1.in", immediateRender: false }, .1)
+    .fromTo("#welLogo", { opacity: 1 }, { opacity: 0, duration: .35, ease: "power1.in", immediateRender: false }, .6)
+    .fromTo(".wel-hello", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: -40, opacity: 0, filter: "blur(12px)", duration: .3, immediateRender: false }, .06)
+    .fromTo(".wel-addr", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: 30, opacity: 0, filter: "blur(12px)", duration: .3, immediateRender: false }, .1)
+    .fromTo(".wel-cue", { opacity: 1 }, { opacity: 0, duration: .1, immediateRender: false }, 0)
+    .fromTo("#welHaze", { opacity: 0, scale: .9 }, { opacity: .9, scale: 1.15, duration: .7, immediateRender: false }, .15)
+    .fromTo(steam, { target: .14 }, { target: .55, duration: .8, immediateRender: false }, .1);
+  // следующий блок проступает из пара снизу
+  gsap.fromTo(".how-in", { opacity: 0, y: 90, filter: "blur(16px)" }, { opacity: 1, y: 0, filter: "blur(0px)", ease: "power1.out", scrollTrigger: { trigger: "#hero", start: "top bottom", end: "top 10%", scrub: 1.2 } });
 
   /* КАК РОЖДАЕТСЯ ПАР: ветра пара, клубы и размах веника — всё движется вместе со скроллом */
   (() => {
@@ -2341,7 +2558,9 @@ function motion() {
     });
     tl.set(words[0], { opacity: 1, yPercent: 0, filter: "blur(0px)" }, 0);
     // шаг 2: капли из ковша падают на камни
-    tl.to(how, { drops: 1, duration: .1 }, 1.0).to(how, { drops: 0, duration: .05 }, 1.22);
+    tl.to(how, { drops: 1, duration: .1 }, 1.0).to(how, { drops: 0, duration: .05 }, 1.22)
+      .fromTo(fx, { sparks: 0 }, { sparks: 3, duration: .08, immediateRender: false }, 1.25).to(fx, { sparks: 0, duration: .4 }, 1.33)
+      .to(steam, { boost: .35, duration: .1 }, 1.25).to(steam, { boost: 0, duration: .6 }, 1.4);
     // шаг 3: пар уходит под потолок и опускается на полки
     tl.fromTo("#howCeil", { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 1, duration: .6, ease: "power2.out", immediateRender: false }, 2.05)
       .to("#howCeil", { y: () => innerHeight * .08, duration: .4 }, 2.6);
