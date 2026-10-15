@@ -1284,6 +1284,45 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
 .map-tag b{font:400 22px/1.1 var(--f-display);color:#f6f0e4}
 .map-tag span{font:500 10px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
 .wel-hello .wi,.wel-addr .wi{display:inline-block}
+
+/* ===== v19: пар в шапке, плавные переходы, мобильная панель ===== */
+.nav-steam{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px 0 12px;border-radius:999px;flex:none;text-decoration:none;color:var(--bone);
+  background:rgba(164,182,74,.10);border:1px solid rgba(164,182,74,.38);font:500 14px/1 var(--f-body);white-space:nowrap;transition:background .3s,border-color .3s}
+.nav-steam:hover{background:rgba(164,182,74,.2);border-color:rgba(164,182,74,.7)}
+.nav-steam i{width:8px;height:8px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 0 rgba(201,164,106,.6);flex:none}
+.nav-steam.live i{background:var(--cta-bg);animation:nsPulse 1.8s ease-out infinite}
+@keyframes nsPulse{0%{box-shadow:0 0 0 0 rgba(164,182,74,.6)}100%{box-shadow:0 0 0 9px rgba(164,182,74,0)}}
+.ns-l{font:500 10px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
+.nav-steam b{font-weight:500;max-width:170px;overflow:hidden;text-overflow:ellipsis}
+.nav-steam .ns-m{display:none}
+.nav .nav-phone{display:none!important}
+@media (max-width:1180px){ .burger{display:grid!important} }
+@media (max-width:780px){ .nav-steam .ns-l,.nav-steam b{display:none} .nav-steam .ns-m{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500} .nav-steam{min-width:0;flex:0 0 auto} }
+@media (max-width:640px){ .nav-steam{flex:0 1 auto} }
+@media (max-width:780px){ .nav .btn.sm{padding:0 16px} .nav{gap:10px} }
+@media (max-width:370px){ .nav img{height:24px} .nav-steam{padding:0 8px;gap:5px;font-size:12px} .nav-steam i{width:6px;height:6px} .nav{gap:6px;padding-left:12px} }
+.nav{width:min(1250px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)))}
+@media (max-width:640px){ .nav{width:calc(100% - 20px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))} }
+.nav .nav-msg{display:none}
+.nav .nav-links{gap:20px}
+.nav .nav-links a{font-size:14.5px}
+@media (max-width:1320px){ .nav .nav-links{gap:16px} .nav .nav-links a{font-size:14px} .nav-steam b{max-width:140px} }
+@media (max-width:1180px){ .nav-links{display:none} .nav .snd{margin-left:auto} }
+@media (max-width:640px){
+  .nav .btn.sm{display:none}
+  .nav{gap:8px}
+  .nav-steam{height:36px;padding:0 10px;gap:6px;font-size:13px;min-width:0;flex:1 1 auto;max-width:200px}
+
+  .mbar{display:flex;transform:none!important}
+  .cookie{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+
+#pageVeil{position:fixed;inset:0;z-index:150;pointer-events:none;opacity:0;transition:opacity .48s cubic-bezier(.4,0,.2,1);
+  background:radial-gradient(70% 55% at 50% 55%,rgba(236,228,214,.22),rgba(14,12,9,.92) 72%),#0b0a08}
+#pageVeil span{position:absolute;inset:-10%;background:radial-gradient(40% 30% at 30% 70%,rgba(244,238,228,.18),transparent 70%),radial-gradient(35% 28% at 70% 40%,rgba(244,238,228,.14),transparent 70%);filter:blur(30px);transform:scale(1.1);transition:transform 1.2s ease}
+#pageVeil.on{opacity:1;pointer-events:auto}
+#pageVeil.on span{transform:scale(1) translateY(-3%)}
+@media (prefers-reduced-motion:reduce){ #pageVeil{display:none} }
 </style>
 <style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -1293,6 +1332,7 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="steamify" x="-20%" y="-40%" width="140%" height="180%"><feTurbulence id="stTurb" type="fractalNoise" baseFrequency="0.010 0.022" numOctaves="2" seed="7"/><feDisplacementMap id="stDisp" in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <canvas id="steam" aria-hidden="true"></canvas>
 <canvas id="sparks" aria-hidden="true"></canvas>
+<div id="pageVeil" aria-hidden="true"><span></span></div>
 <div id="heatTint" aria-hidden="true"></div><canvas id="puffs" aria-hidden="true"></canvas>
 <div class="vignette" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
@@ -1301,8 +1341,9 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
 <a class="skip" href="#main">Перейти к содержанию</a>
 <header class="nav">
   <a href="#top" aria-label="Носовихинские бани, на главную"><img src="img/logo.svg" alt="Носовихинские бани" width="1200" height="490"></a>
+  <a class="nav-steam" href="#info" id="navSteam" aria-label="Расписание паров на сегодня"><i aria-hidden="true"></i><span class="ns-l" id="navSteamL">Пар</span><b id="navSteamT">сегодня</b><span class="ns-m" id="navSteamM">Расписание паров</span></a>
   <nav class="nav-links" aria-label="Разделы">
-    <a href="#rooms">Парные</a><a href="#hall">Тарифы</a><a href="#baths">Бани</a><a href="#services">Услуги</a><a href="#reviews">Отзывы</a><a href="#visit">Контакты</a>
+    <a href="#info">Расписание</a><a href="#hall">Тарифы</a><a href="#baths">Бани</a><a href="#services">Услуги</a><a href="#certificates">Сертификаты</a><a href="#visit">Контакты</a>
   </nav>
   <span class="nav-open" id="openNow"><i></i><span>Открыто до 23:00</span></span>
   <a class="nav-phone" href="tel:+74958881088">+7 (495) 888-10-88</a>
@@ -1312,7 +1353,7 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
   <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu"><span></span></button>
 </header>
 <nav class="mmenu" id="mmenu" aria-label="Меню">
-  <a class="big" href="#rooms">Парные</a><a class="big" href="#hall">Тарифы</a><a class="big" href="#baths">Бани и кабинеты</a><a class="big" href="#services">Парение, массаж, чан</a><a class="big" href="#info">Расписание паров</a><a class="big" href="#reviews">Отзывы</a><a class="big" href="#certificates">Сертификаты</a><a class="big" href="#faq">Вопросы</a><a class="big" href="#visit">Как добраться</a>
+  <a class="big" href="#info">Расписание паров</a><a class="big" href="#rooms">Парные</a><a class="big" href="#hall">Тарифы</a><a class="big" href="#baths">Бани и кабинеты</a><a class="big" href="#services">Парение, массаж, чан</a><a class="big" href="#reviews">Отзывы</a><a class="big" href="#certificates">Сертификаты</a><a class="big" href="#faq">Вопросы</a><a class="big" href="#visit">Как добраться</a>
   <div class="meta"><span><a href="tel:+74958881088">+7 (495) 888-10-88</a> · <a href="https://wa.me/79629992280">WhatsApp</a> · <a href="https://t.me/nosbani">Telegram</a></span><span>Балашиха, мкр Кучино, ул. Центральная, вл. 98</span><span>Ежедневно 10:00–23:00</span></div>
 </nav>
 
@@ -1421,6 +1462,26 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
     </div>
   </section>
 
+  <!-- INFO -->
+  <section class="info" id="info">
+    <div class="wrap">
+      <div class="sh">
+        <h2><span class="reveal-line"><span>Расписание</span></span><span class="reveal-line"><span><em>паров</em></span></span></h2>
+        <p>Бодрящий пар с травами в общем зале. Расписание одинаковое каждый день, в выходные на один пар больше. Приходите за 10 минут до начала.</p>
+      </div>
+      <div class="sched3" id="sched3"></div>
+      <div class="duo duo-one">
+        <div>
+          <span class="mono">Ресторан</span>
+          <h3>После пара — <em class="it" style="color:var(--brass)">к столу</em></h3>
+          <p style="color:var(--bone-dim);max-width:44ch;margin-bottom:24px">Русская и европейская кухня, домашний квас, крафтовое пиво и летняя веранда. Средний чек 3 000–3 500 ₽, есть детское меню.</p>
+          <div class="t-row"><span>Борщ с пампушками</span><i></i><b class="mono" style="font-size:11px">в меню</b></div>
+          <div class="t-row"><span>Морепродукты и поке</span><i></i><b class="mono" style="font-size:11px">в меню</b></div>
+          <div class="t-row"><span>Домашний квас</span><i></i><b class="mono" style="font-size:11px">в меню</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
   <!-- BATHS: карточки -->
   <section class="cards-sec" id="baths">
     <div class="wrap">
@@ -1487,26 +1548,6 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
     </div>
   </section>
 
-  <!-- INFO -->
-  <section class="info" id="info">
-    <div class="wrap">
-      <div class="sh">
-        <h2><span class="reveal-line"><span>Расписание</span></span><span class="reveal-line"><span><em>паров</em></span></span></h2>
-        <p>Бодрящий пар с травами в общем зале. Расписание одинаковое каждый день, в выходные на один пар больше. Приходите за 10 минут до начала.</p>
-      </div>
-      <div class="sched3" id="sched3"></div>
-      <div class="duo duo-one">
-        <div>
-          <span class="mono">Ресторан</span>
-          <h3>После пара — <em class="it" style="color:var(--brass)">к столу</em></h3>
-          <p style="color:var(--bone-dim);max-width:44ch;margin-bottom:24px">Русская и европейская кухня, домашний квас, крафтовое пиво и летняя веранда. Средний чек 3 000–3 500 ₽, есть детское меню.</p>
-          <div class="t-row"><span>Борщ с пампушками</span><i></i><b class="mono" style="font-size:11px">в меню</b></div>
-          <div class="t-row"><span>Морепродукты и поке</span><i></i><b class="mono" style="font-size:11px">в меню</b></div>
-          <div class="t-row"><span>Домашний квас</span><i></i><b class="mono" style="font-size:11px">в меню</b></div>
-        </div>
-      </div>
-    </div>
-  </section>
   <!-- OFFERS: выгодно + сертификаты -->
   <section class="offers" id="offers" aria-labelledby="offTitle">
     <div class="wrap">
@@ -1790,6 +1831,18 @@ function renderSched() {
     <ol class="sd-list">${list.map((s, i) => `<li class="${i === nextI ? "next" : i === nowI ? "now" : tm(s[0]) + 20 <= mins ? "past" : ""}"><time>${s[0]}</time><span>${nm(s)}<small class="herb">${herbOf(s)}</small></span><em>${i === nextI ? "ближайший" : i === nowI ? "идёт сейчас" : tm(s[0]) + 20 <= mins ? "прошёл" : ""}</em></li>`).join("")}</ol></div>`;
 }
 renderSched(); setInterval(renderSched, 60000);
+function navSteam() {
+  const n = mskNow(), d = n.getDay(), wk = d === 0 || d === 6, mins = n.getHours() * 60 + n.getMinutes(), list = SCHED[wk ? "we" : "wd"];
+  const tm = x => { const [h, m] = x.split(":").map(Number); return h * 60 + m; }, nm = s => s[1] + (s[2] ? " " + s[2] : "");
+  const nowI = list.findIndex(s => mins >= tm(s[0]) && mins < tm(s[0]) + 20), nextI = list.findIndex(s => tm(s[0]) > mins);
+  const L = $("#navSteamL"), T = $("#navSteamT"), box = $("#navSteam"); if (!L) return;
+  const M = $("#navSteamM");
+  if (nowI >= 0) { L.textContent = "Сейчас пар"; T.textContent = nm(list[nowI]); M.textContent = "Сейчас · " + list[nowI][1]; box.classList.add("live"); }
+  else if (nextI >= 0) { L.textContent = "Пар в " + list[nextI][0]; T.textContent = nm(list[nextI]); M.textContent = list[nextI][0] + " · " + list[nextI][1]; box.classList.remove("live"); }
+  else { const tw = (d + 1) % 7, f = SCHED[tw === 0 || tw === 6 ? "we" : "wd"][0]; L.textContent = "Завтра в " + f[0]; T.textContent = nm(f); M.textContent = "Завтра " + f[0] + " · " + f[1]; box.classList.remove("live"); }
+  box.title = "Расписание паров на сегодня";
+}
+navSteam(); setInterval(navSteam, 30000);
 (() => {
   const n = mskNow(), d = n.getDay(), h = n.getHours() + n.getMinutes() / 60, z = razryad(d), H = DATA.hall;
   const wk = d === 0 || d === 6;
@@ -1817,10 +1870,25 @@ $$(".copy").forEach(b => b.addEventListener("click", async () => {
   const b = $("#burger"), root = document.documentElement;
   const set = on => { root.classList.toggle("menu-open", on); b.setAttribute("aria-expanded", on); b.setAttribute("aria-label", on ? "Закрыть меню" : "Открыть меню"); window.__lenis && (on ? window.__lenis.stop() : window.__lenis.start()); };
   b.addEventListener("click", () => set(!root.classList.contains("menu-open")));
-  $$("#mmenu a").forEach(a => a.addEventListener("click", e => { e.preventDefault(); set(false); const t = $(a.getAttribute("href")); setTimeout(() => window.__lenis ? window.__lenis.scrollTo(t) : t.scrollIntoView(), 60); }));
+  $$("#mmenu a").forEach(a => a.addEventListener("click", e => { e.preventDefault(); set(false); const t = $(a.getAttribute("href")); setTimeout(() => pageGo(t), 60); }));
   addEventListener("keydown", e => { if (e.key === "Escape") set(false); });
 })();
 
+/* плавный переход к разделу: экран мягко затягивает паром, затем он рассеивается уже на нужном месте */
+const pageGo = (el) => {
+  const v = $("#pageVeil"); if (!el) return;
+  const jump = () => { const y = el.getBoundingClientRect().top + scrollY - (el.id === "info" || el.id === "visit" ? 70 : 0); if (window.__lenis) window.__lenis.scrollTo(y, { immediate: true, force: true }); else scrollTo(0, y); window.ScrollTrigger && ScrollTrigger.update(); };
+  if (!v || reduce) return jump();
+  v.classList.add("on"); try { sound && sound.pluck(392, .012); } catch (e) {}
+  setTimeout(() => { jump(); setTimeout(() => v.classList.remove("on"), 160); }, 480);
+};
+/* переход на другие страницы сайта — тоже через пар */
+document.addEventListener("click", e => {
+  const a = e.target.closest("a[href]"); if (!a || a.target === "_blank" || e.metaKey || e.ctrlKey) return;
+  const h = a.getAttribute("href"); if (!h || h.startsWith("#") || h.startsWith("tel:") || h.startsWith("mailto:") || /^https?:/.test(h) && !h.startsWith(location.origin)) return;
+  const v = $("#pageVeil"); if (!v) return; e.preventDefault(); v.classList.add("on"); setTimeout(() => { location.href = a.href; }, 420);
+});
+addEventListener("pageshow", () => { const v = $("#pageVeil"); v && v.classList.remove("on"); });
 /* split helpers */
 const splitChars = el => { el.innerHTML = el.textContent.split(" ").map(w => `<span class="wd-w" style="display:inline-block;white-space:nowrap">${[...w].map(c => `<span class="ch">${c}</span>`).join("")}</span>`).join(" "); return $$(".ch", el); };
 $$("#heroTitle .ln").forEach(splitChars);
@@ -1923,7 +1991,7 @@ const loadMetrika = () => {
 /* ================== ЗВУК ПАРНОЙ: тихий треск дров, пар, мягкие эффекты скролла и спокойная мелодия ================== */
 const sound = (() => {
   let ctx = null, on = false, master, verb, fxBus, musicBus, timer = 0, plTimer = 0, musicOn = false, musicTimer = 0;
-  let hissG, hissF, airG, airF, rumbleG, pourG, pourF, crackG;
+  let hissG, hissF, airG, airF, rumbleG, pourG, pourF, crackG, zone;
   const noiseBuf = (sec, brown) => {
     const b = ctx.createBuffer(1, ctx.sampleRate * sec, ctx.sampleRate), d = b.getChannelData(0); let last = 0;
     for (let i = 0; i < d.length; i++) { const w = Math.random() * 2 - 1; if (brown) { last = (last + .02 * w) / 1.02; d[i] = last * 3.5; } else d[i] = w; }
@@ -1942,14 +2010,15 @@ const sound = (() => {
     ctx = new (window.AudioContext || window.webkitAudioContext)();
     master = gain(0); const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -24; comp.ratio.value = 3; master.connect(comp).connect(ctx.destination);
     verb = ctx.createConvolver(); verb.buffer = impulse(3.2, 2.6); const verbG = gain(.5); verb.connect(verbG).connect(master);
-    fxBus = gain(1); fxBus.connect(master); fxBus.connect(verb);
+    zone = gain(1); zone.connect(master); zone.connect(verb);
+    fxBus = gain(1); fxBus.connect(zone);
     musicBus = gain(0); musicBus.connect(master); const mv = gain(.9); musicBus.connect(mv).connect(verb);
     white = noiseBuf(2, false); const brown = noiseBuf(4, true);
-    rumbleG = gain(.12); loop(brown, filt("lowpass", 260), rumbleG, master);                       // гул печи
+    rumbleG = gain(.06); loop(brown, filt("lowpass", 240), rumbleG, zone);                       // гул печи
     hissF = filt("bandpass", 4200, .5); hissG = gain(0); loop(white, hissF, hissG, fxBus);          // шипение пара
     airF = filt("lowpass", 700); airG = gain(0); loop(brown, airF, airG, fxBus);                    // мягкий «вдох» пара при переходах
     pourF = filt("bandpass", 1100, 3); pourG = gain(0); loop(white, pourF, pourG, fxBus);           // струйка воды
-    crackG = gain(.6); crackG.connect(master);
+    crackG = gain(.35); crackG.connect(zone);
     tick();
   };
   // треск дров: короткие щелчки, иногда «стрельнёт» полено
@@ -1960,6 +2029,14 @@ const sound = (() => {
     g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + .002); g.gain.exponentialRampToValueAtTime(.0004, t + (big ? .11 : .03));
     s.connect(f).connect(lp).connect(g).connect(crackG); s.start(t, Math.random() * 1.5, .15);
     timer = setTimeout(crack, 60 + Math.random() * (Math.random() < .25 ? 1400 : 320));
+  };
+  // взмах веника: шелест листьев, а не ветер
+  const swish = (vol) => {
+    const t = ctx.currentTime, s = ctx.createBufferSource(), hp = filt("highpass", 900), bp = filt("bandpass", 2400 + Math.random() * 900, .7), g = ctx.createGain(), r = ctx.createGain();
+    s.buffer = white; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .07); g.gain.exponentialRampToValueAtTime(.0004, t + .55);
+    for (let k = 0; k < 30; k++) r.gain.setValueAtTime(.35 + Math.random() * .65, t + k * .018);   // листья шуршат неровно
+    bp.frequency.setValueAtTime(1800, t); bp.frequency.linearRampToValueAtTime(3200, t + .25);
+    s.connect(hp).connect(bp).connect(r).connect(g).connect(fxBus); s.start(t, Math.random(), .7);
   };
   // мягкая нота калимбы
   const pluck = (freq, vol, when) => {
@@ -1974,7 +2051,7 @@ const sound = (() => {
     [0, 4].forEach(det => {
       const o = ctx.createOscillator(), g = ctx.createGain(), lp = filt("lowpass", 900);
       o.type = i ? "sine" : "triangle"; o.frequency.value = f; o.detune.value = det;
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.022, t + dur * .35); g.gain.linearRampToValueAtTime(0, t + dur);
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.014, t + dur * .35); g.gain.linearRampToValueAtTime(0, t + dur);
       o.connect(lp).connect(g).connect(musicBus); o.start(t); o.stop(t + dur + .1);
     });
   });
@@ -1986,26 +2063,33 @@ const sound = (() => {
     if (!on || !musicOn) return;
     const t = ctx.currentTime + .05, ch = CH[ci++ % CH.length];
     pad(ch.map(N), t, 9.5);
-    for (let k = 0; k < 3; k++) if (Math.random() < .85) pluck(N(PENT[(Math.random() * PENT.length) | 0]), .035 + Math.random() * .02, t + 1 + k * 2.6 + Math.random() * .8);
-    musicTimer = setTimeout(musicStep, 8000);
+    for (let k = 0; k < 3; k++) if (Math.random() < .85) pluck(N(PENT[(Math.random() * PENT.length) | 0]), .022 + Math.random() * .012, t + 1 + k * 2.6 + Math.random() * .8);
+    musicTimer = setTimeout(musicStep, 9000);
   };
-  const startMusic = () => { if (musicOn || !ctx) return; musicOn = true; musicBus.gain.setTargetAtTime(1, ctx.currentTime, 2.5); clearTimeout(musicTimer); musicStep(); };
+  const startMusic = () => { if (musicOn || !ctx) return; musicOn = true; musicBus.gain.setTargetAtTime(.55, ctx.currentTime, 4); clearTimeout(musicTimer); musicStep(); };
   // звук следует за анимациями
-  let lastVeil = 0, chimed = 0;
+  let lastVeil = 0, chimed = 0, lastSweep = 0, lastDir = 0, lastSwish = 0;
   function tick() {
     requestAnimationFrame(tick);
     if (!on) return;
     const t = ctx.currentTime, H = (() => { try { return how; } catch (e) { return null; } })() || { heat: 0, burst: 0, hum: 0, sweepK: 0, sweep: 0, vel: 0, drops: 0 };
     const veil = steam.veil || 0;
-    hissG.gain.setTargetAtTime(.004 + H.heat * .018 + H.burst * .22 + H.hum * .015 + ws.p * .03, t, .12);
+    hissG.gain.setTargetAtTime(.002 + H.heat * .01 + H.burst * .14 + H.hum * .008 + ws.p * .015, t, .15);
     hissF.frequency.setTargetAtTime(3400 + H.burst * 2400, t, .1);
-    airG.gain.setTargetAtTime(veil * .16 + ws.p * .12 + H.sweepK * .2 + Math.min(.08, H.vel * .03), t, .25);
-    airF.frequency.setTargetAtTime(420 + H.sweep * 900 + veil * 300, t, .2);
-    pourG.gain.setTargetAtTime(H.drops * .12 * (.6 + .4 * Math.random()), t, .03);
+    airG.gain.setTargetAtTime(veil * .05 + ws.p * .05 + Math.min(.02, H.vel * .01), t, .35);
+    airF.frequency.setTargetAtTime(380 + veil * 220, t, .3);
+    // каждый взмах веника — шелест
+    const sd = Math.sign(H.sweep - lastSweep);
+    if (H.sweepK > .3 && sd && sd !== lastDir && performance.now() - lastSwish > 220) { swish(.22); lastSwish = performance.now(); }
+    if (sd) lastDir = sd; lastSweep = H.sweep;
+    // ниже блока «Как рождается пар» эффекты почти стихают — остаётся музыка
+    const hb = $("#hero") ? $("#hero").getBoundingClientRect().bottom : 1;
+    zone.gain.setTargetAtTime(hb > innerHeight * .3 ? 1 : .07, t, 1.2);
+    pourG.gain.setTargetAtTime(H.drops * .07 * (.6 + .4 * Math.random()), t, .03);
     pourF.frequency.setTargetAtTime(800 + Math.random() * 900, t, .02);
     rumbleG.gain.setTargetAtTime(.08 + H.heat * .12, t, .4);
     // на пике перехода — тихая нота
-    if (veil > .7 && lastVeil <= .7 && performance.now() - chimed > 2500) { chimed = performance.now(); pluck(N(PENT[(Math.random() * 4) | 0] - 12), .03); }
+    if (veil > .7 && lastVeil <= .7 && performance.now() - chimed > 2500) { chimed = performance.now(); pluck(N(PENT[(Math.random() * 4) | 0] - 12), .016); }
     lastVeil = veil;
     // мелодия начинается с блока «Здесь время течёт иначе»
     if (!musicOn) { const m = $(".manifesto"); if (m && m.getBoundingClientRect().top < innerHeight * .75) startMusic(); }
@@ -2014,7 +2098,7 @@ const sound = (() => {
   const set = v => {
     on = v; store.set("nb-sound", v ? "1" : "0");
     btns().forEach(b => { b.classList.toggle("on", v); b.setAttribute("aria-pressed", v); b.setAttribute("aria-label", v ? "Выключить звук парной" : "Включить звук парной"); });
-    if (v) { if (!ctx) init(); ctx.resume(); master.gain.setTargetAtTime(.32, ctx.currentTime, .8); clearTimeout(timer); crack(); if (musicOn) { musicOn = false; startMusic(); } goal("sound_on"); hint(false); }
+    if (v) { if (!ctx) init(); ctx.resume(); master.gain.setTargetAtTime(.14, ctx.currentTime, 1.2); clearTimeout(timer); crack(); if (musicOn) { musicOn = false; startMusic(); } goal("sound_on"); hint(false); }
     else if (ctx) { master.gain.setTargetAtTime(0, ctx.currentTime, .3); clearTimeout(timer); clearTimeout(musicTimer); }
   };
   document.addEventListener("click", e => { if (e.target.closest(".snd")) set(!on); });
@@ -2494,7 +2578,7 @@ function motion() {
     lenis = new Lenis({ lerp: .065, wheelMultiplier: .75, touchMultiplier: 1 });
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
-    $$('a[href^="#"]').forEach(a => a.addEventListener("click", e => { const id = a.getAttribute("href"); if (id.length > 1 && $(id)) { e.preventDefault(); lenis.scrollTo(id); } }));
+    $$('a[href^="#"]').forEach(a => { if (a.closest("#mmenu")) return; a.addEventListener("click", e => { const id = a.getAttribute("href"); if (id.length > 1 && $(id)) { e.preventDefault(); pageGo($(id)); } }); });
     lenis.stop(); window.__lenis = lenis;
   }
   const vel = () => lenis ? Math.abs(lenis.velocity || 0) : 0;
@@ -2690,7 +2774,7 @@ function motion() {
   /* ПЕРЕХОДЫ: блок растворяется в пару, следующий проявляется из него */
   (() => {
     const blur = !matchMedia("(max-width:760px)").matches;
-    const secs = ["#hero", ".manifesto", "#rooms", "#hall", "#baths", "#cycle", "#gallery", "#reviews", "#info", "#offers", "#faq", "#rules", "#visit"].map(s => $(s)).filter(Boolean);
+    const secs = ["#hero", ".manifesto", "#rooms", "#hall", "#info", "#baths", "#cycle", "#gallery", "#reviews", "#offers", "#faq", "#rules", "#visit"].map(s => $(s)).filter(Boolean);
     const kids = s => [...s.children];
     const F = b => blur ? `blur(${b}px)` : "blur(0px)";
     for (let i = 1; i < secs.length; i++) {
