@@ -19,7 +19,10 @@ if [ "$OLD" != "$NEW" ]; then
   echo "$(date '+%F %T') обновлено до ${NEW:0:7}"
 fi
 
-# 2. SSL — когда DNS уже переключён
+# 2. сервис заявок (почта + MAX)
+bash "$DIR/deploy/setup-lead.sh"
+
+# 3. SSL — когда DNS уже переключён
 [ -d "/etc/letsencrypt/live/$DOMAIN" ] && exit 0
 # не чаще раза в час, чтобы не упереться в лимиты Let's Encrypt
 if [ -f "$STAMP" ] && [ $(( $(date +%s) - $(stat -c %Y "$STAMP") )) -lt 3600 ]; then exit 0; fi

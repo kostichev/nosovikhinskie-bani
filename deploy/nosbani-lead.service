@@ -1,0 +1,13 @@
+[Unit]
+Description=Носовихинские бани — приём заявок с сайта
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /usr/local/bin/nosbani-lead serve
+Restart=always
+RestartSec=3
+User=root
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

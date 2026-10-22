@@ -35,6 +35,9 @@ else
 fi
 chown -R www-data:www-data "$DIR/site" 2>/dev/null || true
 
+say "Ставлю сервис заявок (почта + MAX)"
+bash "$DIR/deploy/setup-lead.sh" || true
+
 say "Настраиваю nginx"
 install -m 644 "$DIR/deploy/nosbani-common.conf" /etc/nginx/snippets/nosbani-common.conf
 if [ ! -f /etc/nginx/sites-available/nosbani.conf ] || ! grep -q "ssl_certificate" /etc/nginx/sites-available/nosbani.conf; then
