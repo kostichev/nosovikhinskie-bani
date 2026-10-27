@@ -232,7 +232,7 @@ def cmd_whoami():
     try:
         chats = max_call(cfg, "GET", "/chats?count=50").get("chats", [])
     except Exception as e:
-        chats = []; print("Список групп недоступен:", e)
+        chats = []
     for c in chats:
         if c.get("type") != "dialog":
             print(f"• Группа «{c.get('title', '')}»: chat_id={c.get('chat_id')}  ← это число впишите в «ID группового чата»")
