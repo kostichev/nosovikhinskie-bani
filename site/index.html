@@ -1103,12 +1103,11 @@ section.visit{padding-bottom:clamp(80px,10vw,140px)}
 .gal-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px var(--gutter) 20px;scrollbar-width:thin;scrollbar-color:rgba(var(--fg-rgb),.25) transparent;cursor:grab;-webkit-overflow-scrolling:touch}
 .gal-track.drag{cursor:grabbing;scroll-snap-type:none}
 .gal-track figure{flex:none;width:clamp(260px,34vw,520px);margin:0;scroll-snap-align:start;display:grid;gap:10px}
-.gal-track figure:nth-child(3n+2){width:clamp(220px,26vw,400px)}
 .gal-img{position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:#15120e}
-.gal-track figure:nth-child(3n+2) .gal-img{aspect-ratio:3/4}
 .gal-img > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.04);transition:transform 1.2s var(--ease);-webkit-user-drag:none;user-select:none}
 .gal-track figure:hover .gal-img > img{transform:scale(1.09)}
 .gal-track figcaption{font:400 15px/1.3 var(--f-body);color:var(--bone-dim)}
+@media (max-width:700px){.gal-track figure{width:82vw}}
 
 /* отзывы */
 .rev-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,4vw,64px);align-items:start}
@@ -2297,11 +2296,22 @@ const sound = (() => {
     if (!musicOn) { const m = $(".manifesto"); if (m && m.getBoundingClientRect().top < innerHeight * .75) startMusic(); }
   }
   const btns = () => $$(".snd");
+  // iPhone: Web Audio молчит при включённом беззвучном режиме — переводим звук в категорию «воспроизведение»
+  let silentEl = null;
+  const unlockIOS = on2 => {
+    try { if (navigator.audioSession) navigator.audioSession.type = on2 ? "playback" : "auto"; } catch (e) {}
+    try {
+      if (!silentEl) { silentEl = new Audio("data:audio/wav;base64,UklGRvQHAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YdAHAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA=="); silentEl.loop = true; silentEl.setAttribute("playsinline", ""); silentEl.preload = "auto"; }
+      if (on2) { const pr = silentEl.play(); pr && pr.catch(() => {}); } else silentEl.pause();
+    } catch (e) {}
+  };
+  // если iOS приостановил звук (звонок, блокировка) — возобновляем при следующем касании
+  ["touchend", "click"].forEach(ev => document.addEventListener(ev, () => { if (on && ctx && ctx.state !== "running") { ctx.resume(); unlockIOS(true); } }, { passive: true }));
   const set = v => {
     on = v; store.set("nb-sound", v ? "1" : "0");
     btns().forEach(b => { b.classList.toggle("on", v); b.setAttribute("aria-pressed", v); b.setAttribute("aria-label", v ? "Выключить звук парной" : "Включить звук парной"); });
-    if (v) { if (!ctx) init(); ctx.resume(); master.gain.setTargetAtTime(.14, ctx.currentTime, 1.2); clearTimeout(timer); crack(); if (musicOn) { musicOn = false; startMusic(); } goal("sound_on"); hint(false); }
-    else if (ctx) { master.gain.setTargetAtTime(0, ctx.currentTime, .3); clearTimeout(timer); clearTimeout(musicTimer); }
+    if (v) { if (!ctx) init(); unlockIOS(true); ctx.resume(); master.gain.setTargetAtTime(LITE ? .24 : .14, ctx.currentTime, 1.2); clearTimeout(timer); crack(); if (musicOn) { musicOn = false; startMusic(); } goal("sound_on"); hint(false); }
+    else if (ctx) { master.gain.setTargetAtTime(0, ctx.currentTime, .3); clearTimeout(timer); clearTimeout(musicTimer); unlockIOS(false); }
   };
   document.addEventListener("click", e => { if (e.target.closest(".snd")) set(!on); });
   document.addEventListener("visibilitychange", () => { if (!ctx) return; document.hidden ? ctx.suspend() : on && ctx.resume(); });
