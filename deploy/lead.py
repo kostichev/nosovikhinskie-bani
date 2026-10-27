@@ -25,7 +25,7 @@ MAX_HOSTS = ["https://platform-api2.max.ru", "https://platform-api.max.ru"]
 
 
 def load_env():
-    cfg = {"MAIL_TO": "nosbani@bk.ru", "SMTP_HOST": "smtp.mail.ru", "SMTP_PORT": "465"}
+    cfg = {"MAIL_TO": "nosbani@bk.ru", "SMTP_HOST": "smtp.mail.ru", "SMTP_PORT": "465", "SMTP_USER": "nosbani@bk.ru"}
     try:
         for line in open(ENV, encoding="utf-8"):
             line = line.strip()
