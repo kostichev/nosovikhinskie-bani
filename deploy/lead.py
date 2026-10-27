@@ -229,8 +229,16 @@ def cmd_whoami():
         if key in seen: continue
         seen.add(key)
         print(f"• {user.get('name') or user.get('first_name', '')}: user_id={user.get('user_id')}  chat_id={chat} {ctype}")
+    try:
+        chats = max_call(cfg, "GET", "/chats?count=50").get("chats", [])
+    except Exception as e:
+        chats = []; print("Список групп недоступен:", e)
+    for c in chats:
+        if c.get("type") != "dialog":
+            print(f"• Группа «{c.get('title', '')}»: chat_id={c.get('chat_id')}  ← это число впишите в «ID группового чата»")
+            seen.add(("chat", c.get("chat_id")))
     if not seen:
-        print("Пока никто не писал боту. Напишите ему в MAX «старт» и повторите команду.")
+        print("Пока никто не писал боту и бот не состоит в группах. Напишите ему в MAX «старт» и повторите команду.")
 
 
 def cmd_test():
