@@ -13,9 +13,11 @@ git -C "$DIR" fetch -q --depth 1 origin server && git -C "$DIR" reset -q --hard 
 NEW=$(git -C "$DIR" rev-parse HEAD 2>/dev/null)
 if [ "$OLD" != "$NEW" ]; then
   chown -R www-data:www-data "$DIR/site" 2>/dev/null
+  cp -f /etc/nginx/snippets/nosbani-common.conf /var/lib/nosbani-common.bak 2>/dev/null
   install -m 644 "$DIR/deploy/nosbani-common.conf" /etc/nginx/snippets/nosbani-common.conf
   install -m 755 "$DIR/deploy/tick.sh" /usr/local/bin/nosbani-tick
-  nginx -t -q && systemctl reload nginx
+  if nginx -t -q 2>/dev/null; then systemctl reload nginx
+  else cp -f /var/lib/nosbani-common.bak /etc/nginx/snippets/nosbani-common.conf; echo "$(date '+%F %T') ошибка в настройках nginx — откатил"; fi
   echo "$(date '+%F %T') обновлено до ${NEW:0:7}"
 fi
 
