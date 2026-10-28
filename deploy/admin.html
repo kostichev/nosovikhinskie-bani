@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Админка — Носовихинские бани</title>
+<style>
+:root{--bg:#0d0b08;--panel:#15120e;--panel2:#1c1813;--line:rgba(236,231,218,.12);--line2:rgba(236,231,218,.22);--text:#ece7da;--dim:rgba(236,231,218,.6);--brass:#c9a46a;--olive:#a6b74b;--red:#e07a48}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:16px;padding:12px 20px;background:rgba(13,11,8,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+header b{font:400 22px Georgia,serif}header b em{color:var(--brass)}
+header .sp{flex:1}
+header a,header button.lo{color:var(--dim);font-size:14px;background:none;border:0;cursor:pointer;text-decoration:none}
+.wrap{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;max-width:1280px;margin:0 auto;padding:20px 20px 120px}
+nav.tabs{position:sticky;top:76px;align-self:start;display:grid;gap:4px}
+nav.tabs button{text-align:left;padding:10px 14px;border-radius:10px;border:0;background:none;color:var(--dim);font:inherit;cursor:pointer}
+nav.tabs button.on{background:var(--panel2);color:var(--text)}
+section{display:none}section.on{display:block}
+h2{font:400 30px Georgia,serif;margin:0 0 6px}
+.hint{color:var(--dim);font-size:13.5px;margin:0 0 18px;max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+label{display:grid;gap:5px;font-size:13px;color:var(--dim)}
+input,textarea,select{width:100%;padding:9px 11px;border-radius:9px;border:1px solid var(--line2);background:var(--bg);color:var(--text);font:inherit;font-size:14.5px}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--brass)}
+textarea{min-height:64px;resize:vertical}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--olive)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.card h3{margin:0 0 12px;font:400 20px Georgia,serif}
+.row{display:grid;gap:8px;align-items:start;padding:10px 0;border-bottom:1px dashed var(--line)}
+.row:last-child{border-bottom:0}
+.r-rit{grid-template-columns:150px 1.4fr 1fr 110px 2fr 70px 92px}
+.r-ex{grid-template-columns:1.4fr 120px 1.6fr 92px}
+.r-sch{grid-template-columns:100px 1fr 40px}
+.r-menu{grid-template-columns:1.6fr 120px 120px 2fr 70px 92px}
+.r-feat{grid-template-columns:1.6fr 120px 120px 40px}
+.r-faq{grid-template-columns:1fr 1.6fr 40px}
+.head{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:999px;border:1px solid var(--line2);background:none;color:var(--text);font:inherit;font-size:14px;cursor:pointer}
+.btn:hover{border-color:var(--brass)}
+.btn.main{background:var(--olive);color:#141109;border-color:var(--olive);font-weight:600}
+.icon{width:34px;height:34px;border-radius:9px;border:1px solid var(--line2);background:none;color:var(--dim);cursor:pointer;font-size:15px}
+.icon:hover{color:var(--red);border-color:var(--red)}
+.ops{display:flex;gap:4px}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chk{display:flex;align-items:center;gap:8px;color:var(--text);font-size:14px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;align-items:center;gap:14px;justify-content:flex-end;padding:12px 20px;background:rgba(13,11,8,.95);border-top:1px solid var(--line)}
+.bar .st{margin-right:auto;color:var(--dim);font-size:14px}
+.bar .st.err{color:var(--red)}.bar .st.ok{color:var(--olive)}
+.dirty .bar{border-top-color:var(--brass)}
+.mtabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.mtabs button{padding:8px 14px;border-radius:999px;border:1px solid var(--line2);background:none;color:var(--dim);cursor:pointer;font:inherit}
+.mtabs button.on{background:var(--text);color:var(--bg)}
+.hist{display:grid;gap:6px}
+.hist div{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--line);border-radius:10px}
+code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-size:13px}
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr}
+  nav.tabs{position:static;display:flex;overflow-x:auto;gap:6px}
+  nav.tabs button{white-space:nowrap;border:1px solid var(--line)}
+  .r-rit,.r-ex,.r-menu,.r-feat,.r-faq,.cols2{grid-template-columns:1fr}
+  .head{display:none}
+}
+</style>
+</head>
+<body>
+<header><b>Носовихинские бани · <em>админка</em></b><span class="sp"></span><a href="/" target="_blank">Открыть сайт ↗</a><form method="post" action="/admin/logout" style="margin:0"><button class="lo">Выйти</button></form></header>
+<div class="wrap">
+  <nav class="tabs" id="tabs"></nav>
+  <main id="main"></main>
+</div>
+<div class="bar"><span class="st" id="st">Загрузка…</span><button class="btn main" id="save" disabled>Сохранить и обновить сайт</button></div>
+<script>
+const $ = s => document.querySelector(s);
+let D = null, HIST = [], dirty = false, menuTab = 0;
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const get = (o, p) => p.split(".").reduce((a, k) => a == null ? a : a[k], o);
+const set = (o, p, v) => { const ks = p.split("."); const last = ks.pop(); ks.reduce((a, k) => a[k], o)[last] = v; };
+const st = (t, cls = "") => { const e = $("#st"); e.textContent = t; e.className = "st " + cls; };
+const touch = () => { dirty = true; document.body.classList.add("dirty"); $("#save").disabled = false; st("Есть несохранённые изменения"); };
+
+function inp(path, label, type = "text", extra = "") {
+  const v = get(D, path);
+  if (type === "chk") return `<label class="chk"><input type="checkbox" data-p="${path}" data-t="chk" ${v ? "checked" : ""}> ${label}</label>`;
+  if (type === "area") return `<label>${label}<textarea data-p="${path}">${esc(v)}</textarea></label>`;
+  return `<label>${label}<input data-p="${path}" data-t="${type}" value="${esc(v)}" ${type === "num" ? 'inputmode="numeric"' : ""} ${extra}></label>`;
+}
+const cell = (path, type = "text", ph = "") => type === "chk" ? `<input type="checkbox" data-p="${path}" data-t="chk" ${get(D, path) ? "checked" : ""}>`
+  : type === "area" ? `<textarea data-p="${path}" placeholder="${ph}" style="min-height:42px">${esc(get(D, path))}</textarea>`
+  : `<input data-p="${path}" data-t="${type}" value="${esc(get(D, path))}" placeholder="${ph}" ${type === "num" ? 'inputmode="numeric"' : ""}>`;
+const ops = (list, i) => `<div class="ops"><button class="icon" title="Выше" data-mv="${list}|${i}|-1">↑</button><button class="icon" title="Удалить" data-del="${list}|${i}">✕</button></div>`;
+
+const TABS = [
+  ["hall", "Общий зал и тарифы", () => {
+    const f = [["wd_before16", "Будни, 4 часа до 16:00"], ["wd_after16", "Будни, 4 часа после 16:00"], ["wd_unlim", "Будни, безлимит"], ["we_4h", "Выходные, 4 часа"], ["we_unlim", "Выходные, безлимит"], ["vip", "VIP-тариф"], ["child", "Дети 7–12 лет"], ["lgot", "Льготный билет"], ["svo_wd", "Участник СВО, будни"], ["svo_we", "Участник СВО, выходные"], ["per_min", "Сверх 4 часов, за минуту"]];
+    return `<h2>Общий зал и тарифы</h2><p class="hint">Цены в рублях, только числа. Меняются сразу везде: на главной, в онлайн-записи, на странице «Цены», в ответах на вопросы и в разметке для Яндекса.</p><div class="card grid">${f.map(([k, l]) => inp("hall." + k, l, "num")).join("")}</div>`;
+  }],
+  ["baths", "Бани и кабинеты", () => `<h2>Бани и кабинеты</h2><p class="hint">Отдельные бани — цена за час. Кабинеты — цена за пакет часов, далее доплата за каждый час.</p>` +
+    D.baths.map((b, i) => `<div class="card"><h3>${esc(b.name)}</h3><div class="grid">${inp(`baths.${i}.name`, "Название")}${inp(`baths.${i}.badge`, "Подпись")}${inp(`baths.${i}.price`, b.kind === "cab" ? `Цена за ${b.pkg || 4} часа, ₽` : "Цена за час, ₽", "num")}${inp(`baths.${i}.base`, b.kind === "cab" ? "Гостей без доплаты" : "Гостей в тарифе", "num")}${"cap" in b ? inp(`baths.${i}.cap`, "Максимум гостей", "num") : ""}${b.kind === "cab" ? inp(`baths.${i}.pkg`, "Часов в пакете", "num") + inp(`baths.${i}.hourExtra`, "Доп. час, ₽", "num") : ""}</div><div style="margin-top:10px">${inp(`baths.${i}.d`, "Описание", "area")}</div></div>`).join("") +
+    `<div class="card grid">${inp("extraGuest", "Отдельные бани: гость сверх тарифа, ₽/час", "num")}${inp("cabGuest", "Кабинеты: гость сверх лимита, ₽", "num")}${inp("minHours", "Минимум часов аренды бани", "num")}</div>`],
+  ["rituals", "Парения, мойки, массаж", () => `<h2>Парения, мойки и массаж</h2><p class="hint">Группа объединяет услуги в онлайн-записи (Парение, Парение в 4 руки, Мойки, Массаж). Галочка «на главной» — услуга показывается карточкой на главной странице (лучше 3–4).</p>
+    <div class="card"><div class="row r-rit head"><span>Группа</span><span>Название</span><span>Длительность</span><span>Цена, ₽</span><span>Описание</span><span>Главная</span><span></span></div>
+    ${D.rituals.map((r, i) => `<div class="row r-rit">${cell(`rituals.${i}.g`, "text", "Парение")}${cell(`rituals.${i}.name`, "text", "Название")}${cell(`rituals.${i}.time`, "text", "до 15 минут")}${cell(`rituals.${i}.price`, "num", "Цена")}${cell(`rituals.${i}.d`, "area", "Описание")}${cell(`rituals.${i}.top`, "chk")}${ops("rituals", i)}</div>`).join("")}
+    <button class="btn" data-add="rituals">+ Добавить услугу</button></div>`],
+  ["chan", "Чан и доп. услуги", () => `<h2>Молодильный чан</h2><div class="card grid">${inp("chan.price", "Цена аренды, ₽", "num")}${inp("chan.hours", "Часов в аренде", "num")}${inp("chan.cap", "Вместимость, человек", "num")}${inp("chan.hourExtra", "Доп. час, ₽", "num")}</div>
+    <h2 style="margin-top:28px">Дополнительно к визиту</h2><p class="hint">Веники, аренда простыней и т. п. Цена 0 — «бесплатно».</p>
+    <div class="card"><div class="row r-ex head"><span>Название</span><span>Цена, ₽</span><span>Пояснение</span><span></span></div>${D.extras.map((e, i) => `<div class="row r-ex">${cell(`extras.${i}.name`, "text", "Название")}${cell(`extras.${i}.price`, "num")}${cell(`extras.${i}.note`, "text", "Пояснение")}${ops("extras", i)}</div>`).join("")}<button class="btn" data-add="extras">+ Добавить</button></div>`],
+  ["schedule", "Расписание паров", () => `<h2>Расписание коллективных паров</h2><p class="hint">Время в формате 09:30. Название пара — как на табличке, например «Полынь горькая». Описания трав подставляются сами для известных названий.</p><div class="cols2">` +
+    [["weekday", "Будни"], ["weekend", "Выходные"]].map(([k, t]) => `<div class="card"><h3>${t}</h3>${D.schedule[k].map((x, i) => `<div class="row r-sch">${cell(`schedule.${k}.${i}.time`, "text", "10:30")}${cell(`schedule.${k}.${i}.name`, "text", "Название пара")}<button class="icon" data-del="schedule.${k}|${i}">✕</button></div>`).join("")}<button class="btn" data-add="schedule.${k}">+ Добавить пар</button></div>`).join("") + "</div>"],
+  ["menu", "Меню ресторана", () => {
+    const m = D.menu[menuTab];
+    return `<h2>Меню ресторана</h2><p class="hint">Цена — как в меню, можно «500 / 530». Галочка «скрыть» убирает блюдо с сайта, не удаляя (стоп-лист).</p>
+    <div class="mtabs">${D.menu.map((x, i) => `<button data-mt="${i}" class="${i === menuTab ? "on" : ""}">${esc(x.title)}</button>`).join("")}<button data-mt="feat" class="${menuTab === "feat" ? "on" : ""}">Хиты на главной</button></div>` +
+    (menuTab === "feat" ? `<div class="card"><p class="hint">3 первых показываются в блоке «Расписание» на главной, все — в «Стоит попробовать».</p>${D.menu_featured.map((x, i) => `<div class="row r-feat">${cell(`menu_featured.${i}.name`, "text", "Блюдо")}${cell(`menu_featured.${i}.weight`, "text", "выход")}${cell(`menu_featured.${i}.price`, "text", "цена")}<button class="icon" data-del="menu_featured|${i}">✕</button></div>`).join("")}<button class="btn" data-add="menu_featured">+ Добавить</button></div>` :
+    m.cats.map((c, ci) => `<div class="card"><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">${cell(`menu.${menuTab}.cats.${ci}.title`)}<button class="icon" title="Удалить раздел" data-del="menu.${menuTab}.cats|${ci}">✕</button></div>
+      <div class="row r-menu head"><span>Блюдо</span><span>Выход</span><span>Цена, ₽</span><span>Состав</span><span>Скрыть</span><span></span></div>
+      ${c.items.map((it, ii) => `<div class="row r-menu">${cell(`menu.${menuTab}.cats.${ci}.items.${ii}.name`, "text", "Блюдо")}${cell(`menu.${menuTab}.cats.${ci}.items.${ii}.weight`, "text", "Выход")}${cell(`menu.${menuTab}.cats.${ci}.items.${ii}.price`, "text", "Цена")}${cell(`menu.${menuTab}.cats.${ci}.items.${ii}.desc`, "area", "Состав")}${cell(`menu.${menuTab}.cats.${ci}.items.${ii}.hidden`, "chk")}${ops(`menu.${menuTab}.cats.${ci}.items`, ii)}</div>`).join("")}
+      <button class="btn" data-add="menu.${menuTab}.cats.${ci}.items">+ Блюдо</button></div>`).join("") + `<button class="btn" data-add="menu.${menuTab}.cats">+ Новый раздел</button>`);
+  }],
+  ["contacts", "Контакты и объявление", () => `<h2>Контакты</h2><div class="card grid">${inp("contacts.phone", "Телефон")}${inp("contacts.whatsapp", "WhatsApp")}${inp("contacts.telegram", "Telegram (без @)")}${inp("contacts.email", "Почта")}${inp("contacts.opens", "Открываемся", "text", 'placeholder="10:00"')}${inp("contacts.closes", "Закрываемся", "text", 'placeholder="23:00"')}</div>
+    <h2 style="margin-top:28px">Объявление на сайте</h2><p class="hint">Небольшая плашка под меню сайта: праздничный режим, акция, санитарный день. Посетитель может её закрыть.</p>
+    <div class="card" style="display:grid;gap:12px">${inp("banner.on", "Показывать объявление", "chk")}${inp("banner.text", "Текст (до 160 символов)", "text", 'maxlength="160" placeholder="31 декабря работаем до 18:00"')}${inp("banner.link", "Ссылка (необязательно)", "text", 'placeholder="/zhenskiy-den/"')}</div>`],
+  ["faq", "Вопросы и ответы", () => `<h2>Вопросы и ответы</h2><p class="hint">Показываются на главной и в поиске Яндекса. Вместо цены можно вставить код, тогда цена подставится из тарифов сама: <code>{{P:child}}</code> детский, <code>{{P:lgot}}</code> льготный, <code>{{P:vip}}</code> VIP, <code>{{P:wd_unlim}}</code> безлимит будни, <code>{{P:per_min}}</code> минута сверх.</p>
+    <div class="card">${D.faq.map((x, i) => `<div class="row r-faq">${cell(`faq.${i}.q`, "area", "Вопрос")}${cell(`faq.${i}.a`, "area", "Ответ")}<button class="icon" data-del="faq|${i}">✕</button></div>`).join("")}<button class="btn" data-add="faq">+ Вопрос</button></div>`],
+  ["seo", "Метрика и поиск", () => `<h2>Метрика и поисковики</h2><p class="hint">Номер счётчика — цифры из Яндекс Метрики. Коды подтверждения — значение <code>content</code> из мета-тега, который выдаёт Яндекс Вебмастер или Google Search Console. После сохранения сайт обновится, затем нажмите «Проверить» в Вебмастере.</p>
+    <div class="card grid">${inp("seo.ym", "Номер счётчика Яндекс Метрики", "text", 'inputmode="numeric" placeholder="12345678"')}${inp("seo.ya_verify", "Код подтверждения Яндекс Вебмастера")}${inp("seo.g_verify", "Код подтверждения Google")}</div>`],
+  ["history", "История изменений", () => `<h2>История изменений</h2><p class="hint">Перед каждым сохранением прошлая версия складывается сюда. Можно вернуть любую из последних 60.</p><div class="hist">${HIST.length ? HIST.map(h => { const m = h.match(/^(\d{4})(\d\d)(\d\d)-(\d\d)(\d\d)(\d\d)-?(\w*)/); return `<div><span>${m ? `${m[3]}.${m[2]}.${m[1]} ${m[4]}:${m[5]}` : h} ${m && m[7] ? "· " + esc(m[7]) : ""}</span><button class="btn" data-restore="${esc(h)}">Вернуть эту версию</button></div>`; }).join("") : "<p class='hint'>Пока пусто.</p>"}</div>`],
+];
+const NEW = { rituals: () => ({ id: "", g: "Парение", name: "", time: "", price: 0, d: "" }), extras: () => ({ id: "", name: "", price: 0, note: "" }), "schedule.weekday": () => ({ time: "", name: "" }), "schedule.weekend": () => ({ time: "", name: "" }),
+  faq: () => ({ q: "", a: "" }), menu_featured: () => ({ name: "", weight: "", price: "" }) };
+let cur = "hall";
+function render() {
+  $("#tabs").innerHTML = TABS.map(([k, t]) => `<button data-tab="${k}" class="${k === cur ? "on" : ""}">${t}</button>`).join("");
+  $("#main").innerHTML = TABS.map(([k, , f]) => `<section class="${k === cur ? "on" : ""}">${k === cur ? f() : ""}</section>`).join("");
+}
+document.addEventListener("input", e => { const p = e.target.dataset.p; if (!p) return; const t = e.target.dataset.t; set(D, p, t === "chk" ? e.target.checked : t === "num" ? (e.target.value.replace(/\D/g, "") === "" ? 0 : +e.target.value.replace(/\D/g, "")) : e.target.value); touch(); });
+document.addEventListener("change", e => { if (e.target.dataset.t === "chk") { set(D, e.target.dataset.p, e.target.checked); touch(); } });
+document.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.tab) { cur = b.dataset.tab; render(); scrollTo(0, 0); }
+  else if (b.dataset.mt !== undefined) { menuTab = b.dataset.mt === "feat" ? "feat" : +b.dataset.mt; render(); }
+  else if (b.dataset.add) { const p = b.dataset.add, l = get(D, p); l.push(NEW[p] ? NEW[p]() : /items$/.test(p) ? { name: "", weight: "", price: "", desc: "" } : { title: "Новый раздел", items: [{ name: "", weight: "", price: "", desc: "" }] }); touch(); render(); }
+  else if (b.dataset.del) { const [p, i] = b.dataset.del.split("|"); if (!confirm("Удалить?")) return; get(D, p).splice(+i, 1); touch(); render(); }
+  else if (b.dataset.mv) { const [p, i, d] = b.dataset.mv.split("|"); const l = get(D, p), a = +i, z = a + +d; if (z < 0 || z >= l.length) return; [l[a], l[z]] = [l[z], l[a]]; touch(); render(); }
+  else if (b.dataset.restore) { if (!confirm("Вернуть эту версию? Текущая сохранится в истории.")) return; api("/admin/api/restore", { name: b.dataset.restore }); }
+});
+async function api(url, body) {
+  $("#save").disabled = true; st("Сохраняю и обновляю сайт… это займёт несколько секунд");
+  try {
+    const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", "X-Requested-With": "nbadmin" }, body: JSON.stringify(body) });
+    const j = await r.json();
+    if (r.status === 401) { location.reload(); return; }
+    if (!r.ok) throw new Error(j.error || "ошибка");
+    D = j.data; dirty = false; document.body.classList.remove("dirty"); await load(true); st("Сохранено. Сайт обновлён " + new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" }), "ok");
+  } catch (err) { st("Не сохранено: " + err.message, "err"); $("#save").disabled = false; }
+}
+$("#save").addEventListener("click", () => api("/admin/api/save", D));
+async function load(keep) {
+  const r = await fetch("/admin/api/data", { cache: "no-store" }); if (r.status === 401) return location.reload();
+  const j = await r.json(); if (!keep) D = j.data; HIST = j.history; render(); if (!keep) st("Все изменения сохранены");
+}
+addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+load();
+</script>
+</body>
+</html>

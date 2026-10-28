@@ -9,9 +9,11 @@ STAMP="/var/lib/nosbani-ssl-try"
 
 # 1. обновление сайта из ветки server
 OLD=$(git -C "$DIR" rev-parse HEAD 2>/dev/null)
-git -C "$DIR" fetch -q --depth 1 origin server && git -C "$DIR" reset -q --hard origin/server
-NEW=$(git -C "$DIR" rev-parse HEAD 2>/dev/null)
-if [ "$OLD" != "$NEW" ]; then
+git -C "$DIR" fetch -q --depth 1 origin server
+NEW=$(git -C "$DIR" rev-parse origin/server 2>/dev/null)
+# сбрасываем файлы только при новой версии кода — иначе сайт, пересобранный админкой, не трогаем
+if [ -n "$NEW" ] && [ "$OLD" != "$NEW" ]; then
+  git -C "$DIR" reset -q --hard origin/server
   chown -R www-data:www-data "$DIR/site" 2>/dev/null
   cp -f /etc/nginx/snippets/nosbani-common.conf /var/lib/nosbani-common.bak 2>/dev/null
   install -m 644 "$DIR/deploy/nosbani-common.conf" /etc/nginx/snippets/nosbani-common.conf
@@ -19,10 +21,14 @@ if [ "$OLD" != "$NEW" ]; then
   if nginx -t -q 2>/dev/null; then systemctl reload nginx
   else cp -f /var/lib/nosbani-common.bak /etc/nginx/snippets/nosbani-common.conf; echo "$(date '+%F %T') ошибка в настройках nginx — откатил"; fi
   echo "$(date '+%F %T') обновлено до ${NEW:0:7}"
+  NEED_REBUILD=1
 fi
 
 # 2. сервис заявок (почта + MAX)
 bash "$DIR/deploy/setup-lead.sh"
+
+# 2б. сайт с данными админки (после обновления кода или при первом запуске)
+if [ "${NEED_REBUILD:-0}" = 1 ] || [ ! -f /var/lib/nosbani/site.json ]; then /usr/local/bin/nosbani-rebuild || echo "$(date '+%F %T') пересборка не удалась, работает версия из репозитория"; fi
 
 # 3. SSL — когда DNS уже переключён
 [ -d "/etc/letsencrypt/live/$DOMAIN" ] && exit 0
