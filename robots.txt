@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /404.html
+
+User-agent: Yandex
+Allow: /
+Disallow: /api/
+Disallow: /404.html
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&gclid&fbclid&ysclid&v&book&menu
 
 Sitemap: https://kostichev.github.io/nosovikhinskie-bani/sitemap.xml
