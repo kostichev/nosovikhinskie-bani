@@ -1457,6 +1457,34 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
 .lite .fd-cover-in::before{display:none}
 @media (prefers-reduced-motion:reduce){.fd-panel{transition:none}.fd.on .fd-pane.on .fd-list li{animation:none}}
 .opt-g{grid-column:1/-1;display:block;padding:14px 16px 8px;background:var(--surface);color:var(--brass)}
+
+/* ===== v26: фото в блоках ===== */
+.card-img .ci2{opacity:0;transition:opacity .9s var(--ease)}
+.card:hover .card-img .ci2{opacity:1}
+.ci-hint{position:absolute;right:14px;bottom:12px;z-index:2;font-size:9px;padding:5px 9px;border-radius:999px;background:rgba(10,9,7,.55);color:var(--bone);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:opacity .5s}
+.card:hover .ci-hint{opacity:0}
+@media (hover:none){.card-img .ci2{animation:ciSwap 10s ease-in-out infinite}.ci-hint{display:none}}
+@keyframes ciSwap{0%,40%{opacity:0}50%,90%{opacity:1}100%{opacity:0}}
+.cycle-ph{position:absolute;inset:0;overflow:hidden}
+.cycle-ph::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 70% at 50% 50%,rgba(10,9,7,.55),rgba(10,9,7,.92) 85%)}
+.cp{position:absolute;inset:-3%;background-size:cover;background-position:center;opacity:0;filter:var(--grade) brightness(.62);will-change:opacity,transform}
+.cp:first-child{opacity:1}
+.no-motion .cycle-ph{display:none}
+@media (prefers-reduced-motion:reduce){.cycle-ph{display:none}}
+.hall-ph{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;margin:0 0 clamp(40px,5vw,72px)}
+.hall-ph figure{margin:0;display:grid;gap:10px}
+.hall-ph figure > div{aspect-ratio:4/3;border-radius:14px;background:#15120e center/cover no-repeat;filter:var(--grade)}
+.hall-ph figure:first-child > div{aspect-ratio:auto;height:100%;min-height:100%}
+.hall-ph figure:first-child{grid-template-rows:1fr auto}
+.hall-ph figcaption{font-size:14px;color:var(--bone-dim)}
+.duo-food{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;max-width:none}
+.duo-ph{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden}
+.duo-ph > div{position:absolute;inset:0;background:#15120e center/cover no-repeat;filter:var(--grade)}
+.duo-ph .mono{position:absolute;left:16px;bottom:14px;padding:6px 10px;border-radius:999px;background:rgba(10,9,7,.6);color:var(--bone);font-size:9.5px}
+.visit-ph{margin:22px 0 26px;display:grid;gap:8px;max-width:520px}
+.visit-ph > div{aspect-ratio:16/9;border-radius:14px;background:#15120e center/cover no-repeat;filter:var(--grade)}
+.visit-ph figcaption{font-size:13.5px;color:var(--bone-dim)}
+@media (max-width:900px){.hall-ph{grid-template-columns:1fr 1fr}.hall-ph figure:first-child{grid-column:1/-1}.hall-ph figure:first-child > div{aspect-ratio:16/9;height:auto}.duo-food{grid-template-columns:1fr}}
 </style>
 <style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -1570,6 +1598,7 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
         <h2><span class="reveal-line"><span>Общий зал</span></span><span class="reveal-line"><span><em>и тарифы</em></span></span></h2>
         <p>Входной билет на 4 часа. Вторник — женский разряд, все остальные дни — мужской. В выходные и праздники действует отдельный тариф.</p>
       </div>
+      <div class="hall-ph"><figure><div data-k="g3"></div><figcaption>Зона отдыха общего зала</figcaption></figure><figure><div data-k="room0"></div><figcaption>Хаммам с мраморным лежаком</figcaption></figure><figure><div data-k="x-sinks"></div><figcaption>Умывальная зона у сауны</figcaption></figure></div>
       <div class="today" id="today"><div style="display:grid;gap:4px"><span class="mono">Сегодня</span><b id="todayText">Мужской день</b><span class="note" id="todayNote"></span></div><button class="btn solid sm" data-book="hall" data-cursor>Купить билет <span class="arr">→</span></button></div>
       <div class="week" id="week"></div>
       <div class="tariffs">
@@ -1604,7 +1633,8 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
         <p>Бодрящий пар с травами в общем зале. Расписание одинаковое каждый день, в выходные на один пар больше. Приходите за 10 минут до начала.</p>
       </div>
       <div class="sched3" id="sched3"></div>
-      <div class="duo duo-one">
+      <div class="duo duo-food">
+        <div class="duo-ph"><div data-k="g6"></div><span class="mono">Столы в зоне отдыха</span></div>
         <div>
           <span class="mono">Ресторан</span>
           <h3>После пара — <em class="it" style="color:var(--brass)">к столу</em></h3>
@@ -1642,6 +1672,7 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
 
   <!-- CYCLE -->
   <section class="cycle" id="cycle">
+    <div class="cycle-ph" aria-hidden="true"><div class="cp" data-k="room1"></div><div class="cp" data-k="room4"></div><div class="cp" data-k="g3"></div></div>
     <div class="cycle-bg"></div>
     <span class="mono cycle-label">Как париться правильно</span>
     <div class="cycle-in">
@@ -1791,6 +1822,7 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
         <span class="mono">Как добраться</span>
         <h2 id="visitTitle">Балашиха, <em>Кучино</em></h2>
         <address>Центральная ул., 98, подъезд 1<br>Ежедневно 10:00–23:00</address>
+        <figure class="visit-ph"><div data-k="g1"></div><figcaption>Так выглядит здание: ищите вывеску «Бани» на крыше</figcaption></figure>
         <div class="visit-links">
           <a class="btn solid sm" href="https://yandex.ru/maps/?rtext=~55.751614%2C37.948216&rtt=auto" target="_blank" rel="noopener" data-goal="route">Маршрут в Яндекс Картах</a>
           <a class="btn sm" href="https://2gis.ru/balashiha/search/%D0%9D%D0%BE%D1%81%D0%BE%D0%B2%D0%B8%D1%85%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B5%20%D0%B1%D0%B0%D0%BD%D0%B8" target="_blank" rel="noopener" data-goal="route">2ГИС</a>
@@ -1871,7 +1903,7 @@ if (LITE) document.documentElement.classList.add("lite");
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const rub = n => n.toLocaleString("ru-RU").replace(/ /g, " ") + " ₽";
-const PHOTOS = {"room0": "img/room0.webp?v=18f11f22", "room1": "img/room1.webp?v=ae938471", "room2": "img/room2.webp?v=0a941831", "room3": "img/room3.webp?v=d25b669e", "room4": "img/room4.webp?v=8399af07", "img-provans": "img/img-provans.webp?v=993816cf", "img-taiga": "img/img-taiga.webp?v=de24d143", "img-fin": "img/img-fin.webp?v=997d6f49", "img-bavaria": "img/img-bavaria.webp?v=1de8cf60", "img-hata": "img/img-hata.webp?v=e91a08f7", "chan": "img/chan.webp?v=8458b0f7", "hero": "img/hero.webp?v=ed8c5cea", "x-taiga-vat": "img/x-taiga-vat.webp?v=a6e9624a", "g1": "img/g1.webp?v=2ba24e98", "g8": "img/g8.webp?v=dd057746", "x-steam2": "img/x-steam2.webp?v=1ad4aab8", "g2": "img/g2.webp?v=9cd89f3f", "g3": "img/g3.webp?v=f5c9b470", "x-hata-in": "img/x-hata-in.webp?v=3f949a67", "x-provans-in": "img/x-provans-in.webp?v=a642922b", "g6": "img/g6.webp?v=3cc1b028", "g4": "img/g4.webp?v=632a6f4c", "g7": "img/g7.webp?v=27c03920", "x-court-winter": "img/x-court-winter.webp?v=9f34dc21", "x-fin-in": "img/x-fin-in.webp?v=8254cbb4"};
+const PHOTOS = {"room0": "img/room0.webp?v=18f11f22", "room1": "img/room1.webp?v=ae938471", "room2": "img/room2.webp?v=0a941831", "room3": "img/room3.webp?v=d25b669e", "room4": "img/room4.webp?v=8399af07", "img-provans": "img/img-provans.webp?v=993816cf", "img-taiga": "img/img-taiga.webp?v=de24d143", "img-fin": "img/img-fin.webp?v=997d6f49", "img-bavaria": "img/img-bavaria.webp?v=1de8cf60", "img-hata": "img/img-hata.webp?v=e91a08f7", "chan": "img/chan.webp?v=8458b0f7", "x-provans-in": "img/x-provans-in.webp?v=a642922b", "x-provans-in2": "img/x-provans-in2.webp?v=5d17575f", "x-provans-hall": "img/x-provans-hall.webp?v=7643958a", "x-taiga-vat": "img/x-taiga-vat.webp?v=a6e9624a", "x-fin-in": "img/x-fin-in.webp?v=8254cbb4", "x-fin-in2": "img/x-fin-in2.webp?v=747bce39", "x-bavaria-sign": "img/x-bavaria-sign.webp?v=8fc4fb3e", "x-hata-in": "img/x-hata-in.webp?v=3f949a67", "x-sinks": "img/x-sinks.webp?v=39cfefa8", "hero": "img/hero.webp?v=ed8c5cea", "g1": "img/g1.webp?v=2ba24e98", "g8": "img/g8.webp?v=dd057746", "x-steam2": "img/x-steam2.webp?v=1ad4aab8", "g2": "img/g2.webp?v=9cd89f3f", "g3": "img/g3.webp?v=f5c9b470", "g6": "img/g6.webp?v=3cc1b028", "g4": "img/g4.webp?v=632a6f4c", "g7": "img/g7.webp?v=27c03920", "x-court-winter": "img/x-court-winter.webp?v=9f34dc21"};
 
 /* ================== DATA ================== */
 const DATA = {
@@ -1884,11 +1916,11 @@ const DATA = {
   ],
   hall: { weekday: { "4h": [3000, 3600], unlim: 5000 }, weekend: { "4h": 4000, unlim: 5500 }, vip: 16500, child: 1500, lgot: 1800, svo: [2500, 3000] },
   baths: [
-    { id: "provans", kind: "bath", name: "Прованс", img: "img-provans", price: 4500, base: 6, cap: 10, badge: "Баня с бассейном", d: "Самая просторная баня комплекса: светлая зона отдыха, парная и собственный бассейн." },
-    { id: "taiga", kind: "bath", name: "Таёжная", img: "img-taiga", price: 4500, base: 6, cap: 8, badge: "Сруб и хвоя", d: "Бревенчатый сруб, хвойный аромат и жаркая русская парная." },
-    { id: "fin", kind: "bath", name: "Финская", img: "img-fin", price: 3000, base: 4, cap: 6, badge: "Сухой жар", d: "Камерная финская сауна для небольшой компании." },
-    { id: "bavaria", kind: "cab", name: "Баварский домик", img: "img-bavaria", price: 5000, pkg: 4, hourExtra: 1200, base: 8, cap: 12, badge: "Кабинет № 3", d: "Кабинет в баварском стиле: дерево, тепло и пиво после пара. До 8 гостей, входной билет оплачивается отдельно." },
-    { id: "hata", kind: "cab", name: "Казачья хата", img: "img-hata", price: 7000, pkg: 4, hourExtra: 1700, base: 10, cap: 14, badge: "Кабинет № 4", d: "Самый просторный кабинет: казачий уклад, печь и щедрый стол после пара. До 10 гостей, входной билет оплачивается отдельно." },
+    { id: "provans", img2: "x-provans-in", kind: "bath", name: "Прованс", img: "img-provans", price: 4500, base: 6, cap: 10, badge: "Баня с бассейном", d: "Самая просторная баня комплекса: светлая зона отдыха, парная и собственный бассейн." },
+    { id: "taiga", img2: "x-taiga-vat", kind: "bath", name: "Таёжная", img: "img-taiga", price: 4500, base: 6, cap: 8, badge: "Сруб и хвоя", d: "Бревенчатый сруб, хвойный аромат и жаркая русская парная." },
+    { id: "fin", img2: "x-fin-in", kind: "bath", name: "Финская", img: "img-fin", price: 3000, base: 4, cap: 6, badge: "Сухой жар", d: "Камерная финская сауна для небольшой компании." },
+    { id: "bavaria", img2: "x-bavaria-sign", kind: "cab", name: "Баварский домик", img: "img-bavaria", price: 5000, pkg: 4, hourExtra: 1200, base: 8, cap: 12, badge: "Кабинет № 3", d: "Кабинет в баварском стиле: дерево, тепло и пиво после пара. До 8 гостей, входной билет оплачивается отдельно." },
+    { id: "hata", img2: "x-hata-in", kind: "cab", name: "Казачья хата", img: "img-hata", price: 7000, pkg: 4, hourExtra: 1700, base: 10, cap: 14, badge: "Кабинет № 4", d: "Самый просторный кабинет: казачий уклад, печь и щедрый стол после пара. До 10 гостей, входной билет оплачивается отдельно." },
   ],
   extraGuest: 1000, cabGuest: 500, minHours: 3, chan: 10000,
   rituals: [
@@ -1955,7 +1987,7 @@ $("#track").insertAdjacentHTML("beforeend", DATA.rooms.map((r, i) => `
 
 const bathCard = (b, wide) => `
   <article class="card${wide ? " wide" : ""}" data-kind="${b.kind}">
-    <div class="card-img"><span class="card-tag">${b.badge}</span>${PHOTOS[b.img] ? `<div data-bg="${PHOTOS[b.img]}"></div>` : ""}</div>
+    <div class="card-img"><span class="card-tag">${b.badge}</span>${PHOTOS[b.img] ? `<div data-bg="${PHOTOS[b.img]}"></div>` : ""}${b.img2 && PHOTOS[b.img2] ? `<div class="ci2" data-bg="${PHOTOS[b.img2]}"></div><span class="ci-hint mono">внутри</span>` : ""}</div>
     <div class="card-body">
       <h3>${b.name}</h3>
       <p>${b.d}</p>
@@ -1966,6 +1998,7 @@ const bathCard = (b, wide) => `
       </div>
     </div>
   </article>`;
+$$("[data-k]").forEach(el => { const u = PHOTOS[el.dataset.k]; if (u) el.dataset.bg = u; else el.remove(); });
 $("#bathCards").innerHTML = DATA.baths.filter(b => b.kind === "bath").map(b => bathCard(b)).join("");
 $("#cabCards").innerHTML = DATA.baths.filter(b => b.kind === "cab").map(b => bathCard(b, true)).join("");
 $("#svcCards").innerHTML = DATA.rituals.filter(r => r.top).map(r => `
@@ -2104,7 +2137,7 @@ const store = { get: k => { try { return localStorage.getItem(k); } catch (e) { 
 const lazyBg = (() => {
   const small = Math.min(innerWidth, 1400) * Math.min(devicePixelRatio || 1, 2) <= 1000;
   const src = u => (window.IMG_SIZES && small && /\.webp(\?|$)/.test(u)) ? u.replace(/\.webp(\?|$)/, "-s.webp$1") : u;
-  const load = el => { el.style.backgroundImage = `url(${src(el.dataset.bg)})`; el.removeAttribute("data-bg"); };
+  const load = el => { const u = el.dataset.bg; if (!u) return; el.style.backgroundImage = `url(${src(u)})`; el.removeAttribute("data-bg"); };
   const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); load(e.target); } }), { rootMargin: "700px 100% 700px 100%" }) : null;
   const scan = () => $$("[data-bg]").forEach(el => io ? io.observe(el) : load(el));
   scan();
@@ -2977,6 +3010,9 @@ function motion() {
      .to(cws[0], { opacity: 0, yPercent: -30, filter: "blur(12px)", duration: .6 }, .6)
      .to(cws[1], { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: .6 }, .9)
      .to(steam, { tint: 1, target: .15, duration: 1 }, .6)
+     .to(".cp:nth-child(1)", { opacity: 0, duration: .8 }, .6).to(".cp:nth-child(2)", { opacity: 1, duration: .8 }, .7)
+     .to(".cp:nth-child(2)", { opacity: 0, duration: .8 }, 1.9).to(".cp:nth-child(3)", { opacity: 1, duration: .8 }, 2.0)
+     .fromTo(".cp", { scale: 1.12 }, { scale: 1, duration: 3, ease: "none" }, 0)
      .to(cyc, { "--bg": "185,150,104", duration: 1 }, 1.9)
      .to(cws[1], { opacity: 0, yPercent: -30, filter: "blur(12px)", duration: .6 }, 1.9)
      .to(cws[2], { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: .6 }, 2.2)
