@@ -58,7 +58,7 @@ def section(logo):
     <div class="wrap">
       <div class="sh">
         <h2 id="foodTitle"><span class="reveal-line"><span>Ресторан</span></span><span class="reveal-line"><span><em>после пара</em></span></span></h2>
-        <p>Русская кухня и мангал, раки, рулька, уха по-княжески, травяной чай в больших чайниках и холодное пиво. Всё меню — одним касанием.</p>
+        <p>Русская кухня и мангал, раки, рулька, уха по-царски, травяной чай в больших чайниках и холодное пиво. Всё меню — одним касанием.</p>
       </div>
       <div class="fd-grid">
         <button type="button" class="fd-cover" data-fd-open="kitchen" aria-label="Открыть меню ресторана">

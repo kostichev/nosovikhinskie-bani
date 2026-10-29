@@ -22,6 +22,23 @@ for p in todo:
             o, k = walk(d, s["path"])
             if o.get(k) == s["from"]: o[k] = s["to"]; changed = True
         except Exception: pass
+    if "menu" in p:  # меню целиком; стоп-лист (скрытые блюда) сохраняем
+        hidden = {i["name"] for m in d.get("menu", []) for c in m["cats"] for i in c["items"] if i.get("hidden")}
+        new = json.loads(json.dumps(p["menu"]))
+        for m in new:
+            for c in m["cats"]:
+                for i in c["items"]:
+                    if i["name"] in hidden: i["hidden"] = True
+                    else: i.pop("hidden", None)
+        d["menu"] = new; changed = True
+    for a in p.get("add", []):
+        try:
+            lst = d
+            for k in a["path"]: lst = lst[k]
+            if any(x.get("id") == a["value"]["id"] for x in lst): continue
+            ids = [x.get("id") for x in lst]
+            lst.insert(ids.index(a["after"]) + 1 if a.get("after") in ids else len(lst), a["value"]); changed = True
+        except Exception: pass
     done.add(p["id"]); print(time.strftime("%F %T"), "правка данных", p["id"])
 if changed:
     hist = os.path.join(os.path.dirname(DATA), "history"); os.makedirs(hist, exist_ok=True)
