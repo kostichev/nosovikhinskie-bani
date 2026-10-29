@@ -1521,19 +1521,19 @@ __BANNER__
     <div class="how-flash" id="howFlash" aria-hidden="true"></div>
     <div class="how-ceil" id="howCeil" aria-hidden="true"></div>
     <div class="how-shade" aria-hidden="true"></div>
-    <div class="how-word" aria-hidden="true"><span>Жар</span><span>Вода</span><span>Пар</span><span>Веник</span></div>
+    <div class="how-word" aria-hidden="true"><span>Жар</span><span>Вода</span><span>Пар</span><span>Веер</span></div>
     <div class="how-in">
       <div class="how-text">
         <span class="mono how-kicker">Пар, который помнит традиции</span>
         <h2 class="how-title">Как рождается <em>лёгкий пар</em></h2>
         <ol class="how-steps" id="howSteps">
           <li class="how-step on" data-i="0"><span class="mono">01 · Печь</span><h3>Почти 8 тонн чугуна</h3><p>Печь топят заранее. Чугун медленно набирает жар и долго его отдаёт, поэтому пар получается мягким, а не обжигающим.</p></li>
-          <li class="how-step" data-i="1"><span class="mono">02 · Камни</span><h3>Ковш воды на раскалённые камни</h3><p>Банщик плещет воду на камни, и она мгновенно превращается в лёгкий пар.</p></li>
+          <li class="how-step" data-i="1"><span class="mono">02 · Вода</span><h3>Ковш воды в самое сердце печи</h3><p>Банщик с размаху плещет воду вглубь печи на раскалённый чугун. Она с шипением взлетает белым облаком и становится лёгким паром.</p></li>
           <li class="how-step" data-i="2"><span class="mono">03 · Пар</span><h3>Жар поднимается и ложится на полки</h3><p>Горячий пар уходит под потолок и мягко опускается на верхний полок. Наверху жарче всего, внизу спокойнее.</p></li>
-          <li class="how-step" data-i="3"><span class="mono">04 · Веник</span><h3>Дубовый веник разгоняет пар</h3><p>Банщик нагоняет жар веником и прогревает всё тело. Потом купель, травяной чай и отдых.</p>
+          <li class="how-step" data-i="3"><span class="mono">04 · Веер</span><h3>Веер разгоняет и укладывает пар</h3><p>Банщик веером разгоняет жар и бережно, слоями опускает пар к нижним полкам. Потом купель и травяной чай.</p>
             <div class="how-cta"><button class="btn solid" data-book data-cursor>Записаться на пар <span class="arr">→</span></button><a class="btn" href="#info">Расписание паров</a></div></li>
         </ol>
-        <ol class="how-tl" id="howTl"><li class="on" data-i="0"><span>Печь</span></li><li data-i="1"><span>Камни</span></li><li data-i="2"><span>Пар</span></li><li data-i="3"><span>Веник</span></li><i><em id="howBar"></em></i></ol>
+        <ol class="how-tl" id="howTl"><li class="on" data-i="0"><span>Печь</span></li><li data-i="1"><span>Вода</span></li><li data-i="2"><span>Пар</span></li><li data-i="3"><span>Веер</span></li><i><em id="howBar"></em></i></ol>
       </div>
       <div class="how-meter" aria-hidden="true">
         <span class="mono hm-label">Температура в парной</span>
@@ -1551,7 +1551,7 @@ __BANNER__
       <span class="mono">Носовихинские бани · с заботой о традиции</span>
       <p id="manifesto" style="margin-top:32px">Здесь время течёт иначе. <em>Дубовый веник.</em> Чай с травами. Четыре часа — и ты обновлён. Сюда хочется возвращаться.</p>
       <div class="manifesto-meta">
-        <div><b>90°</b><span class="mono">русская парная</span></div>
+        <div><b>до 90°</b><span class="mono">русская парная</span></div>
         <div><b>4 часа</b><span class="mono">входной билет</span></div>
         <div><b>3</b><span class="mono">индивидуальные бани</span></div>
         <div><b>10–23</b><span class="mono">ежедневно</span></div>
@@ -2792,7 +2792,7 @@ function motion() {
       tl.to(steps[i], { opacity: 0, y: -60, duration: .3 }, i + .7)
         .fromTo(steps[i + 1], { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .3, immediateRender: false }, i + .85);
     }
-    // огромное слово-подсказка на фоне: Жар → Вода → Пар → Веник
+    // огромное слово-подсказка на фоне: Жар → Вода → Пар → Веер
     words.forEach((w, k) => {
       tl.fromTo(w, { opacity: 0, yPercent: 18, filter: "blur(14px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: .35, immediateRender: k === 0 ? true : false }, Math.max(0, k - .1));
       if (k < 3) tl.to(w, { opacity: 0, yPercent: -14, filter: "blur(14px)", duration: .3 }, k + .72);

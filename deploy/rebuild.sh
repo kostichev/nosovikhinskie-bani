@@ -6,6 +6,7 @@ DATA=/var/lib/nosbani/site.json
 mkdir -p /var/lib/nosbani
 exec 9>/var/lib/nosbani/build.lock; flock -w 120 9
 [ -f "$DATA" ] || cp "$DIR/build/data/site.json" "$DATA"
+python3 -B "$DIR/deploy/patch-data.py" "$DATA" "$DIR/build/data/patches.json" || true
 set -a; [ -f /etc/nosbani/site.env ] && . /etc/nosbani/site.env; set +a
 TMP=$(mktemp -d /var/lib/nosbani/build.XXXXXX)
 trap 'rm -rf "$TMP"' EXIT
