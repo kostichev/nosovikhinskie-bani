@@ -189,6 +189,7 @@ FAQLD = {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "ac
 def ld(*items): return '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@graph": list(items)}, ensure_ascii=False) + "</script>"
 
 FONTS = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Onest:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+FONTS2 = "https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap&text=%20%21%D0%9F%D0%B0%D0%B2%D0%B3%D0%B4%D0%B5%D0%B7%D0%B8%D0%B9%D0%BA%D0%BB%D0%BC%D0%BD%D0%BE%D0%BF%D1%80%D1%81%D1%82%D1%83%D1%84%D1%85%D1%87%D1%8B%D1%8C"
 def head(title, desc, path, extra="", img="img/og.jpg"):
     url = SITE + path
     return f'''<!doctype html>
@@ -208,7 +209,7 @@ def head(title, desc, path, extra="", img="img/og.jpg"):
 <meta name="twitter:card" content="summary_large_image">{VERIFY_META if not path else ""}<meta name="geo.region" content="RU-MOS"><meta name="geo.placename" content="Балашиха, Железнодорожный"><meta name="geo.position" content="{GEO[0]};{GEO[1]}"><meta name="ICBM" content="{GEO[0]}, {GEO[1]}">
 <link rel="icon" href="{'../' if path else ''}favicon.ico" sizes="any"><link rel="apple-touch-icon" href="{'../' if path else ''}apple-touch-icon.png"><link rel="manifest" href="{'../' if path else ''}site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="{FONTS}"><link rel="stylesheet" href="{FONTS}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="{FONTS}"></noscript>
+<link rel="preload" as="style" href="{FONTS}"><link rel="stylesheet" href="{FONTS}" media="print" onload="this.media='all'"><link rel="stylesheet" href="{FONTS2}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="{FONTS}"></noscript>
 {extra}'''
 
 # ---- главная
