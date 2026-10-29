@@ -250,7 +250,7 @@ table{width:100%;border-collapse:collapse;margin:8px 0 10px;font-size:16px}th,td
 .card .price{font:400 30px/1 var(--f-display);color:var(--bone)}
 .panel{background:var(--surface);border:1px solid var(--bone-faint);border-radius:16px;padding:clamp(20px,3vw,34px)}
 .sched{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.sched li{list-style:none;display:grid;grid-template-columns:64px 1fr;gap:12px;padding:10px 0;border-bottom:1px dashed var(--bone-faint)}.sched ol{padding:0;margin:0}.sched time{font:400 24px/1 var(--f-display);color:var(--bone)}.sched small{display:block;font-size:14px}
-.hero-img{border-radius:18px;overflow:hidden;margin:10px 0 0;aspect-ratio:16/9}.hero-img img{width:100%;height:100%;object-fit:cover}
+.hero-img{border-radius:18px;overflow:hidden;margin:10px 0 0;aspect-ratio:16/9}.hero-img picture,.hero-img img{display:block;width:100%;height:100%;object-fit:cover}
 footer{border-top:1px solid var(--bone-faint);padding:28px var(--gutter) 40px;display:flex;flex-wrap:wrap;gap:10px 24px;font-size:14px;color:var(--bone-dim)}footer a{color:var(--bone-dim)}
 body{animation:pgIn .8s cubic-bezier(.2,.7,.2,1) both}@keyframes pgIn{from{opacity:0;filter:blur(10px);transform:translateY(14px)}}
 #veil{position:fixed;inset:0;z-index:50;pointer-events:none;opacity:0;transition:opacity .42s;background:radial-gradient(70% 55% at 50% 55%,rgba(236,228,214,.22),rgba(14,12,9,.94) 72%),#0b0a08}#veil.on{opacity:1}
@@ -260,10 +260,14 @@ NAVL = [("ceny/", "Цены"), ("bani/", "Бани"), ("parenie/", "Парени
 HERO = {"zhenskiy-den/": ("room3", "Тёплый бассейн под открытым небом"), "massazh/": ("x-provans-in2", "Зона отдыха после массажа"), "kontakty/": ("g1", "Здание Носовихинских бань в Балашихе"),
         "parenie/": ("hero", "Парение с банщиком в большой русской парной"), "ceny/": ("g3", "Зона отдыха общего зала Носовихинских бань"),
         "menu/": ("g6", "Столы в зоне отдыха, где подают блюда ресторана"), "pravila/": ("x-sinks", "Умывальная зона у сауны"),
-        "bani/": ("img-provans", "Баня «Прованс» на закате")}
+        "bani/": ("img-provans", "Баня «Прованс» на закате"), "chan/": ("chan", "Сад банного комплекса, где стоит чан")}
 def hero_html(path):
     h = HERO.get(path)
-    return f'<div class="hero-img" style="margin:6px 0 28px">{pic(*h)}</div>' if h else ""
+    if not h: return ""
+    k, alt = h; w, hh = sizes[k]
+    img = (f'<img src="../img/{k}-s.webp?v={VER[k]}" srcset="../img/{k}-s.webp?v={VER[k]} 800w, ../img/{k}.webp?v={VER[k]} 1600w" '
+           f'sizes="(max-width:1140px) calc(100vw - 40px), 1100px" width="{w}" height="{hh}" alt="{esc(alt)}" fetchpriority="high" decoding="async">')
+    return f'<div class="hero-img" style="margin:6px 0 28px"><picture><source media="(max-width:760px)" srcset="../img/{k}-s.webp?v={VER[k]}">{img}</picture></div>'
 def page(path, title, desc, h1, body_html, crumb, img="img/og.jpg", ld_extra=()):
     bc = {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": SITE}, {"@type": "ListItem", "position": 2, "name": crumb, "item": SITE + path}]}
     nav = "".join(f'<a href="../{p}">{t}</a>' for p, t in NAVL)
@@ -303,7 +307,7 @@ def inside_html():
 def cards(items, frm=False):
     return '<div class="grid">' + "".join(f'<article class="card">{pic(img, f"{n} — {badge.lower()}, Носовихинские бани")}<div><span class="mono">{badge}</span><h3>{n}</h3><p>{d}</p><p>{"До " + str(cap) + " гостей. Входной билет оплачивается отдельно." if frm else "До " + str(base) + " гостей в тарифе, максимум " + str(cap) + ". Аренда от 3 часов."}</p><span class="price">{price:,} ₽ <small style="font-size:16px;color:var(--bone-dim)">{"за 4 часа" if frm else "в час"}</small></span></div></article>'.replace(",", " ") for _, n, img, price, base, cap, badge, d in items) + "</div>"
 
-page("bani/", "Аренда бани в Железнодорожном и Балашихе — бани и кабинеты | Носовихинские бани",
+page("bani/", "Аренда бани и кабинета в Железнодорожном | Носовихинские бани",
      "Аренда отдельной бани в Железнодорожном (Балашиха): Прованс с бассейном, Таёжная, Финская сауна и кабинеты Баварский домик и Казачья хата. От 3 часов, до 10 гостей.",
      "Отдельные бани <em>и кабинеты</em>",
      '<p class="lead">Своя парная, зона отдыха и тишина только для вашей компании. Аренда от 3 часов, каждый гость сверх тарифа — 1 000 ₽ в час. При аренде бани действует безлимит на посещение общего комплекса для вашей компании уточняйте у администратора.</p>'.replace(" При аренде бани действует безлимит на посещение общего комплекса для вашей компании уточняйте у администратора.", "") +
@@ -335,7 +339,7 @@ page("parenie/", "Парение с банщиком в Железнодорож
 page("chan/", "Банный чан в Железнодорожном (Балашиха) — {{P:chan}} | Носовихинские бани",
      "Горячий чан с луговыми травами под открытым небом в Носовихинских банях, Балашиха. {{P:chan}} за {{N0:chan_hours}} часа, до {{N0:chan_cap}} человек, по предварительной записи с предоплатой 50%.",
      "Молодильный чан <em>«Изобилие трав»</em>",
-     f'<p class="lead">Горячая вода с луговыми травами под открытым небом, в саду банного комплекса. После парной и купели — лучший способ согреться и отдохнуть.</p><div class="hero-img">{pic("chan", "Сад банного комплекса, где стоит чан")}</div><h2>Условия</h2><ul><li>Стоимость — {{P:chan}} за аренду до {{N0:chan_hours}} часов, каждый следующий час — {{P:chan_hour}}.</li><li>Вместимость — до {{N0:chan_cap}} человек. В воду добавляют донник, полынь, эвкалипт и мяту.</li><li>Только по предварительной записи, предоплата 50%.</li><li>Отмена не позднее чем за 24 часа — полный возврат предоплаты.</li><li>Чан можно совместить с посещением общего зала, отдельной бани или парением.</li></ul>', "Чан")
+     f'<p class="lead">Горячая вода с луговыми травами под открытым небом, в саду банного комплекса. После парной и купели — лучший способ согреться и отдохнуть.</p><h2>Условия</h2><ul><li>Стоимость — {{P:chan}} за аренду до {{N0:chan_hours}} часов, каждый следующий час — {{P:chan_hour}}.</li><li>Вместимость — до {{N0:chan_cap}} человек. В воду добавляют донник, полынь, эвкалипт и мяту.</li><li>Только по предварительной записи, предоплата 50%.</li><li>Отмена не позднее чем за 24 часа — полный возврат предоплаты.</li><li>Чан можно совместить с посещением общего зала, отдельной бани или парением.</li></ul>', "Чан")
 
 from food import MENU as _MENU
 def _price(p):
