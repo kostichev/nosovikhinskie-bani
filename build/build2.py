@@ -181,7 +181,7 @@ ORG = {
     "hasMap": YA_ORG,
     "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "10:00", "closes": "23:00"}],
     "sameAs": [YA_ORG, TG], "hasMenu": SITE + "menu/", "areaServed": [{"@type": "City", "name": n} for n in ["Железнодорожный", "Балашиха", "Кучино", "Москва"]], "slogan": "Пар на дровах, травы и тишина",
-    "amenityFeature": [{"@type": "LocationFeatureSpecification", "name": n, "value": True} for n in ["Русская парная", "Финская сауна", "Хаммам", "Бассейн", "Купели", "Ресторан", "Парковка"]],
+    "amenityFeature": [{"@type": "LocationFeatureSpecification", "name": n, "value": True} for n in ["Русская парная", "Финская сауна", "Хаммам", "Бассейн", "Купели", "Ресторан", "Парковка", "Барбершоп", "Автомойка"]],
     "makesOffer": [{"@type": "Offer", "name": n, "price": p, "priceCurrency": "RUB"} for n, p in [("Входной билет 4 часа, будни до 16:00", _H["wd_before16"]), ("Входной билет 4 часа, будни после 16:00", _H["wd_after16"]), ("Входной билет 4 часа, выходные", _H["we_4h"]), ("Безлимит, будни", _H["wd_unlim"]), ("VIP-тариф", _H["vip"]), ("Молодильный чан", SD["chan"]["price"])]
                    + [(x["name"], x["price"]) for x in SD["rituals"] if x.get("top")] + [(("Аренда бани «" + x["name"] + "», в час") if x.get("kind") == "bath" else ("Кабинет «" + x["name"] + "», " + str(x.get("pkg", 4)) + " часа"), x["price"]) for x in SD["baths"]]],
 }
@@ -375,7 +375,7 @@ page("kontakty/", "Контакты — Носовихинские бани, Ж�
      "Контакты <em>и как добраться</em>",
      f'<div class="panel"><table><tbody><tr><td>Адрес</td><td><b>Московская область, Балашиха, мкр Кучино, Центральная ул., 98, подъезд 1</b></td></tr><tr><td>Часы работы</td><td><b>ежедневно 10:00–23:00</b></td></tr>'
      f'<tr><td>Телефон</td><td><a href="tel:{PHONE_RAW}"><b>{PHONE}</b></a></td></tr><tr><td>WhatsApp</td><td><a href="{WA}" target="_blank" rel="noopener">+7 (962) 999-22-80</a></td></tr><tr><td>Telegram</td><td><a href="{TG}" target="_blank" rel="noopener">@nosbani</a></td></tr>'
-     f'<tr><td>Почта</td><td><a href="mailto:{EMAIL}">{EMAIL}</a></td></tr><tr><td>Парковка</td><td>есть, у комплекса</td></tr></tbody></table></div>'
+     f'<tr><td>Почта</td><td><a href="mailto:{EMAIL}">{EMAIL}</a></td></tr><tr><td>Парковка</td><td>есть, у комплекса</td></tr><tr><td>Удобства</td><td>оплата картой, барбершоп, автомойка</td></tr></tbody></table></div>'
      '<h2>Как добраться</h2><p>Комплекс находится в Железнодорожном — микрорайоне Кучино, который с 2015 года входит в Балашиху. В навигаторе ищите «Носовихинские бани» или «Балашиха, Центральная ул., 98». Ищите кирпичное здание с вывеской «Бани» на крыше.</p>'
      f'<div class="cta" style="margin-top:16px"><a class="btn solid" href="https://yandex.ru/maps/?rtext=~{GEO[0]}%2C{GEO[1]}&rtt=auto" target="_blank" rel="noopener">Маршрут в Яндекс Картах</a><a class="btn" href="{YA_ORG}" target="_blank" rel="noopener">Отзывы на Яндекс Картах</a><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination={GEO[0]},{GEO[1]}" target="_blank" rel="noopener">Google Карты</a></div>'
      f'<h2>Реквизиты</h2><p>{OPERATOR}</p>',
