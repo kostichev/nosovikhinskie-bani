@@ -39,6 +39,8 @@ for p in todo:
             ids = [x.get("id") for x in lst]
             lst.insert(ids.index(a["after"]) + 1 if a.get("after") in ids else len(lst), a["value"]); changed = True
         except Exception: pass
+    for df in p.get("default", []):  # новый раздел данных — только если его ещё нет
+        if df["path"] not in d: d[df["path"]] = df["value"]; changed = True
     done.add(p["id"]); print(time.strftime("%F %T"), "правка данных", p["id"])
 if changed:
     hist = os.path.join(os.path.dirname(DATA), "history"); os.makedirs(hist, exist_ok=True)

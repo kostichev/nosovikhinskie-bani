@@ -53,7 +53,7 @@ def contacts_fix(s):
     return s
 def site_data_js():
     d = {"hall": {"weekday": {"4h": [_H["wd_before16"], _H["wd_after16"]], "unlim": _H["wd_unlim"]}, "weekend": {"4h": _H["we_4h"], "unlim": _H["we_unlim"]}, "vip": _H["vip"], "child": _H["child"], "lgot": _H["lgot"], "svo": [_H["svo_wd"], _H["svo_we"]]},
-         "baths": SD["baths"], "extraGuest": SD["extraGuest"], "cabGuest": SD["cabGuest"], "minHours": SD["minHours"], "chan": SD["chan"]["price"], "rituals": SD["rituals"], "extras": SD["extras"]}
+         "baths": SD["baths"], "extraGuest": SD["extraGuest"], "cabGuest": SD["cabGuest"], "minHours": SD["minHours"], "chan": SD["chan"]["price"], "rituals": SD["rituals"], "extras": SD["extras"], "goods": SD.get("goods", []), "veniki": SD.get("veniki_note", {}), "chanInfo": SD["chan"]}
     return json.dumps(d, ensure_ascii=False).replace("</", "<\\/")
 def sched_js():
     sp = lambda n: [n.split(" ", 1)[0]] + ([n.split(" ", 1)[1]] if " " in n else [])
@@ -104,6 +104,7 @@ def gallery_html(photo):
     return "".join(out)
 faq_html = "".join(f'<details><summary>{esc(q)}<i aria-hidden="true"></i></summary><p>{esc(a)}</p></details>' for q, a in FAQ)
 reviews_html = "".join(f'<article class="rv"><div class="rv-head"><span class="rv-ava" aria-hidden="true">{esc(n[0].upper())}</span><div><b>{esc(n)}</b><span>{esc(d)}</span></div></div><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div><p>{esc(t)}</p><button class="more" type="button">Читать полностью</button><span class="rv-src">Отзыв с Яндекс Карт</span></article>' for n, d, t in REVIEWS)
+rules_full_html = "".join(f'<details><summary>{esc(t)}<small>{len(items)}</small><i aria-hidden="true"></i></summary><ul>' + "".join(f"<li>{esc(x)}</li>" for x in items) + "</ul></details>" for t, items in RULES_FULL)
 rules_html = "".join(f'<li><b>{esc(t)}</b><span>{esc(d)}</span></li>' for t, d in RULES)
 
 def fill(s, base, photos, photo_tag, logo):
@@ -113,7 +114,7 @@ def fill(s, base, photos, photo_tag, logo):
     s = s.replace("__LOGOFULLBIG__", logo).replace("__LOGOFULL__", logo).replace("__LOGO__", B["logo"])
     s = s.replace("__LEAFOLIVE__", B["leaf_olive"]).replace("__LEAF__", B["leaf"])
     p = B["pos"]; s = s.replace("__LL__", f"{p['left']:.3f}").replace("__LT__", f"{p['top']:.3f}").replace("__LW__", f"{p['width']:.3f}")
-    s = s.replace("__GALLERY__", gallery_html(photo_tag)).replace("__FAQ__", faq_html).replace("__RULES__", rules_html).replace("__REVIEWS__", reviews_html)
+    s = s.replace("__GALLERY__", gallery_html(photo_tag)).replace("__FAQ__", faq_html).replace("__RULES__", rules_html).replace("__RULESFULL__", rules_full_html).replace("__REVIEWS__", reviews_html)
     s = s.replace("__HERBS__", json.dumps(HERBS, ensure_ascii=False)).replace("__BASE__", base).replace("__DEV__", DEV_HTML).replace("__LEADAPI__", os.environ.get("LEAD_API", "")).replace("__FOODBOOK__", food_book())
     s = s.replace('href="pravila/"', f'href="{base}pravila/"')
     s = s.replace("Макет для согласования · фото будут заменены на реальные", "Макет для согласования")
@@ -387,9 +388,13 @@ page("kontakty/", "Контакты — Носовихинские бани, Ж�
      "Контакты", ld_extra=({"@type": "ContactPage", "url": SITE + "kontakty/", "about": {"@id": SITE + "#org"}},))
 
 page("pravila/", "Правила посещения бани — Носовихинские бани, Балашиха",
-     "Правила посещения банного комплекса «Носовихинские бани» в Балашихе: время, женский день, дети, документы, запись и отмена.",
+     "Правила посещения «Носовихинских бань» в Балашихе: время, женский день, дети, отмена и возврат, штрафы и что запрещено в бане.",
      "Правила <em>посещения</em>",
-     '<p class="lead">Короткие правила, чтобы визит прошёл спокойно для всех гостей.</p><div class="panel"><ol style="padding-left:20px;margin:0;display:grid;gap:14px">' + "".join(f"<li><b style='color:var(--bone)'>{t}.</b> {d}</li>" for t, d in RULES) + '</ol></div><h2>Отмена и возврат</h2><ul><li>Если вы отменили запись не позднее чем за 24 часа — возвращаем 100% предоплаты.</li><li>При отмене менее чем за 24 часа или без предупреждения предоплата не возвращается.</li><li>Опоздание больше чем на 30 минут считается неявкой.</li><li>Если услугу не удалось оказать по нашей вине — возвращаем 100%.</li></ul><h2>Рекомендации для здоровья</h2><ul>' + "".join(f"<li>{x}</li>" for x in RULES_HEALTH) + "</ul>", "Правила посещения")
+     '<p class="lead">Правила, чтобы визит прошёл спокойно и безопасно для всех гостей.</p><div class="panel"><ol style="padding-left:20px;margin:0;display:grid;gap:14px">'
+     + "".join(f"<li><b style='color:var(--bone)'>{esc(t)}.</b> {esc(d)}</li>" for t, d in RULES) + '</ol></div>'
+     + "".join(f"<h2>{esc(t)}</h2><ul>" + "".join(f"<li>{esc(x)}</li>" for x in items) + "</ul>" for t, items in RULES_FULL)
+     + "<h2>Здоровье в парной</h2><ul>" + "".join(f"<li>{esc(x)}</li>" for x in RULES_HEALTH) + "</ul>",
+     "Правила посещения")
 
 page("privacy/", "Политика конфиденциальности | Носовихинские бани",
      "Политика обработки персональных данных банного комплекса «Носовихинские бани»: какие данные собираем, зачем и как их защищаем.",
