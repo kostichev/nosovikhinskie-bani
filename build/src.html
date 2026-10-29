@@ -50,14 +50,7 @@ p{margin:0}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-6%,-2%)}80%{transform:translate(5%,4%)}100%{transform:translate(0,0)}}
 .vignette{position:fixed;inset:0;z-index:54;pointer-events:none;background:radial-gradient(120% 90% at 50% 50%,transparent 55%,rgba(0,0,0,.55))}
 
-/* cursor */
-.cur,.cur-ring{position:fixed;left:0;top:0;z-index:95;pointer-events:none;border-radius:50%;transform:translate(-50%,-50%)}
-.cur{width:6px;height:6px;background:var(--bone)}
-.cur-ring{width:38px;height:38px;border:1px solid rgba(var(--fg-rgb),.5);transition:width .35s var(--ease),height .35s var(--ease),background .35s,border-color .35s;display:grid;place-items:center}
-.cur-ring span{font:500 10px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--night);opacity:0;transition:opacity .2s}
-.cur-ring.big{width:92px;height:92px;background:var(--bone);border-color:var(--bone)}
-.cur-ring.big span{opacity:1}
-@media (hover:none){.cur,.cur-ring{display:none}}
+
 
 /* ---------- intro ---------- */
 .intro{position:fixed;inset:0;z-index:70;background:var(--night);display:grid;place-items:center;pointer-events:none}
@@ -79,14 +72,12 @@ p{margin:0}
 
 .btn{display:inline-flex;align-items:center;gap:14px;cursor:pointer;border:1px solid var(--bone);background:transparent;color:var(--bone);
   padding:16px 26px;border-radius:999px;font:400 14px/1 var(--f-body);letter-spacing:.02em;position:relative;overflow:hidden;isolation:isolate;transition:color .5s var(--ease)}
-.btn::before{content:"";position:absolute;inset:0;background:var(--bone);transform:translateY(101%);transition:transform .6s var(--ease);z-index:-1;border-radius:inherit}
-.btn:hover{color:var(--night)} .btn:hover::before{transform:translateY(0)}
+.btn{transition:background-color .3s ease,border-color .3s ease,color .3s ease}
+.btn:hover{background-color:rgba(var(--fg-rgb),.08);border-color:var(--bone)}
 .btn .arr{display:inline-block;transition:transform .5s var(--ease)} .btn:hover .arr{transform:translateX(4px)}
 .btn.solid{background:var(--bone);color:var(--night)}
-.btn.solid::before{background:var(--brass)}
 .btn.sm{padding:12px 20px;font-size:13px}
 .btn:disabled{opacity:.3;cursor:not-allowed}
-.btn:disabled::before{display:none}
 
 /* ---------- glass (сдержанный) ---------- */
 .glass{background:linear-gradient(160deg,rgba(255,250,240,.07),rgba(255,250,240,.02));border:1px solid var(--bone-faint);
@@ -468,16 +459,10 @@ input[type=range]{width:100%;accent-color:var(--brass)}
 /* кнопки: единый фирменный CTA */
 .btn{min-height:46px}
 .btn.solid{background:var(--cta-bg);color:var(--cta-fg);border-color:var(--cta-bg)}
-.btn.solid::before{background:var(--cta-hover)}
-.btn.solid:hover{color:var(--cta-fg)}
+.btn.solid:hover{background-color:var(--cta-hover);border-color:var(--cta-hover);color:var(--cta-fg)}
 .btn.sm{min-height:42px}
 
-/* курсор виден на любом фоне */
-.cur,.cur-ring{mix-blend-mode:difference}
-.cur{background:#fff}
-.cur-ring{border-color:rgba(255,255,255,.7)}
-.cur-ring.big{background:#fff;border-color:#fff}
-.cur-ring span{color:#000}
+
 .vignette{background:radial-gradient(120% 90% at 50% 50%,transparent 60%,rgba(0,0,0,.45))}
 #steam,#puffs{mix-blend-mode:screen;transition:opacity 1.2s ease}
 .steam-off #puffs{opacity:0}
@@ -1489,6 +1474,14 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
 .site-banner{position:fixed;left:50%;transform:translateX(-50%);top:calc(var(--navh, 70px) + 16px);z-index:65;display:flex;align-items:center;gap:10px;max-width:min(92vw,640px);padding:10px 10px 10px 18px;border-radius:999px;background:rgba(20,17,13,.92);border:1px solid rgba(164,182,74,.55);color:var(--bone);font:400 14px/1.35 var(--f-body);box-shadow:0 12px 40px -12px rgba(0,0,0,.7);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .site-banner a{color:var(--bone)}.site-banner button{flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--bone-faint);background:none;color:var(--bone-dim);cursor:pointer}
 @media (max-width:640px){.site-banner{font-size:13px;top:calc(var(--navh, 64px) + 10px)}}
+
+/* производительность на ноутбуках */
+#steam,#puffs,#heatTint{mix-blend-mode:normal!important}
+#pageVeil{visibility:hidden}#pageVeil.on{visibility:visible}
+.grain{display:none!important}
+.nav{-webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important}
+.nav.scrolled{background:linear-gradient(180deg,rgba(30,26,21,.84),rgba(12,11,9,.8))}
+.nav::before,.nav::after{display:none!important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="steamify" x="-20%" y="-40%" width="140%" height="180%"><feTurbulence id="stTurb" type="fractalNoise" baseFrequency="0.010 0.022" numOctaves="2" seed="7"/><feDisplacementMap id="stDisp" in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
@@ -1498,7 +1491,7 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
 <div id="heatTint" aria-hidden="true"></div><canvas id="puffs" aria-hidden="true"></canvas>
 <div class="vignette" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
-<div class="cur" aria-hidden="true"></div><div class="cur-ring" aria-hidden="true"><span>Запись</span></div>
+
 
 <a class="skip" href="#main">Перейти к содержанию</a>
 __BANNER__
@@ -2370,8 +2363,8 @@ const smokeSprites = (() => {
 (function sparksAndHeat() {
   const cv = $("#sparks"), tint = $("#heatTint");
   if (!cv || reduce || LITE) return;
-  const x = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 1.5), mob = matchMedia("(max-width:760px)").matches;
-  let W = 1, H = 1; const S = [];
+  const x = cv.getContext("2d"), dpr = 1, mob = matchMedia("(max-width:760px)").matches;
+  let W = 1, H = 1, dirty = false, lastTint = ""; const S = [];
   const size = () => { W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0); };
   size(); addEventListener("resize", size);
   const hero = $("#hero");
@@ -2379,9 +2372,10 @@ const smokeSprites = (() => {
     requestAnimationFrame(loop);
     let howOn = 0;
     const hw = (() => { try { return how; } catch (e) { return null; } })();
-    if (hero && hw) { const r = hero.getBoundingClientRect(); howOn = r.top < H * .5 && r.bottom > H * .5 ? 1 : 0; }
+    if (hero && hw && (hw.heat > .001 || hw.burst > .001)) { const r = hero.getBoundingClientRect(); howOn = r.top < H * .5 && r.bottom > H * .5 ? 1 : 0; }
     const heat = howOn ? hw.heat : 0, burst = howOn ? hw.burst : 0;
-    if (tint) tint.style.opacity = Math.min(1, heat * .75 + burst * .25).toFixed(3);
+    const tv = Math.min(1, heat * .75 + burst * .25).toFixed(2);
+    if (tint && tv !== lastTint) { lastTint = tv; tint.style.opacity = tv; tint.style.visibility = +tv ? "" : "hidden"; }
     const veil = steam.veil || 0, band = (1 - (steam.vy || .5)) * H;
     let rate = veil * 1.4 + ws.p * (ws.p < .98 ? 1.1 : 0) + heat * 1.3 + burst * 4 + fx.sparks;
     if (mob) rate *= .6;
@@ -2389,8 +2383,9 @@ const smokeSprites = (() => {
       const fromBand = veil > ws.p && veil > heat;
       S.push({ x: Math.random() * W, y: fromBand ? band + (Math.random() - .3) * H * .25 : H + 10, vx: (Math.random() - .5) * .6, vy: -(.6 + Math.random() * 1.6), life: 0, max: 70 + Math.random() * 120, s: .6 + Math.random() * 1.4, f: Math.random() * 6 });
     }
+    if (!S.length) { if (dirty) { x.clearRect(0, 0, W, H); dirty = false; cv.style.visibility = "hidden"; } return; }
+    if (!dirty) { cv.style.visibility = ""; dirty = true; }
     x.clearRect(0, 0, W, H);
-    if (!S.length) return;
     x.globalCompositeOperation = "lighter";
     for (let i = S.length - 1; i >= 0; i--) {
       const p = S[i]; p.life++;
@@ -2486,21 +2481,20 @@ const steamIdle = () => steam.off && steam.base < .01 && steam.veil < .01;
       trI = (trI + 1) % 10; lpx = e.clientX; lpy = e.clientY;
     }
   }, { passive: true });
-  const sc = matchMedia("(max-width:700px)").matches ? .22 : .3, reduceVeil = false;
+  const sc = matchMedia("(max-width:700px)").matches ? .22 : .3, reduceVeil = true;
   const resize = () => { c.width = innerWidth * sc; c.height = innerHeight * sc; gl.viewport(0, 0, c.width, c.height); };
   resize(); addEventListener("resize", resize);
   const veilEls = $$("#hero,.manifesto,#rooms,#hall,#baths,#services,#cycle,#gallery,#reviews,#info,#offers,#faq,#visit,footer");
   steam.tint = 0;
   (function loop(now) {
-    if (steamIdle()) { if (!loop.cleared) { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); loop.cleared = true; } last = now; requestAnimationFrame(loop); 
-      const vh = innerHeight; for (const el of veilEls) { const d = (el.getBoundingClientRect().top - vh * .55) / vh; if (Math.abs(d) < .9) { steam.veil = .011; break; } } return; }
+    if (steamIdle()) { if (!loop.cleared) { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); loop.cleared = true; c.style.visibility = "hidden"; } last = now; requestAnimationFrame(loop); return; }
+    if (loop.cleared) c.style.visibility = "";
     loop.cleared = false;
     const dt = Math.min(.05, (now - last) / 1000); last = now;
     mx += (tx - mx) * .04; my += (ty - my) * .04;
     // завеса пара на стыках секций
     let vk = 0, vy = steam.vy; const vh = innerHeight;
-    for (const el of veilEls) { const top = el.getBoundingClientRect().top, dist = (top - vh * .55) / vh, k = Math.exp(-dist * dist * 9); if (k > vk) { vk = k; vy = 1 - top / vh; } }
-    if (reduceVeil) vk = 0;
+    if (!reduceVeil) for (const el of veilEls) { const top = el.getBoundingClientRect().top, dist = (top - vh * .55) / vh, k = Math.exp(-dist * dist * 9); if (k > vk) { vk = k; vy = 1 - top / vh; } }
     steam.veil += (vk - steam.veil) * .14; steam.vy += (vy - steam.vy) * .35;
     steam.base += ((steam.off ? 0 : 1) - steam.base) * .05;
     const target = Math.min(1, steam.target + steam.boost);
@@ -2604,7 +2598,7 @@ const how = { heat: 0, hum: 0, burst: 0, swirl: 0, vel: 0, sweep: 0, sweepK: 0, 
     W = Math.max(1, sec.clientWidth); H = Math.max(1, sec.clientHeight);
     cv.width = W * dpr; cv.height = H * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
     if (sm) { sm.width = W * .5; sm.height = H * .5; sx2.setTransform(.5, 0, 0, .5, 0, 0); }
-    const N = Math.round(Math.min(LITE ? 340 : 1900, W * H / (LITE ? 900 : 640)));
+    const N = Math.round(Math.min(LITE ? 340 : 1000, W * H / (LITE ? 900 : 1100)));
     P = Array.from({ length: N }, () => spawn({}, true));
   };
   size(); addEventListener("resize", () => { clearTimeout(size.t); size.t = setTimeout(size, 200); });
@@ -2752,16 +2746,6 @@ const fogApi = (function fogGlass() {
   };
 })();
 
-/* ================== CURSOR ================== */
-(function cursor() {
-  if (reduce || !matchMedia("(hover:hover)").matches || !window.gsap) return;
-  const d = $(".cur"), r = $(".cur-ring");
-  const dx = gsap.quickTo(d, "x", { duration: .1 }), dy = gsap.quickTo(d, "y", { duration: .1 });
-  const rx = gsap.quickTo(r, "x", { duration: .45, ease: "power3" }), ry = gsap.quickTo(r, "y", { duration: .45, ease: "power3" });
-  addEventListener("pointermove", e => { dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY); });
-  document.addEventListener("pointerover", e => r.classList.toggle("big", !!(e.target.closest && e.target.closest("[data-cursor]"))));
-})();
-
 /* ================== MOTION ================== */
 function motion() {
   if (reduce || !window.gsap || !window.ScrollTrigger) { $("#intro") && $("#intro").remove(); $$(".manifesto .w").forEach(w => w.style.opacity = 1); $("#steam").style.zIndex = 55; $("#puffs").style.zIndex = 56; $("#mbar").classList.add("on"); document.documentElement.classList.add("no-motion"); return; }
@@ -2769,7 +2753,7 @@ function motion() {
   ScrollTrigger.config({ ignoreMobileResize: true });
   let lenis = null;
   if (window.Lenis) {
-    lenis = new Lenis({ lerp: .065, wheelMultiplier: .75, touchMultiplier: 1 });
+    lenis = new Lenis({ lerp: .12, wheelMultiplier: 1, touchMultiplier: 1 });
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
     $$('a[href^="#"]').forEach(a => { if (a.closest("#mmenu")) return; a.addEventListener("click", e => { const id = a.getAttribute("href"); if (id.length > 1 && $(id)) { e.preventDefault(); pageGo($(id)); } }); });
@@ -2804,7 +2788,7 @@ function motion() {
       .fromTo(ws, { p: 0 }, { p: 1, duration: 1, ease: "power1.in", immediateRender: false }, 0)
       .fromTo("#stDisp", { attr: { scale: 0 } }, { attr: { scale: 150 }, duration: .9, ease: "power2.in", immediateRender: false }, 0)
       .fromTo("#stTurb", { attr: { baseFrequency: "0.010 0.022" } }, { attr: { baseFrequency: "0.016 0.046" }, duration: .9, immediateRender: false }, 0)
-      .fromTo("#welLogo", { y: 0, scale: 1, filter: "blur(0px) brightness(1)" }, { y: () => -innerHeight * .08, scale: 1.06, filter: "blur(22px) brightness(1.7)", duration: .85, ease: "power1.in", immediateRender: false }, .1)
+      .fromTo("#welLogo", { y: 0, scale: 1 }, { y: () => -innerHeight * .08, scale: 1.06, duration: .85, ease: "power1.in", immediateRender: false }, .1)
       .fromTo("#welLogo", { opacity: 1 }, { opacity: 0, duration: .35, ease: "power1.in", immediateRender: false }, .6)
       .fromTo(".wel-hello", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: -40, opacity: 0, filter: "blur(12px)", duration: .3, immediateRender: false }, .06)
       .fromTo(".wel-addr", { opacity: 1, y: 0, filter: "blur(0px)" }, { y: 30, opacity: 0, filter: "blur(12px)", duration: .3, immediateRender: false }, .1)
@@ -2814,7 +2798,7 @@ function motion() {
   }
 
   // следующий блок проступает из пара снизу
-  if (!LITE) gsap.fromTo(".how-in", { opacity: 0, y: 90, filter: "blur(16px)" }, { opacity: 1, y: 0, filter: "blur(0px)", ease: "power1.out", scrollTrigger: { trigger: "#hero", start: "top bottom", end: "top 10%", scrub: 1.2 } });
+  if (!LITE) gsap.fromTo(".how-in", { opacity: 0, y: 90 }, { opacity: 1, y: 0, ease: "power1.out", scrollTrigger: { trigger: "#hero", start: "top bottom", end: "top 10%", scrub: 1.2 } });
 
   /* КАК РОЖДАЕТСЯ ПАР: ветра пара, клубы и размах веника — всё движется вместе со скроллом */
   (() => {
@@ -2981,14 +2965,12 @@ function motion() {
   /* ПЕРЕХОДЫ: блок растворяется в пару, следующий проявляется из него */
   (() => {
     if (LITE) return;
-    const blur = true;
     const secs = ["#hero", ".manifesto", "#rooms", "#hall", "#info", "#baths", "#cycle", "#gallery", "#reviews", "#offers", "#faq", "#rules", "#visit"].map(s => $(s)).filter(Boolean);
     const kids = s => [...s.children];
-    const F = b => blur ? `blur(${b}px)` : "blur(0px)";
     for (let i = 1; i < secs.length; i++) {
       const S = secs[i], prev = secs[i - 1];
-      gsap.fromTo(kids(S), { opacity: 0, filter: F(14) }, { opacity: 1, filter: F(0), ease: "power1.out", scrollTrigger: { trigger: S, start: "top 95%", end: "top 45%", scrub: true } });
-      gsap.fromTo(kids(prev).filter(e => e.tagName !== "CANVAS"), { opacity: 1, filter: F(0) }, { opacity: 0, filter: F(12), ease: "power1.in", immediateRender: false, scrollTrigger: { trigger: S, start: "top 75%", end: "top 15%", scrub: true } });
+      gsap.fromTo(kids(S), { opacity: 0 }, { opacity: 1, ease: "power1.out", scrollTrigger: { trigger: S, start: "top 95%", end: "top 45%", scrub: true } });
+      gsap.fromTo(kids(prev).filter(e => e.tagName !== "CANVAS"), { opacity: 1 }, { opacity: 0, ease: "power1.in", immediateRender: false, scrollTrigger: { trigger: S, start: "top 75%", end: "top 15%", scrub: true } });
       if (prev.id === "hero") gsap.fromTo("#howFlow", { opacity: 1 }, { opacity: 0, ease: "power1.in", immediateRender: false, scrollTrigger: { trigger: S, start: "top 75%", end: "top 15%", scrub: true } });
     }
     ScrollTrigger.refresh();
