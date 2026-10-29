@@ -1495,6 +1495,41 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
 .site-banner a{color:var(--bone)}.site-banner button{flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--bone-faint);background:none;color:var(--bone-dim);cursor:pointer}
 @media (max-width:640px){.site-banner{font-size:13px;top:calc(var(--navh, 64px) + 10px)}}
 
+
+/* полный прайс услуг (раскрывается, строится только при открытии) */
+.plist{margin-top:clamp(28px,4vw,44px);border:1px solid var(--bone-faint);border-radius:20px;background:var(--surface);overflow:hidden}
+.plist-btn{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto 36px;gap:16px;align-items:center;padding:clamp(18px,2.4vw,26px) clamp(18px,3vw,34px);background:none;border:0;color:var(--bone);text-align:left;cursor:pointer;font:inherit}
+.plist-t{display:grid;gap:6px}.plist-t .mono{color:var(--brass)}
+.plist-t b{font:400 clamp(22px,2.2vw,30px)/1.15 var(--f-display);color:#f6f0e4}
+.plist-n{color:var(--bone-dim);font-size:12px}
+.plist-btn i{position:relative;width:36px;height:36px;border-radius:50%;border:1px solid var(--bone-faint)}
+.plist-btn i::before,.plist-btn i::after{content:"";position:absolute;left:50%;top:50%;width:13px;height:1.5px;background:var(--bone);transform:translate(-50%,-50%);transition:transform .35s var(--ease)}
+.plist-btn i::after{transform:translate(-50%,-50%) rotate(90deg)}
+.plist-btn[aria-expanded="true"] i::after{transform:translate(-50%,-50%) rotate(0)}
+.plist-body{padding:0 clamp(18px,3vw,34px) clamp(22px,3vw,34px);border-top:1px solid var(--bone-faint)}
+.pl-tabs{display:flex;flex-wrap:wrap;gap:8px;padding:20px 0 6px}
+.pl-tabs button{border:1px solid var(--bone-faint);background:none;border-radius:999px;padding:10px 16px;font:400 14px/1 var(--f-body);color:var(--bone-dim);cursor:pointer;transition:color .3s,border-color .3s,background-color .3s}
+.pl-tabs button:hover{color:var(--bone);border-color:rgba(var(--fg-rgb),.4)}
+.pl-tabs button.on{color:var(--cta-fg);background:var(--cta-bg);border-color:var(--cta-bg)}
+.pl-note{margin:14px 0 0;color:var(--brass);font-size:14px;line-height:1.5}
+.pl-rows{list-style:none;margin:8px 0 0;padding:0}
+.pl-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 18px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--bone-faint)}
+.pl-row:last-child{border-bottom:0}
+.pl-name{font:400 clamp(19px,1.6vw,22px)/1.25 var(--f-display);color:#f6f0e4}
+.pl-time{display:inline-block;margin-left:10px;font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--brass);vertical-align:middle}
+.pl-price{font:400 clamp(19px,1.6vw,22px)/1 var(--f-display);color:#f6f0e4;white-space:nowrap;text-align:right}
+.pl-d{grid-column:1/-1;color:var(--bone-dim);font-size:14px;line-height:1.5;max-width:70ch}
+.pl-book{grid-column:1/-1;justify-self:start;background:none;border:0;padding:0;color:var(--cta-bg);font:500 13px/1 var(--f-body);cursor:pointer}
+.pl-book:hover{text-decoration:underline}
+.pl-inc{margin:6px 0 0;padding-left:18px;color:var(--bone-dim);font-size:14px;line-height:1.7}
+@media (max-width:640px){ .plist-btn{grid-template-columns:minmax(0,1fr) 36px} .plist-n{display:none} .pl-time{display:block;margin:6px 0 0} }
+
+.rules-more{margin-top:clamp(18px,2.5vw,28px);padding:0 clamp(28px,4vw,52px);border-radius:20px;background:var(--surface);border:1px solid var(--bone-faint)}
+.rules-more details:last-child{border-bottom:0}
+.rules-more ul{margin:0;padding:0 44px 24px 20px;display:grid;gap:10px;color:var(--bone-dim);font-size:16px;line-height:1.6;max-width:72ch}
+.rules-more summary{grid-template-columns:minmax(0,1fr) auto 28px}
+.rules-more summary small{font:500 11px/1 var(--f-mono);letter-spacing:.1em;color:var(--brass)}
+@media (max-width:640px){ .rules-more{padding:0 18px} .rules-more ul{padding-right:0;font-size:15px} }
 /* производительность на ноутбуках */
 #steam,#puffs,#heatTint{mix-blend-mode:normal!important}
 #pageVeil{visibility:hidden}#pageVeil.on{visibility:visible}
@@ -1683,6 +1718,13 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
       </div>
       <div class="cards svc" id="svcCards"></div>
       <p class="cards-note">Услуги можно добавить к любому визиту: в общий зал или в отдельную баню.</p>
+      <div class="plist" id="plist">
+        <button class="plist-btn" type="button" aria-expanded="false" aria-controls="plistBody">
+          <span class="plist-t"><span class="mono">Прайс-лист</span><b>Все услуги банщика, массаж и товары</b></span>
+          <span class="plist-n mono" id="plistN"></span><i aria-hidden="true"></i>
+        </button>
+        <div class="plist-body" id="plistBody" hidden></div>
+      </div>
     </div>
   </section>
 
@@ -1847,8 +1889,9 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
           <h2 id="rulesTitle">Правила <em>посещения</em></h2>
           <a class="btn sm" href="pravila/">Все правила <span class="arr">→</span></a>
         </div>
-        <ol class="rules-list" id="rulesList"><li><b>Время</b><span>Входной билет в общий зал действует 4 часа. Сверх тарифа — 15 ₽ за минуту.</span></li><li><b>Дни</b><span>Вторник — женский день, остальные дни — мужские. Отдельные бани и кабинеты доступны любой компании.</span></li><li><b>Дети</b><span>Дети до 12 лет — только вместе с родителем и с документом: паспорт или свидетельство о рождении.</span></li><li><b>Документы</b><span>Льготные тарифы предоставляются по документу. Администратор вправе попросить документ, удостоверяющий личность.</span></li><li><b>Запись</b><span>Отдельные бани, баня у бассейна, чан и услуги банщика — по предварительной записи.</span></li><li><b>Отмена</b><span>Отмена не позднее чем за 24 часа — полный возврат. Позже или без предупреждения — предоплата не возвращается. Опоздание больше 30 минут считается неявкой.</span></li></ol>
+        <ol class="rules-list" id="rulesList"><li><b>Время</b><span>Входной билет в общий зал действует 4 часа. Сверх тарифа — 15 ₽ за минуту.</span></li><li><b>Дни</b><span>Вторник — женский день, остальные дни — мужские. Отдельные бани и кабинеты доступны любой компании.</span></li><li><b>Дети</b><span>Дети до 14 лет — только со взрослым, не больше трёх детей на одного взрослого, и только в день своего разряда: мужской или женский. Нужен документ: паспорт или свидетельство о рождении.</span></li><li><b>Документы</b><span>Льготные тарифы предоставляются по документу. Администратор вправе попросить документ, удостоверяющий личность.</span></li><li><b>Запись</b><span>Отдельные бани, баня у бассейна, чан и услуги банщика — по предварительной записи.</span></li><li><b>Отмена</b><span>Отмена не позднее чем за 24 часа — полный возврат. Позже или без предупреждения — предоплата не возвращается. Опоздание больше 30 минут считается неявкой.</span></li></ol>
       </div>
+      <div class="rules-more faq-list"><details><summary>Отмена и возврат<small>2</small><i aria-hidden="true"></i></summary><ul><li>Если вы предупредили сотрудников бани об отмене не позднее чем за 24 часа до начала услуги, оплата за неоказанную услугу возвращается полностью, без штрафов.</li><li>Если вы отменили услугу без предупреждения или предупредили меньше чем за 24 часа, деньги не возвращаются.</li></ul></details><details><summary>Штрафы<small>3</small><i aria-hidden="true"></i></summary><ul><li>Утеря номерка гардероба — 500 ₽.</li><li>Утеря электронного браслета — 2 000 ₽.</li><li>Бой посуды — от 300 ₽ за единицу.</li></ul></details><details><summary>Что запрещено<small>17</small><i aria-hidden="true"></i></summary><ul><li>Посещать баню в нетрезвом состоянии.</li><li>Приносить с собой напитки и еду, купленные вне бани.</li><li>Нарушать тишину, мешать отдыху других гостей, использовать нецензурную лексику.</li><li>Входить в зал отдыха в верхней одежде, головных уборах и уличной обуви.</li><li>Проводить косметические процедуры и пользоваться косметикой в зале отдыха, в парных и в хаммаме.</li><li>Использовать в парных эфирные масла, травы, коренья и спиртовые настойки.</li><li>Курить, в том числе электронные устройства, во всех помещениях бани — только в отведённом месте на улице.</li><li>Класть ноги на стол и бегать по залу.</li><li>Открывать двери в технические помещения.</li><li>Пользоваться индивидуальной парной без заказа индивидуального парения, массажным отделением — без заказа массажа, молодильным чаном — без заказа чана.</li><li>Нырять в купели с бортиков и пользоваться купелями, не приняв душ.</li><li>Выносить тазы из моечного отделения в зал отдыха и в парные.</li><li>Вносить воду в парные и лить её на какие-либо поверхности в парных.</li><li>Мыться в парных и в хаммаме, приносить туда мыло, шампунь и гель для душа.</li><li>Стирать бельё, простыни, килты и одежду в помывочном отделении и сушить их в парной.</li><li>Продавать товары и услуги на территории бани.</li><li>Снимать фото и видео с участием других гостей.</li></ul></details><details><summary>Дети<small>3</small><i aria-hidden="true"></i></summary><ul><li>Дети до 14 лет допускаются только в сопровождении взрослых, не больше трёх детей на одного взрослого.</li><li>В парной, хаммаме, у купелей и в остальных зонах дети до 14 лет находятся под присмотром и ответственностью взрослых.</li><li>Посещение только однополое: ребёнок приходит в день своего разряда — мужской или женский.</li></ul></details></div>
     </div>
   </section>
 
@@ -1951,7 +1994,7 @@ const DATA = {
     { name: "Тёплый бассейн", t: 27, h: 0, d: "Открытый бассейн под небом. Над водой поднимается пар даже зимой.", tint: "127,169,182", water: true },
     { name: "Купели", t: 12, t2: 35, h: 0, d: "Холодная и тёплая: контраст после парной бодрит и тренирует сосуды.", tint: "110,150,170", water: true },
   ],
-  ...{"hall": {"weekday": {"4h": [3000, 3600], "unlim": 5000}, "weekend": {"4h": 4000, "unlim": 5500}, "vip": 16500, "child": 1500, "lgot": 1800, "svo": [2500, 3000]}, "baths": [{"id": "provans", "img2": "x-provans-in", "kind": "bath", "name": "Прованс", "img": "img-provans", "price": 5000, "base": 6, "cap": 10, "badge": "Баня с бассейном", "d": "Самая просторная баня комплекса: светлая зона отдыха, парная и собственный бассейн."}, {"id": "taiga", "img2": "x-taiga-vat", "kind": "bath", "name": "Таёжная", "img": "img-taiga", "price": 5000, "base": 6, "cap": 8, "badge": "Сруб и хвоя", "d": "Бревенчатый сруб, хвойный аромат и жаркая русская парная."}, {"id": "fin", "img2": "x-fin-in", "kind": "bath", "name": "Финская", "img": "img-fin", "price": 3500, "base": 4, "cap": 6, "badge": "Сухой жар", "d": "Камерная финская сауна для небольшой компании."}, {"id": "bavaria", "img2": "x-bavaria-sign", "kind": "cab", "name": "Баварский домик", "img": "img-bavaria", "price": 5000, "pkg": 4, "hourExtra": 1200, "base": 8, "cap": 12, "badge": "Кабинет № 3", "d": "Кабинет в баварском стиле: дерево, тепло и пиво после пара. До 8 гостей, входной билет оплачивается отдельно."}, {"id": "hata", "img2": "x-hata-in", "kind": "cab", "name": "Казачья хата", "img": "img-hata", "price": 7000, "pkg": 4, "hourExtra": 1700, "base": 10, "cap": 14, "badge": "Кабинет № 4", "d": "Самый просторный кабинет: казачий уклад, печь и щедрый стол после пара. До 10 гостей, входной билет оплачивается отдельно."}], "extraGuest": 1500, "cabGuest": 500, "minHours": 3, "chan": 10000, "rituals": [{"id": "classic", "g": "Парение", "top": 1, "name": "Классическое парение", "time": "до 15 минут", "price": 3500, "d": "Прогрев и парение всего тела вениками."}, {"id": "ice", "g": "Парение", "name": "Классическое со льдом", "time": "до 15 минут", "price": 3700, "d": "Прогрев и парение всего тела вениками, охлаждение льдом."}, {"id": "taiga", "g": "Парение", "top": 1, "name": "Таёжное парение", "time": "до 20 минут", "price": 4500, "d": "Парение на подушке из пихты, охлаждение льдом и растирка пихтовым веником."}, {"id": "citrus", "g": "Парение", "name": "Цитрусовый бриз", "time": "до 15 минут", "price": 3500, "d": "Прогрев и парение всего тела вениками, охлаждение цитрусами."}, {"id": "north", "g": "Парение", "name": "Северное сияние", "time": "до 25 минут", "price": 4800, "d": "Два захода на подушке из ароматной пихты, контрастное охлаждение ледяной простынёй."}, {"id": "tsar", "g": "Парение", "top": 1, "name": "Царское парение", "time": "до 25 минут", "price": 6200, "d": "Два захода на матрасе из луговых трав."}, {"id": "author", "g": "Парение", "name": "Авторское парение", "time": "до 40 минут", "price": 9500, "d": "Два захода на подушке из пихтовых веников, растирка можжевеловым веником, контрастное охлаждение ледяной простынёй."}, {"id": "cold", "g": "Парение", "name": "Холодное парение", "time": "до 5 минут", "price": 1200, "d": "Релаксирующая процедура после парения."}, {"id": "h4classic", "g": "Парение в 4 руки", "name": "Классическое в 4 руки", "time": "до 15 минут", "price": 5700, "d": "Два банщика, прогрев и парение всего тела вениками."}, {"id": "h4taiga", "g": "Парение в 4 руки", "name": "Таёжное в 4 руки", "time": "до 20 минут", "price": 6800, "d": "Два банщика, пихтовая подушка, охлаждение льдом и растирка пихтовым веником."}, {"id": "wbirch", "g": "Мойки", "name": "Мойка берёзовым веником", "time": "до 15 минут", "price": 3300, "d": "Веник входит в стоимость."}, {"id": "wsoap", "g": "Мойки", "name": "Мыльная классика", "time": "до 15 минут", "price": 3200, "d": ""}, {"id": "wlyko", "g": "Мойки", "name": "Лыковая мойка", "time": "до 15 минут", "price": 3200, "d": ""}, {"id": "peel", "g": "Мойки", "name": "Пилинг", "time": "", "price": 3000, "d": ""}, {"id": "wsoapm", "g": "Мойки", "name": "Мыльный массаж", "time": "30 минут", "price": 4500, "d": ""}, {"id": "m30", "g": "Массаж", "name": "Массаж 30 минут", "time": "30 минут", "price": 3500, "d": ""}, {"id": "m40", "g": "Массаж", "name": "Массаж 40 минут", "time": "40 минут", "price": 4200, "d": ""}, {"id": "massage", "g": "Массаж", "top": 1, "name": "Массаж 60 минут", "time": "60 минут", "price": 5000, "d": "Массаж всего тела после парной, когда мышцы уже прогреты."}, {"id": "m90", "g": "Массаж", "name": "Массаж 90 минут", "time": "90 минут", "price": 7000, "d": ""}, {"id": "thai30", "g": "Массаж", "name": "Тайский массаж 30 минут", "time": "30 минут", "price": 3800, "d": ""}, {"id": "thai60", "g": "Массаж", "name": "Тайский массаж 60 минут", "time": "60 минут", "price": 5200, "d": ""}], "extras": [{"id": "venik", "name": "Веники дубовые, 2 шт", "price": 1200, "note": "для парения, приобретаются отдельно"}, {"id": "venikb", "name": "Веники берёзовые, 2 шт", "price": 1000, "note": "для парения, приобретаются отдельно"}, {"id": "sheet", "name": "Простыня, аренда", "price": 400, "note": ""}, {"id": "towel", "name": "Полотенце, аренда", "price": 400, "note": ""}, {"id": "table", "name": "Стол в ресторане", "price": 0, "note": "бронь без депозита"}]},
+  ...{"hall": {"weekday": {"4h": [3000, 3600], "unlim": 5000}, "weekend": {"4h": 4000, "unlim": 5500}, "vip": 16500, "child": 1500, "lgot": 1800, "svo": [2500, 3000]}, "baths": [{"id": "provans", "img2": "x-provans-in", "kind": "bath", "name": "Прованс", "img": "img-provans", "price": 5000, "base": 6, "cap": 10, "badge": "Баня с бассейном", "d": "Самая просторная баня комплекса: светлая зона отдыха, парная и собственный бассейн."}, {"id": "taiga", "img2": "x-taiga-vat", "kind": "bath", "name": "Таёжная", "img": "img-taiga", "price": 5000, "base": 6, "cap": 8, "badge": "Сруб и хвоя", "d": "Бревенчатый сруб, хвойный аромат и жаркая русская парная."}, {"id": "fin", "img2": "x-fin-in", "kind": "bath", "name": "Финская", "img": "img-fin", "price": 3500, "base": 4, "cap": 6, "badge": "Сухой жар", "d": "Камерная финская сауна для небольшой компании."}, {"id": "bavaria", "img2": "x-bavaria-sign", "kind": "cab", "name": "Баварский домик", "img": "img-bavaria", "price": 5000, "pkg": 4, "hourExtra": 1200, "base": 8, "cap": 12, "badge": "Кабинет № 3", "d": "Кабинет в баварском стиле: дерево, тепло и пиво после пара. До 8 гостей, входной билет оплачивается отдельно."}, {"id": "hata", "img2": "x-hata-in", "kind": "cab", "name": "Казачья хата", "img": "img-hata", "price": 7000, "pkg": 4, "hourExtra": 1700, "base": 10, "cap": 14, "badge": "Кабинет № 4", "d": "Самый просторный кабинет: казачий уклад, печь и щедрый стол после пара. До 10 гостей, входной билет оплачивается отдельно."}], "extraGuest": 1500, "cabGuest": 500, "minHours": 3, "chan": 10000, "rituals": [{"id": "classic", "g": "Парение", "top": 1, "name": "Классическое парение", "time": "до 15 минут", "price": 3500, "d": "Прогрев и парение всего тела вениками."}, {"id": "ice", "g": "Парение", "name": "Классическое со льдом", "time": "до 15 минут", "price": 3700, "d": "Прогрев и парение всего тела вениками, охлаждение льдом."}, {"id": "taiga", "g": "Парение", "top": 1, "name": "Таёжное парение", "time": "до 20 минут", "price": 4500, "d": "Парение на подушке из пихты, охлаждение льдом и растирка пихтовым веником."}, {"id": "citrus", "g": "Парение", "name": "Цитрусовый бриз", "time": "до 15 минут", "price": 3500, "d": "Прогрев и парение всего тела вениками, охлаждение цитрусами."}, {"id": "north", "g": "Парение", "name": "Северное сияние", "time": "до 25 минут", "price": 4800, "d": "Два захода на подушке из ароматной пихты, контрастное охлаждение ледяной простынёй."}, {"id": "tsar", "g": "Парение", "top": 1, "name": "Царское парение", "time": "до 25 минут", "price": 6200, "d": "Два захода на матрасе из луговых трав."}, {"id": "author", "g": "Парение", "name": "Авторское парение", "time": "до 40 минут", "price": 9500, "d": "Два захода на подушке из пихтовых веников, растирка можжевеловым веником, контрастное охлаждение ледяной простынёй."}, {"id": "cold", "g": "Парение", "name": "Холодное парение", "time": "до 5 минут", "price": 1200, "d": "Релаксирующая процедура после парения."}, {"id": "h4classic", "g": "Парение в 4 руки", "name": "Классическое в 4 руки", "time": "до 15 минут", "price": 5700, "d": "Два банщика, прогрев и парение всего тела вениками."}, {"id": "h4taiga", "g": "Парение в 4 руки", "name": "Таёжное в 4 руки", "time": "до 20 минут", "price": 6800, "d": "Два банщика, пихтовая подушка, охлаждение льдом и растирка пихтовым веником."}, {"id": "wbirch", "g": "Мойки", "name": "Мойка берёзовым веником", "time": "до 15 минут", "price": 3300, "d": "Веник входит в стоимость."}, {"id": "wsoap", "g": "Мойки", "name": "Мыльная классика", "time": "до 15 минут", "price": 3200, "d": ""}, {"id": "wlyko", "g": "Мойки", "name": "Лыковая мойка", "time": "до 15 минут", "price": 3200, "d": ""}, {"id": "peel", "g": "Мойки", "name": "Пилинг", "time": "", "price": 3000, "d": ""}, {"id": "wsoapm", "g": "Мойки", "name": "Мыльный массаж", "time": "30 минут", "price": 4500, "d": ""}, {"id": "m30", "g": "Массаж", "name": "Массаж 30 минут", "time": "30 минут", "price": 3500, "d": ""}, {"id": "m40", "g": "Массаж", "name": "Массаж 40 минут", "time": "40 минут", "price": 4200, "d": ""}, {"id": "massage", "g": "Массаж", "top": 1, "name": "Массаж 60 минут", "time": "60 минут", "price": 5000, "d": "Массаж всего тела после парной, когда мышцы уже прогреты."}, {"id": "m90", "g": "Массаж", "name": "Массаж 90 минут", "time": "90 минут", "price": 7000, "d": ""}, {"id": "thai30", "g": "Массаж", "name": "Тайский массаж 30 минут", "time": "30 минут", "price": 3800, "d": ""}, {"id": "thai60", "g": "Массаж", "name": "Тайский массаж 60 минут", "time": "60 минут", "price": 5200, "d": ""}], "extras": [{"id": "venik", "name": "Веники дубовые, 2 шт", "price": 1200, "note": "для парения, приобретаются отдельно"}, {"id": "venikb", "name": "Веники берёзовые, 2 шт", "price": 1000, "note": "для парения, приобретаются отдельно"}, {"id": "sheet", "name": "Простыня, аренда", "price": 400, "note": ""}, {"id": "towel", "name": "Полотенце, аренда", "price": 400, "note": ""}, {"id": "table", "name": "Стол в ресторане", "price": 0, "note": "бронь без депозита"}], "goods": [{"name": "Веник берёзовый", "price": 500}, {"name": "Веник дубовый", "price": 600}, {"name": "Веник пихтовый / можжевеловый", "price": 500}, {"name": "Травы: донник, полынь, мята", "price": 350}, {"name": "Килт банный с логотипом", "price": 2000}, {"name": "Простыня, аренда", "price": 400}, {"name": "Полотенце, аренда", "price": 400}, {"name": "Полотенце махровое", "price": 1800}, {"name": "Сидушка из фетра", "price": 900}, {"name": "Тапочки резиновые", "price": 550}, {"name": "Халат вафельный с логотипом", "price": 4000}, {"name": "Халат махровый с логотипом", "price": 6200}, {"name": "Шапка из овчины с логотипом", "price": 5800}, {"name": "Шапка-боярка из овчины с логотипом", "price": 7000}, {"name": "Шапка фетровая с логотипом", "price": 1500}, {"name": "Шапка фетровая детская", "price": 1200}, {"name": "Матрас из сена", "price": 2500}], "veniki": {"two": "Веники для парения приобретаются отдельно: дубовые (2 шт) — 1 200 ₽, берёзовые (2 шт) — 1 000 ₽.", "four": "Для парения в 4 руки: дубовые (4 шт) — 2 400 ₽, берёзовые (4 шт) — 2 000 ₽."}, "chanInfo": {"price": 10000, "hours": 4, "cap": 8, "hourExtra": 2000}},
 };
 
 /* ================== HELPERS ================== */
@@ -2180,6 +2223,46 @@ const lazyFrame = (box, title) => {
   map && map.querySelector(".visit-load").addEventListener("click", () => lazyFrame(map, "Носовихинские бани на карте"));
 })();
 
+
+/* полный прайс услуг: строится при первом открытии */
+(function priceList() {
+  const btn = $("#plist .plist-btn"), body = $("#plistBody"); if (!btn) return;
+  const R = DATA.rituals, G = DATA.goods || [], V = DATA.veniki || {}, C = DATA.chanInfo || {};
+  const groups = [...new Set(R.map(r => r.g))];
+  const nb = n => n.toLocaleString("ru-RU").replace(/\s/g, "\u00a0") + "\u00a0₽";
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const tabs = [...groups.map(g => ({ id: g, title: g === "Мойки" ? "Мойки и пилинг" : g })), { id: "_cab", title: "Кабинеты и чан" }, { id: "_vip", title: "Комплексный билет" }, { id: "_goods", title: "Веники и товары" }];
+  const total = R.length + G.length + 4;
+  $("#plistN").textContent = total + " позиций";
+  const row = (name, time, price, d, book) => `<li class="pl-row"><span class="pl-name">${esc(name)}${time ? `<span class="pl-time">${esc(time)}</span>` : ""}</span><span class="pl-price">${price}</span>${d ? `<span class="pl-d">${esc(d)}</span>` : ""}${book || ""}</li>`;
+  const panel = id => {
+    if (id === "_cab") {
+      const cabs = DATA.baths.filter(b => b.kind === "cab");
+      return `<ul class="pl-rows">${cabs.map(b => row(b.name, `до ${b.base} гостей · ${b.pkg || 4} часа`, nb(b.price), `Каждый следующий час — ${nb(b.hourExtra || 0)}. Гость сверх лимита — ${nb(DATA.cabGuest)}. Входной билет в стоимость не входит, льготы не действуют.`, `<button class="pl-book" data-book="bath" data-bath="${b.id}">Забронировать →</button>`)).join("")}
+        ${row("Молодильный чан «Изобилие трав»", `до ${C.cap || 8} человек · ${C.hours || 4} часа`, nb(C.price || DATA.chan), `Донник, полынь, эвкалипт, мята. Каждый следующий час — ${nb(C.hourExtra || 0)}. Только по предварительной записи.`, `<button class="pl-book" data-book="chan">Забронировать →</button>`)}</ul>`;
+    }
+    if (id === "_vip") return `<ul class="pl-rows">${row("Комплексный билет", "весь день", nb(DATA.hall.vip), "", "")}</ul><ul class="pl-inc"><li>Безлимитное посещение</li><li>Классическое парение со льдом</li><li>Мойка берёзовым веником</li><li>Массаж 40 минут</li><li>Травяной чай</li></ul>`;
+    if (id === "_goods") return `<ul class="pl-rows">${G.map(x => row(x.name, "", nb(x.price), "", "")).join("")}</ul>`;
+    const list = R.filter(r => r.g === id);
+    const note = id === "Парение" ? V.two : id === "Парение в 4 руки" ? V.four : "";
+    return (note ? `<p class="pl-note">${esc(note)}</p>` : "") + `<ul class="pl-rows">${list.map(r => row(r.name, r.time, nb(r.price), r.d, `<button class="pl-book" data-book="ritual" data-ritual="${r.id}">Записаться →</button>`)).join("")}</ul>`;
+  };
+  let built = false;
+  const show = id => { $$(".pl-tabs button", body).forEach(b => b.classList.toggle("on", b.dataset.id === id)); $(".pl-panel", body).innerHTML = panel(id); };
+  btn.addEventListener("click", () => {
+    const open = btn.getAttribute("aria-expanded") !== "true";
+    if (open && !built) {
+      built = true;
+      body.innerHTML = `<div class="pl-tabs" role="tablist">${tabs.map(t => `<button type="button" role="tab" data-id="${esc(t.id)}">${esc(t.title)}</button>`).join("")}</div><div class="pl-panel"></div>`;
+      body.addEventListener("click", e => { const t = e.target.closest(".pl-tabs button"); if (t) show(t.dataset.id); });
+      show(tabs[0].id);
+    }
+    btn.setAttribute("aria-expanded", open); body.hidden = !open;
+    window.ScrollTrigger && ScrollTrigger.refresh();
+  });
+})();
+
+document.querySelectorAll(".rules-more details").forEach(d => d.addEventListener("toggle", () => window.ScrollTrigger && ScrollTrigger.refresh()));
 /* сертификат: номинал и готовое сообщение администратору */
 (() => {
   const opts = $$(".cert-opts button"); if (!opts.length) return;
@@ -3037,7 +3120,8 @@ function motion() {
     for (let i = 1; i < secs.length; i++) {
       const S = secs[i], prev = secs[i - 1];
       gsap.fromTo(kids(S), { opacity: 0 }, { opacity: 1, ease: "power1.out", scrollTrigger: { trigger: S, start: "top 95%", end: "top 45%", scrub: true } });
-      gsap.fromTo(kids(prev).filter(e => e.tagName !== "CANVAS"), { opacity: 1 }, { opacity: 0, ease: "power1.in", immediateRender: false, scrollTrigger: { trigger: S, start: "top 75%", end: "top 15%", scrub: true } });
+      // блоки, где читают длинный раскрывающийся текст (прайс, правила), не растворяем
+      if (prev.id !== "baths" && prev.id !== "rules") gsap.fromTo(kids(prev).filter(e => e.tagName !== "CANVAS"), { opacity: 1 }, { opacity: 0, ease: "power1.in", immediateRender: false, scrollTrigger: { trigger: S, start: "top 75%", end: "top 15%", scrub: true } });
       if (prev.id === "hero") gsap.fromTo("#howFlow", { opacity: 1 }, { opacity: 0, ease: "power1.in", immediateRender: false, scrollTrigger: { trigger: S, start: "top 75%", end: "top 15%", scrub: true } });
     }
     ScrollTrigger.refresh();
