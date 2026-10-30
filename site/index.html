@@ -1530,6 +1530,35 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
 .rules-more summary{grid-template-columns:minmax(0,1fr) auto 28px}
 .rules-more summary small{font:500 11px/1 var(--f-mono);letter-spacing:.1em;color:var(--brass)}
 @media (max-width:640px){ .rules-more{padding:0 18px} .rules-more ul{padding-right:0;font-size:15px} }
+.addon.goods{cursor:default}
+.addons.goods-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
+.gq{display:flex;align-items:center;gap:10px}.gq b{min-width:16px;text-align:center;font:400 15px var(--f-mono)}
+.bk-tip{margin:14px 0 0;padding:12px 16px;border-radius:12px;border:1px solid rgba(164,182,74,.35);background:rgba(164,182,74,.08);color:var(--bone);font-size:14px;line-height:1.5}
+
+/* подбор парения */
+.pick{margin-top:clamp(28px,4vw,44px);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);gap:clamp(20px,4vw,56px);padding:clamp(22px,3.4vw,44px);border-radius:20px;border:1px solid rgba(201,164,115,.28);background:radial-gradient(120% 140% at 0% 0%,rgba(201,164,115,.10),transparent 55%),var(--surface)}
+.pick-head{display:grid;gap:12px;align-content:start}.pick-head .mono{color:var(--brass)}
+.pick-head h3{font:400 clamp(30px,3.2vw,46px)/1 var(--f-display);color:#f6f0e4}.pick-head h3 em{color:var(--brass)}
+.pick-head p{color:var(--bone-dim);font-size:15px;line-height:1.55;max-width:34ch}
+.pick-body{display:grid;gap:22px}
+.pick-q{display:grid;gap:18px}
+.pq{display:grid;gap:10px}.pq>span{font:500 11px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim)}
+.pq div{display:flex;flex-wrap:wrap;gap:8px}
+.pq button{border:1px solid var(--bone-faint);background:none;border-radius:999px;padding:11px 16px;font:400 14px/1 var(--f-body);color:var(--bone);cursor:pointer;transition:border-color .3s,background-color .3s,color .3s}
+.pq button:hover{border-color:rgba(var(--fg-rgb),.45)}
+.pq button.on{background:var(--cta-bg);border-color:var(--cta-bg);color:var(--cta-fg)}
+.pick-res:empty{display:none}
+.pick-res{display:grid;gap:12px;padding-top:6px;border-top:1px solid var(--bone-faint)}
+.pr-lead{color:var(--brass);font-size:14px;margin:8px 0 0}
+.pr-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 18px;align-items:center;padding:16px 18px;border-radius:14px;background:rgba(255,250,240,.03);border:1px solid var(--bone-faint)}
+.pr-card.best{border-color:rgba(164,182,74,.55);background:rgba(164,182,74,.07)}
+.pr-card h4{font:400 clamp(20px,1.8vw,24px)/1.2 var(--f-display);color:#f6f0e4;margin:0}
+.pr-card h4 small{font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--brass);margin-left:10px}
+.pr-card p{grid-column:1;color:var(--bone-dim);font-size:14px;line-height:1.5;margin:0}
+.pr-card .pr-side{grid-column:2;grid-row:1/3;display:grid;gap:10px;justify-items:end}
+.pr-card .pr-side b{font:400 22px/1 var(--f-display);color:#f6f0e4;white-space:nowrap}
+@media (max-width:900px){ .pick{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:560px){ .pr-card{grid-template-columns:minmax(0,1fr)} .pr-card .pr-side{grid-column:1;grid-row:auto;justify-items:start;grid-auto-flow:column;align-items:center;gap:16px} .pr-card h4 small{display:block;margin:6px 0 0} }
 /* производительность на ноутбуках */
 #steam,#puffs,#heatTint{mix-blend-mode:normal!important}
 #pageVeil{visibility:hidden}#pageVeil.on{visibility:visible}
@@ -1718,6 +1747,10 @@ mark.fd-hl{background:rgba(201,164,115,.28);color:inherit;border-radius:3px;padd
       </div>
       <div class="cards svc" id="svcCards"></div>
       <p class="cards-note">Услуги можно добавить к любому визиту: в общий зал или в отдельную баню.</p>
+      <div class="pick" id="pick">
+        <div class="pick-head"><span class="mono">Подбор за 3 вопроса</span><h3>Какое парение <em>выбрать?</em></h3><p>Ответьте на три вопроса, и мы подскажем, что подойдёт именно вам.</p></div>
+        <div class="pick-body"><div class="pick-q" id="pickQ"></div><div class="pick-res" id="pickRes" aria-live="polite"></div></div>
+      </div>
       <div class="plist" id="plist">
         <button class="plist-btn" type="button" aria-expanded="false" aria-controls="plistBody">
           <span class="plist-t"><span class="mono">Прайс-лист</span><b>Все услуги банщика, массаж и товары</b></span>
@@ -2223,6 +2256,35 @@ const lazyFrame = (box, title) => {
   map && map.querySelector(".visit-load").addEventListener("click", () => lazyFrame(map, "Носовихинские бани на карте"));
 })();
 
+
+
+/* подбор парения: 3 вопроса → 2 подходящие процедуры */
+(function pickRitual() {
+  const qBox = $("#pickQ"), res = $("#pickRes"); if (!qBox) return;
+  const Q = [
+    { id: "exp", t: "Опыт", o: [["first", "Впервые с банщиком"], ["some", "Иногда парюсь"], ["pro", "Бывалый парильщик"]] },
+    { id: "want", t: "Что хочется", o: [["classic", "Классика с веником"], ["cold", "Контраст и лёд"], ["aroma", "Ароматы: пихта, травы, цитрус"], ["max", "Особый случай"]] },
+    { id: "time", t: "Сколько времени", o: [["short", "До 15 минут"], ["mid", "20–25 минут"], ["long", "Не ограничено"]] },
+  ];
+  const A = {};
+  const W = {
+    want: { classic: { classic: 4, h4classic: 2, ice: 1 }, cold: { ice: 4, north: 4, taiga: 2 }, aroma: { taiga: 4, tsar: 4, citrus: 3 }, max: { author: 4, h4taiga: 4, h4classic: 3, north: 2 } },
+    exp: { first: { classic: 3, citrus: 2, ice: 1, author: -3, north: -2, h4classic: -2, h4taiga: -2 }, some: {}, pro: { author: 2, north: 1, h4classic: 2, h4taiga: 2, classic: -1 } },
+  };
+  const mins = r => +((r.time || "").match(/\d+/) || [15])[0];
+  const timeScore = (m, t) => t === "short" ? (m <= 15 ? 3 : m <= 20 ? 1 : -2) : t === "mid" ? (m >= 20 && m <= 25 ? 3 : m === 15 ? 1 : 0) : (m >= 40 ? 3 : m >= 25 ? 2 : 0);
+  const draw = () => {
+    qBox.innerHTML = Q.map(q => `<div class="pq"><span>${q.t}</span><div>${q.o.map(([v, l]) => `<button type="button" data-q="${q.id}" data-v="${v}" class="${A[q.id] === v ? "on" : ""}">${l}</button>`).join("")}</div></div>`).join("");
+    if (!A.want) { res.innerHTML = ""; return; }
+    const pool = DATA.rituals.filter(r => /Парение/.test(r.g) && r.id !== "cold");
+    const sc = r => ((W.want[A.want] || {})[r.id] || 0) + ((W.exp[A.exp] || {})[r.id] || 0) + (A.time ? timeScore(mins(r), A.time) : 0);
+    const top = pool.map(r => [r, sc(r)]).sort((a, b) => b[1] - a[1]).slice(0, 2).map(x => x[0]);
+    const lead = A.exp === "first" ? "Первый раз — отличный повод: банщик подстроит жар под вас." : "Вот что подойдёт лучше всего:";
+    res.innerHTML = `<p class="pr-lead">${lead}</p>` + top.map((r, i) => `<div class="pr-card ${i ? "" : "best"}"><h4>${r.name}<small>${r.time}</small></h4><p>${r.d || ""}</p><div class="pr-side"><b>${rub(r.price)}</b><button class="btn solid sm" data-book="ritual" data-ritual="${r.id}">Записаться <span class="arr">→</span></button></div></div>`).join("");
+  };
+  qBox.addEventListener("click", e => { const b = e.target.closest("[data-q]"); if (!b) return; A[b.dataset.q] = b.dataset.v; draw(); goal("pick_ritual"); window.ScrollTrigger && ScrollTrigger.refresh(); });
+  draw();
+})();
 
 /* полный прайс услуг: строится при первом открытии */
 (function priceList() {
@@ -3224,7 +3286,7 @@ if (/[?&]book\b/.test(location.search)) setTimeout(() => { const b = document.qu
 const modal = $("#modal"), body = $("#bkBody");
 let S;
 const fresh = () => ({ step: 0, done: false, type: null, tariff: "4h", bath: null, ritual: null, date: null, time: null, hours: 3,
-  adults: 2, kids7: 0, kids0: 0, lgot: 0, svo: 0, extras: new Set(), rituals: new Set(), name: "", phone: "", comment: "", agree: false, pay: "sbp", monthOff: 0 });
+  adults: 2, kids7: 0, kids0: 0, lgot: 0, svo: 0, extras: new Set(), rituals: new Set(), goods: {}, name: "", phone: "", comment: "", agree: false, pay: "sbp", monthOff: 0 });
 const TYPES = [
   { id: "hall", name: "Общий зал", d: "Входной билет на 4 часа, безлимит или VIP. Все парные и бассейн.", pr: "от 3 000 ₽" },
   { id: "bath", name: "Отдельная баня", d: "Бани Прованс, Таёжная, Финская и два кабинета. От 3 часов.", pr: "от 3 500 ₽ / час" },
@@ -3258,6 +3320,7 @@ function price() {
   else if (S.type === "ritual" && S.ritual) { const r = DATA.rituals.find(x => x.id === S.ritual); add(r.name, r.price); }
   S.rituals.forEach(id => { const r = DATA.rituals.find(x => x.id === id); add(r.name, r.price); });
   S.extras.forEach(id => { const e = DATA.extras.find(x => x.id === id); if (e.price) add(e.name, e.price); else L.push([e.name, 0]); });
+  Object.entries(S.goods).forEach(([i, n]) => { const g = (DATA.goods || [])[i]; if (g && n > 0) add(n > 1 ? `${g.name} × ${n}` : g.name, g.price * n); });
   return { L, sum };
 }
 const lgotAllowed = () => S.date && !isWeekend(S.date) && S.time && (() => { const [a, b] = S.time.split(":").map(Number), t = a + b / 60; return t >= 10 && t <= 15; })();
@@ -3328,7 +3391,13 @@ function view2() {
 }
 function view3() {
   const rit = S.type === "ritual" ? "" : `<p class="step-title">Парение, мойки и массаж</p><div class="addons">${DATA.rituals.map((r, i, a) => `${!i || a[i - 1].g !== r.g ? `<span class="opt-g mono">${r.g}</span>` : ""}<button class="addon ${S.rituals.has(r.id) ? "sel" : ""}" data-rit="${r.id}"><span><b>${r.name}</b><small>${r.time}</small></span><span class="pr">+ ${rub(r.price)}</span></button>`).join("")}</div>`;
-  return `${rit}<p class="step-title" style="margin-top:24px">Дополнительно</p><div class="addons">${DATA.extras.map(e => `<button class="addon ${S.extras.has(e.id) ? "sel" : ""}" data-ext="${e.id}"><span><b>${e.name}</b><small>${e.note}</small></span><span class="pr">${e.price ? "+ " + rub(e.price) : "бесплатно"}</span></button>`).join("")}</div>`;
+  const steam = [...S.rituals].concat(S.ritual ? [S.ritual] : []).map(id => DATA.rituals.find(r => r.id === id)).filter(r => r && /Парение/.test(r.g) && r.id !== "cold");
+  const hasVenik = [...S.extras].some(id => /^venik/.test(id)) || Object.keys(S.goods).some(i => S.goods[i] > 0 && /Веник/.test((DATA.goods[i] || {}).name || ""));
+  const four = steam.some(r => /4 руки/.test(r.g)), V = DATA.veniki || {};
+  const tip = steam.length && !hasVenik ? `<p class="bk-tip">🌿 ${four ? V.four || V.two : V.two || "Веники для парения приобретаются отдельно."} Добавьте их ниже — банщик подготовит заранее.</p>` : "";
+  const G = (DATA.goods || []).map((g, i) => [g, i]).filter(([g]) => !/аренда/i.test(g.name));
+  const goods = G.length ? `<p class="step-title" style="margin-top:24px">Веники и банные товары</p><div class="addons goods-grid">${G.map(([g, i]) => { const n = S.goods[i] || 0; return `<div class="addon goods ${n ? "sel" : ""}"><span><b>${g.name}</b><small>${rub(g.price)}</small></span><span class="cnt gq"><button type="button" data-gd="${i}" ${n ? "" : "disabled"} aria-label="Меньше">−</button><b>${n}</b><button type="button" data-gi="${i}" aria-label="Больше">+</button></span></div>`; }).join("")}</div>` : "";
+  return `${rit}${tip}<p class="step-title" style="margin-top:24px">Дополнительно</p><div class="addons">${DATA.extras.map(e => `<button class="addon ${S.extras.has(e.id) ? "sel" : ""}" data-ext="${e.id}"><span><b>${e.name}</b><small>${e.note}</small></span><span class="pr">${e.price ? "+ " + rub(e.price) : "бесплатно"}</span></button>`).join("")}</div>${goods}`;
 }
 function view4() {
   const p = price(), q = s => s.replace(/"/g, "&quot;");
@@ -3379,6 +3448,8 @@ function bind() {
   on("[data-dec]", el => S[el.dataset.dec]--);
   on("[data-rit]", el => S.rituals.has(el.dataset.rit) ? S.rituals.delete(el.dataset.rit) : S.rituals.add(el.dataset.rit));
   on("[data-ext]", el => S.extras.has(el.dataset.ext) ? S.extras.delete(el.dataset.ext) : S.extras.add(el.dataset.ext));
+  on("[data-gi]", el => S.goods[el.dataset.gi] = Math.min(20, (S.goods[el.dataset.gi] || 0) + 1));
+  on("[data-gd]", el => S.goods[el.dataset.gd] = Math.max(0, (S.goods[el.dataset.gd] || 0) - 1));
   on("[data-pay]", el => S.pay = el.dataset.pay);
   const hr = $("#hours", body); if (hr) hr.addEventListener("input", () => { S.hours = +hr.value; S.time = null; render(); });
   const nm = $("#f-name", body), ph = $("#f-phone", body), cm = $("#f-comment", body), ag = $("#f-agree", body), upd = () => $("#bkNext").disabled = !valid();

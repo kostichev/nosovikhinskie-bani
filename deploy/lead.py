@@ -119,7 +119,7 @@ def format_lead(d):
     if d.get("guests"): rows.append(f"Гости: {clean(d.get('guests'))}")
     items = d.get("items") or []
     if isinstance(items, list) and items:
-        rows += ["", "Состав:"] + [f"• {clean(i, 160)}" for i in items[:20]]
+        rows += ["", "Состав:"] + [f"• {clean(i, 160)}" for i in items[:40]]
     if d.get("total"): rows.append(f"Итого: {clean(d.get('total'), 40)} (предоплата 50% после подтверждения)")
     rows += ["", f"Имя: {clean(d.get('name'), 80)}", f"Телефон: {clean(d.get('phone'), 30)}"]
     if d.get("comment"): rows.append(f"Комментарий: {clean(d.get('comment'), 600)}")
